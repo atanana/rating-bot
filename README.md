@@ -1,4 +1,7 @@
 # rating-bot
+
+[![Build Status](https://travis-ci.org/atanana/rating-bot.svg?branch=master)](https://travis-ci.org/atanana/rating-bot)
+
 Следит за командой и спамит чат вконтакте мотивирующими сообщениями
 
 Пример запуска: `java -Dtoken={access_token} -Dchat={chat_id} -Dteam={team_id} -jar rating-bot-assembly-1.3.jar`
