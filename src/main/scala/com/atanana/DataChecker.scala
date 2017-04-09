@@ -13,7 +13,7 @@ class DataChecker(private val poster: Poster, private val store: JsonStore, priv
     val newTournamentsData: Set[Tournament] = getTournamentsData(data)
     val changedResults: Set[Tournament] = storedData.tournaments -- newTournamentsData
     if (changedResults.nonEmpty) {
-      store.write(Data(newTournamentsData))
+      store.write(storedData.copy(tournaments = newTournamentsData))
       changedResults.foreach(tournament => {
         val tournamentData: TournamentData = data.find(_.id == tournament.id).get
         val message: String = messageComposer.composeChangedResult(tournamentData, tournament.score)
@@ -26,7 +26,7 @@ class DataChecker(private val poster: Poster, private val store: JsonStore, priv
     val newTournamentIds: Set[Int] = data.map(_.id).toSet -- storedData.tournaments.map(_.id)
     if (newTournamentIds.nonEmpty) {
       val newTournamentsData: Set[Tournament] = getTournamentsData(data)
-      store.write(Data(newTournamentsData))
+      store.write(storedData.copy(tournaments = newTournamentsData))
       newTournamentIds.foreach(id => {
         val tournamentData: TournamentData = data.find(_.id == id).get
         if (storedData.tournaments.nonEmpty) {

@@ -23,7 +23,7 @@ class DataCheckerTest extends FunSuite with BeforeAndAfter with MockFactory {
   }
 
   test("no new tournaments") {
-    (store.read _).expects().returns(Data(Set(Tournament(1, 0), Tournament(2, 0), Tournament(3, 0))))
+    (store.read _).expects().returns(Data(Set(Tournament(1, 0), Tournament(2, 0), Tournament(3, 0)), Set.empty))
 
     dataChecker.check(List(
       TournamentData(3, "test 3", "link 3", 0f, 0, 0),
@@ -33,7 +33,7 @@ class DataCheckerTest extends FunSuite with BeforeAndAfter with MockFactory {
   }
 
   test("new tournaments") {
-    (store.read _).expects().returns(Data(Set(Tournament(1, 0))))
+    (store.read _).expects().returns(Data(Set(Tournament(1, 0)), Set.empty))
     val tournamentData3: TournamentData = TournamentData(3, "test 3", "link 3", 3.3f, 3, 0)
     val tournamentData2: TournamentData = TournamentData(2, "test 2", "link 2", 2.2f, 2, 0)
 
@@ -42,7 +42,7 @@ class DataCheckerTest extends FunSuite with BeforeAndAfter with MockFactory {
     (messageComposer.composeNewResult _).expects(tournamentData3).returns(MESSAGE_NEW)
     (messageComposer.composeNewResult _).expects(tournamentData2).returns(MESSAGE_NEW)
 
-    (store.write _).expects(Data(Set(Tournament(1, 0), Tournament(2, 0), Tournament(3, 0))))
+    (store.write _).expects(Data(Set(Tournament(1, 0), Tournament(2, 0), Tournament(3, 0)), Set.empty))
 
     dataChecker.check(List(
       tournamentData3,
@@ -52,9 +52,9 @@ class DataCheckerTest extends FunSuite with BeforeAndAfter with MockFactory {
   }
 
   test("not post first time") {
-    (store.read _).expects().returns(Data(Set.empty))
+    (store.read _).expects().returns(Data(Set.empty, Set.empty))
 
-    (store.write _).expects(Data(Set(Tournament(1, 0), Tournament(2, 1), Tournament(3, 0))))
+    (store.write _).expects(Data(Set(Tournament(1, 0), Tournament(2, 1), Tournament(3, 0)), Set.empty))
 
     dataChecker.check(List(
       TournamentData(3, "test 3", "link 3", 3.3f, 3, 0),
@@ -64,14 +64,14 @@ class DataCheckerTest extends FunSuite with BeforeAndAfter with MockFactory {
   }
 
   test("questions changed") {
-    (store.read _).expects().returns(Data(Set(Tournament(1, 0), Tournament(2, 0), Tournament(3, 0))))
+    (store.read _).expects().returns(Data(Set(Tournament(1, 0), Tournament(2, 0), Tournament(3, 0)), Set.empty))
     val tournamentData2: TournamentData = TournamentData(2, "test 2", "link 2", 2.2f, 2, 1)
 
     (poster.post _).expects(MESSAGE_CHANGED)
 
     (messageComposer.composeChangedResult _).expects(tournamentData2, 0).returns(MESSAGE_CHANGED)
 
-    (store.write _).expects(Data(Set(Tournament(1, 0), Tournament(2, 1), Tournament(3, 0))))
+    (store.write _).expects(Data(Set(Tournament(1, 0), Tournament(2, 1), Tournament(3, 0)), Set.empty))
 
     dataChecker.check(List(
       TournamentData(3, "test 3", "link 3", 3.3f, 3, 0),
