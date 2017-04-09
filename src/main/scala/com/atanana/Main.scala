@@ -3,6 +3,7 @@ package com.atanana
 import java.util.concurrent.TimeUnit
 
 import com.atanana.data.TournamentData
+import com.atanana.parsers.CsvParser
 import com.typesafe.scalalogging.Logger
 
 import scala.concurrent.duration.Duration

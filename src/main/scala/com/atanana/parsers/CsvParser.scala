@@ -1,5 +1,6 @@
-package com.atanana
+package com.atanana.parsers
 
+import com.atanana.Connector
 import com.atanana.data.TournamentData
 
 import scala.util.Try
