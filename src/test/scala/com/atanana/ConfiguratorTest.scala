@@ -19,14 +19,16 @@ class ConfiguratorTest extends WordSpecLike with MockFactory with Matchers with 
       (systemWrapper.get _).when("token").returns("test token")
       (systemWrapper.get _).when("chat").returns("123")
       (systemWrapper.get _).when("team").returns("321")
+      (systemWrapper.get _).when("city").returns("456")
 
-      configurator.config shouldEqual Success(Config("test token", 123, 321))
+      configurator.config shouldEqual Success(Config("test token", 123, 321, 456))
     }
 
     "fail without token" in {
       (systemWrapper.get _).when("token").returns("")
       (systemWrapper.get _).when("chat").returns("123")
       (systemWrapper.get _).when("team").returns("321")
+      (systemWrapper.get _).when("city").returns("456")
 
       configurator.config shouldBe a[Failure[_]]
     }
@@ -35,6 +37,7 @@ class ConfiguratorTest extends WordSpecLike with MockFactory with Matchers with 
       (systemWrapper.get _).when("token").returns("test token")
       (systemWrapper.get _).when("chat").returns("")
       (systemWrapper.get _).when("team").returns("321")
+      (systemWrapper.get _).when("city").returns("456")
 
       configurator.config shouldBe a[Failure[_]]
     }
@@ -43,6 +46,16 @@ class ConfiguratorTest extends WordSpecLike with MockFactory with Matchers with 
       (systemWrapper.get _).when("token").returns("test token")
       (systemWrapper.get _).when("chat").returns("123")
       (systemWrapper.get _).when("team").returns("")
+      (systemWrapper.get _).when("city").returns("456")
+
+      configurator.config shouldBe a[Failure[_]]
+    }
+
+    "fail without city" in {
+      (systemWrapper.get _).when("token").returns("test token")
+      (systemWrapper.get _).when("chat").returns("123")
+      (systemWrapper.get _).when("team").returns("321")
+      (systemWrapper.get _).when("city").returns("")
 
       configurator.config shouldBe a[Failure[_]]
     }

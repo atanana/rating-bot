@@ -8,7 +8,8 @@ class Configurator(private val systemWrapper: SystemWrapper) {
       val token = getStringValue("token")
       val chat = getIntValue("chat")
       val team = getIntValue("team")
-      Config(token, chat, team)
+      val city = getIntValue("city")
+      Config(token, chat, team, city)
     })
   }
 
@@ -35,4 +36,4 @@ class SystemWrapper {
   }
 }
 
-case class Config(token: String, chat: Int, team: Int)
+case class Config(token: String, chat: Int, team: Int, city: Int)
