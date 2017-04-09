@@ -10,11 +10,23 @@ class Connector(config: Config) {
   }
 
   def getTeamPage: HttpResponse[String] = {
-    Http(teamUrl).charset("cp1251").asString
+    getPage(teamUrl)
   }
 
-  def teamUrl: String = {
+  private def getPage(url: String) = {
+    Http(url).charset("cp1251").asString
+  }
+
+  private def teamUrl: String = {
     SITE_URL + s"/teams.php?team_id=${config.team}&download_data=export_tournaments"
+  }
+
+  def getRequisitionPage: HttpResponse[String] = {
+    getPage(requisitionUrl)
+  }
+
+  private def requisitionUrl: String = {
+    SITE_URL + "/synch_town/" + config.city
   }
 }
 
