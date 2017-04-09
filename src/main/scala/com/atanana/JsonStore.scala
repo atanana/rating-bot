@@ -1,13 +1,10 @@
 package com.atanana
 
+import com.atanana.data.{Data, Tournament}
 import spray.json.DefaultJsonProtocol._
 import spray.json._
 
 import scala.util.Try
-
-case class Tournament(id: Int, score: Int)
-
-case class Data(tournaments: Set[Tournament])
 
 class JsonStore(private val fsHandler: FsHandler) {
 

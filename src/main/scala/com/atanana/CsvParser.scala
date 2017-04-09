@@ -1,5 +1,7 @@
 package com.atanana
 
+import com.atanana.data.TournamentData
+
 import scala.util.Try
 
 class CsvParser {

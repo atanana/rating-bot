@@ -2,6 +2,8 @@ package com.atanana
 
 import java.time.{DayOfWeek, LocalDate}
 
+import com.atanana.data.TournamentData
+
 class MessageComposer {
   def composeNewResult(data: TournamentData): String = {
     s"Воздрочим же! На турнире ${data.name} ${scoreDescription(data.bonus)}. По итогам команда заняла ${data.place} " +

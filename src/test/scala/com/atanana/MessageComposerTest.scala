@@ -1,5 +1,6 @@
 package com.atanana
 
+import com.atanana.data.TournamentData
 import org.scalatest.FunSuite
 
 class MessageComposerTest extends FunSuite {

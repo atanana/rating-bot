@@ -1,5 +1,6 @@
 package com.atanana
 
+import com.atanana.data.{Data, Tournament, TournamentData}
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, FunSuite}
 

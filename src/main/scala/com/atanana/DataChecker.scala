@@ -1,5 +1,7 @@
 package com.atanana
 
+import com.atanana.data.{Data, Tournament, TournamentData}
+
 class DataChecker(private val poster: Poster, private val store: JsonStore, private val messageComposer: MessageComposer) {
   def check(data: List[TournamentData]): Unit = {
     val storedData = store.read
