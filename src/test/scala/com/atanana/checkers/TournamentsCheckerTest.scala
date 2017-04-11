@@ -1,6 +1,6 @@
 package com.atanana.checkers
 
-import com.atanana.data.{Tournament, TournamentData}
+import com.atanana.data.{ChangedTournament, Tournament, TournamentData}
 import org.scalatest.{Matchers, WordSpecLike}
 
 class TournamentsCheckerTest extends WordSpecLike with Matchers {

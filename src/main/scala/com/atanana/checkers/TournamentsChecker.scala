@@ -1,6 +1,6 @@
 package com.atanana.checkers
 
-import com.atanana.data.{Tournament, TournamentData}
+import com.atanana.data.{ChangedTournament, Tournament, TournamentData, TournamentsCheckResult}
 
 class TournamentsChecker {
   def check(oldTournaments: Set[Tournament], newTournaments: Set[TournamentData]): TournamentsCheckResult = {
@@ -29,10 +29,6 @@ class TournamentsChecker {
       .flatMap(_.toList)
   }
 }
-
-case class TournamentsCheckResult(newTournaments: Set[TournamentData], changedTournaments: Set[ChangedTournament])
-
-case class ChangedTournament(tournament: TournamentData, oldScore: Int)
 
 object TournamentsChecker {
   def apply(): TournamentsChecker = new TournamentsChecker()

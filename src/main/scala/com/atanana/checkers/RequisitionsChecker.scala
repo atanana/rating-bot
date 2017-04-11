@@ -2,7 +2,7 @@ package com.atanana.checkers
 
 import java.time.{LocalDateTime, ZoneId}
 
-import com.atanana.data.Requisition
+import com.atanana.data.{Requisition, RequisitionsCheckResult}
 
 class RequisitionsChecker {
   def check(oldRequisitions: Set[Requisition], newRequisitions: Set[Requisition]): RequisitionsCheckResult = {
@@ -30,5 +30,3 @@ class RequisitionsChecker {
 object RequisitionsChecker {
   def apply(): RequisitionsChecker = new RequisitionsChecker()
 }
-
-case class RequisitionsCheckResult(newRequisitions: Set[Requisition], cancelledRequisitions: Set[Requisition])
