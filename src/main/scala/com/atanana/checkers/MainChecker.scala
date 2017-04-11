@@ -4,8 +4,9 @@ import com.atanana.data.{CheckResult, Data, Requisition, TournamentData}
 
 class MainChecker(tournamentsChecker: TournamentsChecker, requisitionsChecker: RequisitionsChecker) {
   def check(storedData: Data, newTournaments: Set[TournamentData], newRequisitions: Set[Requisition]): CheckResult = {
+    val tournamentsCheckResult = tournamentsChecker.check(storedData.tournaments, newTournaments)
     CheckResult(
-      tournamentsChecker.check(storedData.tournaments, newTournaments),
+      if (storedData.tournaments.nonEmpty) tournamentsCheckResult else tournamentsCheckResult.copy(newTournaments = Set.empty),
       requisitionsChecker.check(storedData.requisitions, newRequisitions)
     )
   }

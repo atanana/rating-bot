@@ -33,5 +33,17 @@ class MainCheckerTest extends WordSpecLike with MockFactory with Matchers with B
 
       checker.check(data, newTournaments, newRequisitions) shouldEqual CheckResult(tournamentsCheckResult, requisitionsCheckResult)
     }
+
+    "return no new tournaments on first run" in {
+      val data = Data(Set.empty, Set.empty)
+      val tournament = TournamentData(2, "tournament 2", "link 2", 2f, 2, 2)
+      val newTournaments = Set(tournament)
+      (tournamentsChecker.check _).when(data.tournaments, newTournaments).returns(
+        TournamentsCheckResult(Set(tournament), Set(ChangedTournament(tournament, 4)))
+      )
+      (requisitionsChecker.check _).when(*, *).returns(mock[RequisitionsCheckResult])
+
+      checker.check(data, newTournaments, Set.empty).tournamentsCheckResult shouldEqual TournamentsCheckResult(Set.empty, Set(ChangedTournament(tournament, 4)))
+    }
   }
 }
