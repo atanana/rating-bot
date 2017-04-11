@@ -1,8 +1,13 @@
 package com.atanana
 
+import java.time.format.DateTimeFormatter
 import java.time.{DayOfWeek, LocalDate}
+import java.util.Locale
 
-import com.atanana.data.TournamentData
+import com.atanana.MessageComposer.{alarms, timePattern}
+import com.atanana.data.{Requisition, TournamentData}
+
+import scala.util.Random
 
 class MessageComposer {
   def composeNewResult(data: TournamentData): String = {
@@ -36,8 +41,26 @@ class MessageComposer {
     case DayOfWeek.SATURDAY => "суббота"
     case DayOfWeek.SUNDAY => "воскресенье"
   }
+
+  def composeNewRequisition(requisition: Requisition): String = {
+    s"А следующий сеанс рейтинг-оргии под названием ${requisition.tournament} " +
+      s"состоится ${requisition.dateTime.format(timePattern)} с подачи ${requisition.agent}"
+  }
+
+  def composeCancelledRequisition(requisition: Requisition): String = {
+    randomAlarm + s"! ${requisition.agent} вёл себя подозрительно и посему ${requisition.tournament} в " +
+      s"${requisition.dateTime.format(timePattern)} отменяется!"
+  }
+
+  private def randomAlarm: String = {
+    alarms(Random.nextInt(alarms.size))
+  }
 }
 
 object MessageComposer {
+  val alarms = List("Ахтунг", "Алярм", "Бида-бида", "Усё пропало")
+
+  val timePattern: DateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy HH:mm:ss", new Locale("ru"))
+
   def apply(): MessageComposer = new MessageComposer()
 }

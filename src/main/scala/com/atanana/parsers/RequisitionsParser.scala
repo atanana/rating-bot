@@ -27,12 +27,14 @@ class RequisitionsParser {
       Requisition(
         tournament = data.head.text,
         agent = data(2).text,
-        dateTime = LocalDateTime.parse(data(3).text, DateTimeFormatter.ofPattern("d MMMM yyyy HH:mm:ss", new Locale("ru")))
+        dateTime = LocalDateTime.parse(data(3).text, RequisitionsParser.timePattern)
       )
     })
   }
 }
 
 object RequisitionsParser {
+  val timePattern: DateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy HH:mm:ss", new Locale("ru"))
+
   def apply(): RequisitionsParser = new RequisitionsParser()
 }
