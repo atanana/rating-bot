@@ -4,9 +4,8 @@ import com.atanana.checkers.MainChecker
 import com.atanana.data.Data
 import com.atanana.parsers.{CsvParser, RequisitionsParser}
 
-class Processor(config: Config, connector: Connector, csvParser: CsvParser,
-                requisitionsParser: RequisitionsParser, store: JsonStore,
-                checker: MainChecker, poster: Poster, checkResultHandler: CheckResultHandler) {
+class Processor(connector: Connector, csvParser: CsvParser, requisitionsParser: RequisitionsParser,
+                store: JsonStore, checker: MainChecker, checkResultHandler: CheckResultHandler) {
   def process(): Unit = {
     val newTournaments = getNewTournaments
     val newRequisitions = getNewRequisitions
@@ -37,7 +36,7 @@ class Processor(config: Config, connector: Connector, csvParser: CsvParser,
 }
 
 object Processor {
-  def apply(config: Config, connector: Connector, csvParser: CsvParser,
-            requisitionsParser: RequisitionsParser, jsonStore: JsonStore,
-            mainChecker: MainChecker, poster: Poster, checkResultHandler: CheckResultHandler): Processor = new Processor(config, connector, csvParser, requisitionsParser, jsonStore, mainChecker, poster, checkResultHandler)
+  def apply(connector: Connector, csvParser: CsvParser, requisitionsParser: RequisitionsParser,
+            jsonStore: JsonStore, mainChecker: MainChecker, checkResultHandler: CheckResultHandler) =
+    new Processor(connector, csvParser, requisitionsParser, jsonStore, mainChecker, checkResultHandler)
 }

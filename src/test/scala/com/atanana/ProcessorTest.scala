@@ -12,7 +12,6 @@ import org.scalatest.{BeforeAndAfter, WordSpecLike}
 class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter with Matchers {
   var processor: Processor = _
 
-  var config: Config = _
   var connector: Connector = _
   var csvParser: CsvParser = _
   var requisitionsParser: RequisitionsParser = _
@@ -22,7 +21,6 @@ class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
   var checkResultsHandler: CheckResultHandler = _
 
   before {
-    config = mock[Config]
     connector = stub[Connector]
     csvParser = stub[CsvParser]
     requisitionsParser = stub[RequisitionsParser]
@@ -31,7 +29,7 @@ class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
     poster = mock[Poster]
     checkResultsHandler = mock[CheckResultHandler]
 
-    processor = Processor(config, connector, csvParser, requisitionsParser, store, checker, poster, checkResultsHandler)
+    processor = Processor(connector, csvParser, requisitionsParser, store, checker, checkResultsHandler)
   }
 
   "Processor" should {
