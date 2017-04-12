@@ -46,7 +46,7 @@ class MessageComposer {
 
   def composeNewRequisition(requisition: Requisition): String = {
     s"А в следующий нас поимеют на турнире под названием ${requisition.tournament} который " +
-      s"состоится ${requisition.dateTime.format(timePattern)} с подачи ${requisition.agent}"
+      s"состоится ${requisition.dateTime.format(timePattern)}. Ответственный: ${requisition.agent}"
   }
 
   def composeCancelledRequisition(requisition: Requisition): String = {
