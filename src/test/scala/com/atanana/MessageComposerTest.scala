@@ -35,7 +35,7 @@ class MessageComposerTest extends WordSpecLike with Matchers {
 
   "valid new requisition" in {
     MessageComposer().composeNewRequisition(Requisition("tournament 1", "agent 1", LocalDateTime.of(2017, 4, 11, 18, 45))) shouldEqual
-      "А следующий сеанс рейтинг-оргии под названием tournament 1 состоится 11 апреля 2017 18:45:00 с подачи agent 1"
+      "А в следующий нас поимеют на турнире под названием tournament 1 который состоится 11 апреля 2017 18:45:00 с подачи agent 1"
   }
 
   "valid cancelled requisition" in {
