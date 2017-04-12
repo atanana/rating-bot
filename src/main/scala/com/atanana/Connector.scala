@@ -9,19 +9,19 @@ class Connector(config: Config) {
     Http(url).asString
   }
 
-  def getTeamPage: HttpResponse[String] = {
+  def getTeamPage: String = {
     getPage(teamUrl)
   }
 
   private def getPage(url: String) = {
-    Http(url).charset("cp1251").asString
+    Http(url).charset("cp1251").asString.body
   }
 
   private def teamUrl: String = {
     SITE_URL + s"/teams.php?team_id=${config.team}&download_data=export_tournaments"
   }
 
-  def getRequisitionPage: HttpResponse[String] = {
+  def getRequisitionPage: String = {
     getPage(requisitionUrl)
   }
 

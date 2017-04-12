@@ -8,7 +8,6 @@ import com.typesafe.scalalogging.Logger
 
 import scala.concurrent.duration.Duration
 import scala.util.{Failure, Success}
-import scalaj.http._
 
 object Main extends App {
   override def main(args: Array[String]): Unit = Configurator(new SystemWrapper).config match {
@@ -20,8 +19,8 @@ object Main extends App {
 
       while (true) {
         try {
-          val response: HttpResponse[String] = connector.getTeamPage
-          val data: List[TournamentData] = parser.getTournamentsData(response.body)
+          val response: String = connector.getTeamPage
+          val data: List[TournamentData] = parser.getTournamentsData(response)
           dataChecker.check(data)
         } catch {
           case e: Throwable => logger.debug("Error occurred!", e)
