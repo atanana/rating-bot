@@ -5,7 +5,7 @@ import java.time.{DayOfWeek, LocalDate}
 import java.util.Locale
 
 import com.atanana.MessageComposer.{alarms, timePattern}
-import com.atanana.data.{Requisition, TournamentData}
+import com.atanana.data.{ChangedTournament, Requisition, TournamentData}
 
 import scala.util.Random
 
@@ -27,7 +27,9 @@ class MessageComposer {
     case _ if score > 0 => "нам немного повезло"
   }
 
-  def composeChangedResult(data: TournamentData, oldResult: Int): String = {
+  def composeChangedResult(changedTournament: ChangedTournament): String = {
+    val data = changedTournament.tournament
+    val oldResult = changedTournament.oldScore
     s"Сегодня ${currentDay()}, а значит настало время дрочить на рейтинг! На турнире ${data.name} у нас было $oldResult, " +
       s"а стало ${data.questions} взятых. Новый результат: ${data.place} место и ${data.bonus} рейтига. \n${data.link}"
   }

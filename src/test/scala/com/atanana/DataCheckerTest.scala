@@ -1,6 +1,6 @@
 package com.atanana
 
-import com.atanana.data.{Data, Tournament, TournamentData}
+import com.atanana.data.{ChangedTournament, Data, Tournament, TournamentData}
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, FunSuite}
 
@@ -69,7 +69,7 @@ class DataCheckerTest extends FunSuite with BeforeAndAfter with MockFactory {
 
     (poster.post _).expects(MESSAGE_CHANGED)
 
-    (messageComposer.composeChangedResult _).expects(tournamentData2, 0).returns(MESSAGE_CHANGED)
+    (messageComposer.composeChangedResult _).expects(ChangedTournament(tournamentData2, 0)).returns(MESSAGE_CHANGED)
 
     (store.write _).expects(Data(Set(Tournament(1, 0), Tournament(2, 1), Tournament(3, 0)), Set.empty))
 

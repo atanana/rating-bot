@@ -2,7 +2,7 @@ package com.atanana
 
 import java.time.LocalDateTime
 
-import com.atanana.data.{Requisition, TournamentData}
+import com.atanana.data.{ChangedTournament, Requisition, TournamentData}
 import org.scalatest.{Matchers, WordSpecLike}
 
 class MessageComposerTest extends WordSpecLike with Matchers {
@@ -29,7 +29,7 @@ class MessageComposerTest extends WordSpecLike with Matchers {
   }
 
   "valid changed result" in {
-    MessageComposer().composeChangedResult(TournamentData(123, "test name", "test link", 123, 15, 20), 10) shouldEqual
+    MessageComposer().composeChangedResult(ChangedTournament(TournamentData(123, "test name", "test link", 123, 15, 20), 10)) shouldEqual
       s"Сегодня ${MessageComposer().currentDay()}, а значит настало время дрочить на рейтинг! На турнире test name у нас было 10, а стало 20 взятых. Новый результат: 123.0 место и 15 рейтига. \ntest link"
   }
 

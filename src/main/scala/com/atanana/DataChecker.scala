@@ -1,6 +1,6 @@
 package com.atanana
 
-import com.atanana.data.{Data, Tournament, TournamentData}
+import com.atanana.data.{ChangedTournament, Data, Tournament, TournamentData}
 
 class DataChecker(private val poster: Poster, private val store: JsonStore, private val messageComposer: MessageComposer) {
   def check(data: List[TournamentData]): Unit = {
@@ -16,7 +16,7 @@ class DataChecker(private val poster: Poster, private val store: JsonStore, priv
       store.write(storedData.copy(tournaments = newTournamentsData))
       changedResults.foreach(tournament => {
         val tournamentData: TournamentData = data.find(_.id == tournament.id).get
-        val message: String = messageComposer.composeChangedResult(tournamentData, tournament.score)
+        val message: String = messageComposer.composeChangedResult(ChangedTournament(tournamentData, tournament.score))
         poster.post(message)
       })
     }

@@ -6,7 +6,7 @@ import com.typesafe.scalalogging.Logger
 
 import scalaj.http.HttpResponse
 
-class Poster(private val connector: Connector, private val config: Config) {
+class Poster(connector: Connector, config: Config) {
 
   import Poster.logger
 
@@ -16,7 +16,7 @@ class Poster(private val connector: Connector, private val config: Config) {
     logger.debug(response.body)
   }
 
-  def url(message: String): String = {
+  private def url(message: String): String = {
     s"https://api.vk.com/method/messages.send?chat_id=${config.chat}&message=$message&access_token=${config.token}&v=5.57"
   }
 }
