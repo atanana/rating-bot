@@ -2,13 +2,13 @@ package com.atanana.checkers
 
 import java.time.{LocalDateTime, ZoneId}
 
-import com.atanana.data.{Requisition, RequisitionsCheckResult}
+import com.atanana.data.{Requisition, RequisitionData, RequisitionsCheckResult}
 
 class RequisitionsChecker {
-  def check(oldRequisitions: Set[Requisition], newRequisitions: Set[Requisition]): RequisitionsCheckResult = {
+  def check(oldRequisitions: Set[Requisition], newRequisitions: Set[RequisitionData]): RequisitionsCheckResult = {
     RequisitionsCheckResult(
       getNewRequisitions(oldRequisitions, newRequisitions),
-      getCancelledRequisitions(getNotFinishedRequisitions(oldRequisitions), newRequisitions)
+      getCancelledRequisitions(getNotFinishedRequisitions(oldRequisitions), newRequisitions.map(_.toRequisition))
     )
   }
 
@@ -17,8 +17,8 @@ class RequisitionsChecker {
     oldRequisitions.filter(requisition => requisition.dateTime.isAfter(finishTime))
   }
 
-  def getNewRequisitions(oldRequisitions: Set[Requisition], newRequisitions: Set[Requisition]): Set[Requisition] = {
-    newRequisitions -- oldRequisitions
+  def getNewRequisitions(oldRequisitions: Set[Requisition], newRequisitions: Set[RequisitionData]): Set[RequisitionData] = {
+    newRequisitions.filter(newRequisition => !oldRequisitions.contains(newRequisition.toRequisition))
   }
 
   def getCancelledRequisitions(oldRequisitions: Set[Requisition], newRequisitions: Set[Requisition]): Set[Requisition] = {

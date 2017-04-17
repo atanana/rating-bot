@@ -18,7 +18,7 @@ class Processor @Inject()(connector: Connector, csvParser: CsvParser, requisitio
 
     val newData = Data(
       newTournaments.map(_.toTournament),
-      newRequisitions
+      newRequisitions.map(_.toRequisition)
     )
 
     if (storedData != newData) {
@@ -28,7 +28,7 @@ class Processor @Inject()(connector: Connector, csvParser: CsvParser, requisitio
 
   private def getNewRequisitions = {
     val requisitionPage = connector.getRequisitionPage
-    requisitionsParser.getRequisitionsData(requisitionPage).map(_.toRequisition).toSet
+    requisitionsParser.getRequisitionsData(requisitionPage).toSet
   }
 
   private def getNewTournaments = {

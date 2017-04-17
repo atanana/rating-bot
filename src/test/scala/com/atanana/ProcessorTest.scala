@@ -34,7 +34,7 @@ class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
 
   "Processor" should {
     "posts about changes" in {
-      val (tournament: TournamentData, requisition: Requisition) = setUpDefaults()
+      val (tournament: TournamentData, requisition: RequisitionData) = setUpDefaults()
       val storedData = Data(Set.empty, Set.empty)
       (store.read _).expects().returns(storedData)
       (store.write _).expects(*)
@@ -46,10 +46,10 @@ class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
     }
 
     "save new data" in {
-      val (tournament: TournamentData, requisition: Requisition) = setUpDefaults()
+      val (tournament: TournamentData, requisition: RequisitionData) = setUpDefaults()
       val storedData = Data(Set.empty, Set.empty)
       (store.read _).expects().returns(storedData)
-      (store.write _).expects(Data(Set(tournament.toTournament), Set(requisition)))
+      (store.write _).expects(Data(Set(tournament.toTournament), Set(requisition.toRequisition)))
       (checker.check _).when(storedData, Set(tournament), Set(requisition))
       (checkResultsHandler.processCheckResult _).expects(*)
 
@@ -57,8 +57,8 @@ class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
     }
 
     "not save data when no changes" in {
-      val (tournament: TournamentData, requisition: Requisition) = setUpDefaults()
-      val storedData = Data(Set(tournament.toTournament), Set(requisition))
+      val (tournament: TournamentData, requisition: RequisitionData) = setUpDefaults()
+      val storedData = Data(Set(tournament.toTournament), Set(requisition.toRequisition))
       (store.read _).expects().returns(storedData)
       (checker.check _).when(storedData, Set(tournament), Set(requisition))
       (checkResultsHandler.processCheckResult _).expects(*)
@@ -74,6 +74,6 @@ class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
     (csvParser.getTournamentsData _).when("team page").returns(List(tournament))
     val requisition = RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now())
     (requisitionsParser.getRequisitionsData _).when("requisitions page").returns(List(requisition))
-    (tournament, requisition.toRequisition)
+    (tournament, requisition)
   }
 }

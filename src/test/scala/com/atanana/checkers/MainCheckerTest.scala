@@ -24,7 +24,7 @@ class MainCheckerTest extends WordSpecLike with MockFactory with Matchers with B
         TournamentData(2, "tournament 2", "link 2", 2f, 2, 2)
       )
       val newRequisitions = Set(
-        Requisition("tournament 4", "agent 4", LocalDateTime.now())
+        RequisitionData("tournament 4", 4, "agent 4", LocalDateTime.now())
       )
       val tournamentsCheckResult = mock[TournamentsCheckResult]
       val requisitionsCheckResult = mock[RequisitionsCheckResult]

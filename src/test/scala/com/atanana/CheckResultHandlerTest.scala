@@ -1,5 +1,7 @@
 package com.atanana
 
+import java.time.LocalDateTime
+
 import com.atanana.data._
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{Matchers, WordSpecLike}
@@ -9,13 +11,13 @@ class CheckResultHandlerTest extends WordSpecLike with Matchers with MockFactory
     "post all changes" in {
       val tournamentData = mock[TournamentData]
       val changedTournament = mock[ChangedTournament]
-      val requisition = mock[Requisition]
+      val requisitionData = RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now())
 
       val messageComposer = stub[MessageComposer]
       (messageComposer.composeNewResult _).when(tournamentData).returns("new result")
       (messageComposer.composeChangedResult _).when(changedTournament).returns("changed result")
-      (messageComposer.composeNewRequisition _).when(requisition, List()).returns("new requisition")
-      (messageComposer.composeCancelledRequisition _).when(requisition).returns("cancelled requisition")
+      (messageComposer.composeNewRequisition _).when(requisitionData.toRequisition, List()).returns("new requisition")
+      (messageComposer.composeCancelledRequisition _).when(requisitionData.toRequisition).returns("cancelled requisition")
 
       val poster = mock[Poster]
       (poster.post _).expects("new result")
@@ -25,7 +27,7 @@ class CheckResultHandlerTest extends WordSpecLike with Matchers with MockFactory
 
       CheckResultHandler(poster, messageComposer).processCheckResult(CheckResult(
         TournamentsCheckResult(Set(tournamentData), Set(changedTournament)),
-        RequisitionsCheckResult(Set(requisition), Set(requisition))
+        RequisitionsCheckResult(Set(requisitionData), Set(requisitionData.toRequisition))
       ))
     }
   }

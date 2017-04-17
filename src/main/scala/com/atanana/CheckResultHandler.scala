@@ -2,18 +2,22 @@ package com.atanana
 
 import javax.inject.Inject
 
-import com.atanana.data.CheckResult
+import com.atanana.data.{CheckResult, RequisitionData}
 
 class CheckResultHandler @Inject()(poster: Poster, messageComposer: MessageComposer) {
   def processCheckResult(checkResult: CheckResult): Unit = {
     List(
       checkResult.tournamentsCheckResult.newTournaments.map(messageComposer.composeNewResult),
       checkResult.tournamentsCheckResult.changedTournaments.map(messageComposer.composeChangedResult),
-      checkResult.requisitionsCheckResult.newRequisitions.map(messageComposer.composeNewRequisition(_, List.empty)),
+      checkResult.requisitionsCheckResult.newRequisitions.map(getNewRequisitionMessage),
       checkResult.requisitionsCheckResult.cancelledRequisitions.map(messageComposer.composeCancelledRequisition)
     )
       .flatten
       .foreach(poster.post)
+  }
+
+  private def getNewRequisitionMessage(newRequisition: RequisitionData) = {
+    messageComposer.composeNewRequisition(newRequisition.toRequisition, List.empty)
   }
 }
 

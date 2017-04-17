@@ -2,10 +2,10 @@ package com.atanana.checkers
 
 import javax.inject.Inject
 
-import com.atanana.data.{CheckResult, Data, Requisition, TournamentData}
+import com.atanana.data._
 
 class MainChecker @Inject()(tournamentsChecker: TournamentsChecker, requisitionsChecker: RequisitionsChecker) {
-  def check(storedData: Data, newTournaments: Set[TournamentData], newRequisitions: Set[Requisition]): CheckResult = {
+  def check(storedData: Data, newTournaments: Set[TournamentData], newRequisitions: Set[RequisitionData]): CheckResult = {
     val tournamentsCheckResult = tournamentsChecker.check(storedData.tournaments, newTournaments)
     CheckResult(
       if (storedData.tournaments.nonEmpty) tournamentsCheckResult else tournamentsCheckResult.copy(newTournaments = Set.empty),
