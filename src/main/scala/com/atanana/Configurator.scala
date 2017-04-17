@@ -1,8 +1,10 @@
 package com.atanana
 
+import javax.inject.Inject
+
 import scala.util.Try
 
-class Configurator(private val systemWrapper: SystemWrapper) {
+class Configurator @Inject()(systemWrapper: SystemWrapper) {
   def config: Try[Config] = {
     Try({
       val token = getStringValue("token")

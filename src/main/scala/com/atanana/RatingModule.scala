@@ -9,6 +9,8 @@ class RatingModule extends AbstractModule with ScalaModule {
   override def configure(): Unit = {
     bind[FsHandler]
     bind[JsonStore]
+    bind[Configurator]
+    bind[SystemWrapper]
 
     bind[CsvParser]
     bind[RequisitionsParser]

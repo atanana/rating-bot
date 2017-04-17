@@ -12,29 +12,33 @@ import scala.concurrent.duration.Duration
 import scala.util.{Failure, Success}
 
 object Main extends App {
-  override def main(args: Array[String]): Unit = Configurator(new SystemWrapper).config match {
-    case Success(config) =>
-      val logger = Logger("main")
-      val injector = Guice.createInjector(new RatingModule)
-      val connector = Connector(config)
-      val processor = Processor(
-        connector,
-        injector.instance[CsvParser],
-        injector.instance[RequisitionsParser],
-        injector.instance[JsonStore],
-        injector.instance[MainChecker],
-        CheckResultHandler(Poster(connector, config), MessageComposer())
-      )
+  override def main(args: Array[String]): Unit = {
+    val injector = Guice.createInjector(new RatingModule)
+    val configurator = injector.instance[Configurator]
 
-      while (true) {
-        try {
-          processor.process()
-        } catch {
-          case e: Throwable => logger.debug("Error occurred!", e)
+    configurator.config match {
+      case Success(config) =>
+        val logger = Logger("main")
+        val connector = Connector(config)
+        val processor = Processor(
+          connector,
+          injector.instance[CsvParser],
+          injector.instance[RequisitionsParser],
+          injector.instance[JsonStore],
+          injector.instance[MainChecker],
+          CheckResultHandler(Poster(connector, config), MessageComposer())
+        )
+
+        while (true) {
+          try {
+            processor.process()
+          } catch {
+            case e: Throwable => logger.debug("Error occurred!", e)
+          }
+
+          Thread.sleep(Duration(30, TimeUnit.SECONDS).toMillis)
         }
-
-        Thread.sleep(Duration(30, TimeUnit.SECONDS).toMillis)
-      }
-    case Failure(e) => println(e.getMessage)
+      case Failure(e) => println(e.getMessage)
+    }
   }
 }
