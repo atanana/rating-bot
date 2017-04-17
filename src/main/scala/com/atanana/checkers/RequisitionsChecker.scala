@@ -6,10 +6,9 @@ import com.atanana.data.{Requisition, RequisitionsCheckResult}
 
 class RequisitionsChecker {
   def check(oldRequisitions: Set[Requisition], newRequisitions: Set[Requisition]): RequisitionsCheckResult = {
-    val notFinishedRequisitions = getNotFinishedRequisitions(oldRequisitions)
     RequisitionsCheckResult(
-      getNewRequisitions(notFinishedRequisitions, newRequisitions),
-      getCancelledRequisitions(notFinishedRequisitions, newRequisitions)
+      getNewRequisitions(oldRequisitions, newRequisitions),
+      getCancelledRequisitions(getNotFinishedRequisitions(oldRequisitions), newRequisitions)
     )
   }
 
