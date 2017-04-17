@@ -37,7 +37,7 @@ class MessageComposerTest extends WordSpecLike with Matchers {
     val requisition = Requisition("tournament 1", "agent 1", LocalDateTime.of(2017, 4, 11, 18, 45))
     val editors = List(Editor("editor 1"), Editor("editor 2"))
     MessageComposer().composeNewRequisition(requisition, editors) shouldEqual
-      "А в следующий нас поимеют на турнире под названием tournament 1 который состоится 11 апреля 2017 18:45:00. Ответственный: agent 1.\nРедакторы:editor 1, editor 2"
+      "А в следующий нас поимеют на турнире под названием tournament 1 который состоится 11 апреля 2017 18:45:00. Ответственный: agent 1.\nРедакторы: editor 1, editor 2"
   }
 
   "valid cancelled requisition" in {

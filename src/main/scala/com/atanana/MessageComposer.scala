@@ -48,7 +48,7 @@ class MessageComposer {
     val editorsString = editors.map(_.data).mkString(", ")
     s"А в следующий нас поимеют на турнире под названием ${requisition.tournament} который " +
       s"состоится ${requisition.dateTime.format(timePattern)}. Ответственный: ${requisition.agent}." +
-      s"\nРедакторы:$editorsString"
+      s"\nРедакторы: $editorsString"
   }
 
   def composeCancelledRequisition(requisition: Requisition): String = {
