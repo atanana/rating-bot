@@ -1,11 +1,13 @@
 package com.atanana
 
+import javax.inject.Inject
+
 import com.atanana.checkers.MainChecker
 import com.atanana.data.Data
 import com.atanana.parsers.{CsvParser, RequisitionsParser}
 
-class Processor(connector: Connector, csvParser: CsvParser, requisitionsParser: RequisitionsParser,
-                store: JsonStore, checker: MainChecker, checkResultHandler: CheckResultHandler) {
+class Processor @Inject()(connector: Connector, csvParser: CsvParser, requisitionsParser: RequisitionsParser,
+                          store: JsonStore, checker: MainChecker, checkResultHandler: CheckResultHandler) {
   def process(): Unit = {
     val newTournaments = getNewTournaments
     val newRequisitions = getNewRequisitions

@@ -1,12 +1,13 @@
 package com.atanana
 
 import java.net.URLEncoder.encode
+import javax.inject.Inject
 
 import com.typesafe.scalalogging.Logger
 
 import scalaj.http.HttpResponse
 
-class Poster(connector: Connector, config: Config) {
+class Poster @Inject()(connector: Connector, config: Config) {
 
   import Poster.logger
 

@@ -1,10 +1,12 @@
 package com.atanana
 
+import javax.inject.Inject
+
 import com.atanana.Connector.SITE_URL
 
 import scalaj.http.{Http, HttpResponse}
 
-class Connector(config: Config) {
+class Connector @Inject()(config: Config) {
   def get(url: String): HttpResponse[String] = {
     Http(url).asString
   }

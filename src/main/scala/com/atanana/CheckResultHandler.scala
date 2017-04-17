@@ -1,8 +1,10 @@
 package com.atanana
 
+import javax.inject.Inject
+
 import com.atanana.data.CheckResult
 
-class CheckResultHandler(poster: Poster, messageComposer: MessageComposer) {
+class CheckResultHandler @Inject()(poster: Poster, messageComposer: MessageComposer) {
   def processCheckResult(checkResult: CheckResult): Unit = {
     List(
       checkResult.tournamentsCheckResult.newTournaments.map(messageComposer.composeNewResult),

@@ -11,6 +11,7 @@ class RatingModule extends AbstractModule with ScalaModule {
     bind[JsonStore]
     bind[Configurator]
     bind[SystemWrapper]
+    bind[MessageComposer]
 
     bind[CsvParser]
     bind[RequisitionsParser]
