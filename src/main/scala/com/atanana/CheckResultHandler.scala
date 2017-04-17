@@ -4,7 +4,7 @@ import javax.inject.Inject
 
 import com.atanana.data.{CheckResult, RequisitionData}
 
-class CheckResultHandler @Inject()(poster: Poster, messageComposer: MessageComposer) {
+class CheckResultHandler @Inject()(poster: Poster, messageComposer: MessageComposer, tournamentInfoProvider: TournamentInfoProvider) {
   def processCheckResult(checkResult: CheckResult): Unit = {
     List(
       checkResult.tournamentsCheckResult.newTournaments.map(messageComposer.composeNewResult),
@@ -17,10 +17,11 @@ class CheckResultHandler @Inject()(poster: Poster, messageComposer: MessageCompo
   }
 
   private def getNewRequisitionMessage(newRequisition: RequisitionData) = {
-    messageComposer.composeNewRequisition(newRequisition.toRequisition, List.empty)
+    val editors = tournamentInfoProvider.getEditors(newRequisition.tournamentId)
+    messageComposer.composeNewRequisition(newRequisition.toRequisition, editors)
   }
 }
 
 object CheckResultHandler {
-  def apply(poster: Poster, messageComposer: MessageComposer): CheckResultHandler = new CheckResultHandler(poster, messageComposer)
+  def apply(poster: Poster, messageComposer: MessageComposer, tournamentInfoProvider: TournamentInfoProvider): CheckResultHandler = new CheckResultHandler(poster, messageComposer, tournamentInfoProvider)
 }
