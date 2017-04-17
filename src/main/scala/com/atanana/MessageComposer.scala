@@ -5,7 +5,7 @@ import java.time.{DayOfWeek, LocalDate}
 import java.util.Locale
 
 import com.atanana.MessageComposer.{alarms, timePattern}
-import com.atanana.data.{ChangedTournament, Requisition, TournamentData}
+import com.atanana.data.{ChangedTournament, Editor, Requisition, TournamentData}
 
 import scala.util.Random
 
@@ -44,9 +44,11 @@ class MessageComposer {
     case DayOfWeek.SUNDAY => "воскресенье"
   }
 
-  def composeNewRequisition(requisition: Requisition): String = {
+  def composeNewRequisition(requisition: Requisition, editors: List[Editor]): String = {
+    val editorsString = editors.map(_.data).mkString(", ")
     s"А в следующий нас поимеют на турнире под названием ${requisition.tournament} который " +
-      s"состоится ${requisition.dateTime.format(timePattern)}. Ответственный: ${requisition.agent}"
+      s"состоится ${requisition.dateTime.format(timePattern)}. Ответственный: ${requisition.agent}." +
+      s"\nРедакторы:$editorsString"
   }
 
   def composeCancelledRequisition(requisition: Requisition): String = {

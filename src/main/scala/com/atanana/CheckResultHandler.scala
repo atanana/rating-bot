@@ -9,7 +9,7 @@ class CheckResultHandler @Inject()(poster: Poster, messageComposer: MessageCompo
     List(
       checkResult.tournamentsCheckResult.newTournaments.map(messageComposer.composeNewResult),
       checkResult.tournamentsCheckResult.changedTournaments.map(messageComposer.composeChangedResult),
-      checkResult.requisitionsCheckResult.newRequisitions.map(messageComposer.composeNewRequisition),
+      checkResult.requisitionsCheckResult.newRequisitions.map(messageComposer.composeNewRequisition(_, List.empty)),
       checkResult.requisitionsCheckResult.cancelledRequisitions.map(messageComposer.composeCancelledRequisition)
     )
       .flatten

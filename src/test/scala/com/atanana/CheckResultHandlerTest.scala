@@ -14,7 +14,7 @@ class CheckResultHandlerTest extends WordSpecLike with Matchers with MockFactory
       val messageComposer = stub[MessageComposer]
       (messageComposer.composeNewResult _).when(tournamentData).returns("new result")
       (messageComposer.composeChangedResult _).when(changedTournament).returns("changed result")
-      (messageComposer.composeNewRequisition _).when(requisition).returns("new requisition")
+      (messageComposer.composeNewRequisition _).when(requisition, List()).returns("new requisition")
       (messageComposer.composeCancelledRequisition _).when(requisition).returns("cancelled requisition")
 
       val poster = mock[Poster]
