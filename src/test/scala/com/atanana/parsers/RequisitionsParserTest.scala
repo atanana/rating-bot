@@ -2,7 +2,7 @@ package com.atanana.parsers
 
 import java.time.LocalDateTime
 
-import com.atanana.data.Requisition
+import com.atanana.data.RequisitionData
 import org.scalatest.{Matchers, WordSpecLike}
 
 import scala.io.Source
@@ -12,8 +12,8 @@ class RequisitionsParserTest extends WordSpecLike with Matchers {
     "parse valid data" in {
       val html = Source.fromFile("src/test/scala/com/atanana/parsers/testValidRequisitions.html", "cp1251").getLines().mkString
       RequisitionsParser().getRequisitionsData(html) shouldEqual List(
-        Requisition("Африканский бобр", "Иванов Иван Иванович", LocalDateTime.of(2017, 4, 5, 12, 45)),
-        Requisition("Малахитовая шкатулка", "Мерзляков Максим Петрович", LocalDateTime.of(2017, 4, 10, 18, 0))
+        RequisitionData("Африканский бобр", 422, "Иванов Иван Иванович", LocalDateTime.of(2017, 4, 5, 12, 45)),
+        RequisitionData("Малахитовая шкатулка", 4220, "Мерзляков Максим Петрович", LocalDateTime.of(2017, 4, 10, 18, 0))
       )
     }
 

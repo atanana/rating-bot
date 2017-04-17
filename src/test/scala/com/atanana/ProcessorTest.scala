@@ -72,8 +72,8 @@ class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
     (connector.getRequisitionPage _).when().returns("requisitions page")
     val tournament = TournamentData(1, "tournament 1", "link 1", 1f, 1, 1)
     (csvParser.getTournamentsData _).when("team page").returns(List(tournament))
-    val requisition = Requisition("tournament 1", "agent 1", LocalDateTime.now())
+    val requisition = RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now())
     (requisitionsParser.getRequisitionsData _).when("requisitions page").returns(List(requisition))
-    (tournament, requisition)
+    (tournament, requisition.toRequisition)
   }
 }

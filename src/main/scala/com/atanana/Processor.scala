@@ -28,7 +28,7 @@ class Processor @Inject()(connector: Connector, csvParser: CsvParser, requisitio
 
   private def getNewRequisitions = {
     val requisitionPage = connector.getRequisitionPage
-    requisitionsParser.getRequisitionsData(requisitionPage).toSet
+    requisitionsParser.getRequisitionsData(requisitionPage).map(_.toRequisition).toSet
   }
 
   private def getNewTournaments = {
