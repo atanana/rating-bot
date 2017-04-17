@@ -10,5 +10,6 @@ class ConfigModule(config: Config) extends AbstractModule with ScalaModule {
     bind[Poster]
     bind[CheckResultHandler]
     bind[Processor]
+    bind[TournamentInfoProvider]
   }
 }

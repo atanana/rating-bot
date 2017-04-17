@@ -23,6 +23,14 @@ class Connector @Inject()(config: Config) {
     SITE_URL + s"/teams.php?team_id=${config.team}&download_data=export_tournaments"
   }
 
+  def getTournamentPage(id: Int): String = {
+    getPage(tournamentUrl(id))
+  }
+
+  private def tournamentUrl(id: Int): String = {
+    SITE_URL + "/tournament/" + id
+  }
+
   def getRequisitionPage: String = {
     getPage(requisitionUrl)
   }
