@@ -2,7 +2,7 @@ package com.atanana
 
 import java.util.concurrent.TimeUnit
 
-import com.atanana.checkers.{MainChecker, RequisitionsChecker, TournamentsChecker}
+import com.atanana.checkers.MainChecker
 import com.atanana.parsers.{CsvParser, RequisitionsParser}
 import com.google.inject.Guice
 import com.typesafe.scalalogging.Logger
@@ -19,10 +19,10 @@ object Main extends App {
       val connector = Connector(config)
       val processor = Processor(
         connector,
-        CsvParser(),
-        RequisitionsParser(),
+        injector.instance[CsvParser],
+        injector.instance[RequisitionsParser],
         injector.instance[JsonStore],
-        MainChecker(TournamentsChecker(), RequisitionsChecker()),
+        injector.instance[MainChecker],
         CheckResultHandler(Poster(connector, config), MessageComposer())
       )
 
