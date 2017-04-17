@@ -26,7 +26,7 @@ object Main extends App {
             case e: Throwable => logger.debug("Error occurred!", e)
           }
 
-          Thread.sleep(Duration(30, TimeUnit.SECONDS).toMillis)
+          Thread.sleep(Duration(10, TimeUnit.MINUTES).toMillis)
         }
       case Failure(e) => println(e.getMessage)
     }
