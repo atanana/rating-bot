@@ -31,7 +31,7 @@ class MainCheckerTest extends WordSpecLike with MockFactory with Matchers with B
       (tournamentsChecker.check _).when(data.tournaments, newTournaments).returns(tournamentsCheckResult)
       (requisitionsChecker.check _).when(data.requisitions, newRequisitions).returns(requisitionsCheckResult)
 
-      checker.check(data, newTournaments, newRequisitions) shouldEqual CheckResult(tournamentsCheckResult, requisitionsCheckResult)
+      checker.check(data, ParsedData(newTournaments, newRequisitions)) shouldEqual CheckResult(tournamentsCheckResult, requisitionsCheckResult)
     }
 
     "return no new tournaments on first run" in {
@@ -43,7 +43,7 @@ class MainCheckerTest extends WordSpecLike with MockFactory with Matchers with B
       )
       (requisitionsChecker.check _).when(*, *).returns(mock[RequisitionsCheckResult])
 
-      checker.check(data, newTournaments, Set.empty).tournamentsCheckResult shouldEqual TournamentsCheckResult(Set.empty, Set(ChangedTournament(tournament, 4)))
+      checker.check(data, ParsedData(newTournaments, Set.empty)).tournamentsCheckResult shouldEqual TournamentsCheckResult(Set.empty, Set(ChangedTournament(tournament, 4)))
     }
   }
 }

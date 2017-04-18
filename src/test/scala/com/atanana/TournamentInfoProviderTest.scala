@@ -2,6 +2,7 @@ package com.atanana
 
 import com.atanana.data.Editor
 import com.atanana.parsers.TournamentPageParser
+import com.atanana.providers.TournamentInfoProvider
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
 

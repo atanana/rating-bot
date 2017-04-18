@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 
 import com.atanana.checkers.MainChecker
 import com.atanana.data._
-import com.atanana.parsers.{CsvParser, RequisitionsParser}
+import com.atanana.providers.PollingDataProvider
 import org.scalamock.matchers.Matchers
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, WordSpecLike}
@@ -12,55 +12,51 @@ import org.scalatest.{BeforeAndAfter, WordSpecLike}
 class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter with Matchers {
   var processor: Processor = _
 
-  var connector: Connector = _
-  var csvParser: CsvParser = _
-  var requisitionsParser: RequisitionsParser = _
+  var provider: PollingDataProvider = _
   var store: JsonStore = _
   var checker: MainChecker = _
   var poster: Poster = _
   var checkResultsHandler: CheckResultHandler = _
 
   before {
-    connector = stub[Connector]
-    csvParser = stub[CsvParser]
-    requisitionsParser = stub[RequisitionsParser]
+    provider = stub[PollingDataProvider]
     store = mock[JsonStore]
     checker = stub[MainChecker]
     poster = mock[Poster]
     checkResultsHandler = mock[CheckResultHandler]
 
-    processor = Processor(connector, csvParser, requisitionsParser, store, checker, checkResultsHandler)
+    processor = Processor(provider, store, checker, checkResultsHandler)
   }
 
   "Processor" should {
     "posts about changes" in {
-      val (tournament: TournamentData, requisition: RequisitionData) = setUpDefaults()
+      val parsedData = setUpDefaults()
       val storedData = Data(Set.empty, Set.empty)
       (store.read _).expects().returns(storedData)
       (store.write _).expects(*)
       val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty), RequisitionsCheckResult(Set.empty, Set.empty))
-      (checker.check _).when(storedData, Set(tournament), Set(requisition)).returns(checkResult)
+      (checker.check _).when(storedData, parsedData).returns(checkResult)
       (checkResultsHandler.processCheckResult _).expects(checkResult)
 
       processor.process()
     }
 
     "save new data" in {
-      val (tournament: TournamentData, requisition: RequisitionData) = setUpDefaults()
+      val parsedData = setUpDefaults()
       val storedData = Data(Set.empty, Set.empty)
       (store.read _).expects().returns(storedData)
-      (store.write _).expects(Data(Set(tournament.toTournament), Set(requisition.toRequisition)))
-      (checker.check _).when(storedData, Set(tournament), Set(requisition))
+      (store.write _).expects(parsedData.toData)
+      (checker.check _).when(storedData, parsedData)
       (checkResultsHandler.processCheckResult _).expects(*)
 
       processor.process()
     }
 
     "not save data when no changes" in {
-      val (tournament: TournamentData, requisition: RequisitionData) = setUpDefaults()
-      val storedData = Data(Set(tournament.toTournament), Set(requisition.toRequisition))
+      val parsedData = setUpDefaults()
+      val storedData = parsedData.toData
       (store.read _).expects().returns(storedData)
-      (checker.check _).when(storedData, Set(tournament), Set(requisition))
+      (checker.check _).when(storedData, parsedData)
       (checkResultsHandler.processCheckResult _).expects(*)
 
       processor.process()
@@ -68,12 +64,11 @@ class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
   }
 
   private def setUpDefaults() = {
-    (connector.getTeamPage _).when().returns("team page")
-    (connector.getRequisitionPage _).when().returns("requisitions page")
-    val tournament = TournamentData(1, "tournament 1", "link 1", 1f, 1, 1)
-    (csvParser.getTournamentsData _).when("team page").returns(List(tournament))
-    val requisition = RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now())
-    (requisitionsParser.getRequisitionsData _).when("requisitions page").returns(List(requisition))
-    (tournament, requisition)
+    val parsedData = ParsedData(
+      Set(TournamentData(1, "tournament 1", "link 1", 1f, 1, 1)),
+      Set(RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now()))
+    )
+    (provider.data _).when().returns(parsedData)
+    parsedData
   }
 }
