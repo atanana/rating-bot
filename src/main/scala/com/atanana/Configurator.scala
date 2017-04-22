@@ -7,24 +7,30 @@ import scala.util.Try
 class Configurator @Inject()(systemWrapper: SystemWrapper) {
   def config: Try[Config] = {
     Try({
-      val token = getStringValue("token")
-      val chat = getIntValue("chat")
-      val team = getIntValue("team")
-      val city = getIntValue("city")
-      Config(token, chat, team, city)
+      val token = getStringRequiredValue("token")
+      val chat = getIntRequiredValue("chat")
+      val team = getIntRequiredValue("team")
+      val city = getIntRequiredValue("city")
+      val port = getIntOptionalValue("port").getOrElse(11000)
+      Config(token, chat, team, city, port)
     })
   }
 
-  private def getIntValue(key: String): Int = {
-    getStringValue(key).toInt
+  private def getIntRequiredValue(key: String): Int = {
+    getStringRequiredValue(key).toInt
   }
 
-  private def getStringValue(key: String): String = {
+  private def getStringRequiredValue(key: String): String = {
+    getStringOptionalValue(key).getOrElse(throw new RuntimeException(s"$key is not set!"))
+  }
+
+  private def getIntOptionalValue(key: String): Option[Int] = {
+    getStringOptionalValue(key).map(_.toInt)
+  }
+
+  private def getStringOptionalValue(key: String): Option[String] = {
     val result = systemWrapper.get(key)
-    if (result.isEmpty) {
-      throw new RuntimeException(s"$key is not set!")
-    }
-    result
+    if (result.isEmpty) None else Some(result)
   }
 }
 
@@ -38,4 +44,4 @@ class SystemWrapper {
   }
 }
 
-case class Config(token: String, chat: Int, team: Int, city: Int)
+case class Config(token: String, chat: Int, team: Int, city: Int, port: Int)
