@@ -5,9 +5,8 @@ import java.time.LocalDateTime
 import com.atanana.checkers.MainChecker
 import com.atanana.data._
 import com.atanana.providers.PollingDataProvider
-import org.scalamock.matchers.Matchers
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{BeforeAndAfter, WordSpecLike}
+import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
 
 class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter with Matchers {
   var processor: Processor = _
@@ -38,7 +37,7 @@ class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
       (checker.check _).when(storedData, parsedData).returns(checkResult)
       (checkResultsHandler.processCheckResult _).expects(checkResult)
 
-      processor.process()
+      processor.processCommand("poll")
     }
 
     "save new data" in {
@@ -49,7 +48,7 @@ class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
       (checker.check _).when(storedData, parsedData)
       (checkResultsHandler.processCheckResult _).expects(*)
 
-      processor.process()
+      processor.processCommand("poll")
     }
 
     "not save data when no changes" in {
@@ -59,7 +58,11 @@ class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
       (checker.check _).when(storedData, parsedData)
       (checkResultsHandler.processCheckResult _).expects(*)
 
-      processor.process()
+      processor.processCommand("poll")
+    }
+
+    "should fail on unknown command" in {
+      an[RuntimeException] should be thrownBy processor.processCommand("unknown")
     }
   }
 

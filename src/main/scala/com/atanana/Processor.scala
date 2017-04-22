@@ -7,7 +7,12 @@ import com.atanana.providers.PollingDataProvider
 
 class Processor @Inject()(pollingDataProvider: PollingDataProvider, store: JsonStore, checker: MainChecker,
                           checkResultHandler: CheckResultHandler) {
-  def process(): Unit = {
+  def processCommand(command: String): Unit = command match {
+    case "poll" => process()
+    case _ => throw new RuntimeException(s"Unknown command $command!")
+  }
+
+  private def process(): Unit = {
     val parsedData = pollingDataProvider.data
     val storedData = store.read
 
