@@ -1,8 +1,8 @@
 name := "rating-bot"
 
-version := "1.5.0"
+version := "1.6.0"
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.2"
 
 libraryDependencies += "org.scalaj" %% "scalaj-http" % "2.3.0"
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.7"
