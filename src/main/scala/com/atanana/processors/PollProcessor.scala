@@ -8,7 +8,7 @@ import com.atanana.{CheckResultHandler, JsonStore}
 
 class PollProcessor @Inject()(pollingDataProvider: PollingDataProvider, store: JsonStore, checker: MainChecker,
                               checkResultHandler: CheckResultHandler) extends Processor {
-  def process(): Unit = {
+  override def process(): Unit = {
     val parsedData = pollingDataProvider.data
     val storedData = store.read
 
