@@ -34,11 +34,19 @@ class CommandProviderTest extends WordSpecLike with MockFactory with BeforeAndAf
 
     "provide valid command" in {
       (socket.accept _).when().returns(socketChannel)
+
       (socketChannel.read(_: ByteBuffer)).when(*).onCall((buffer: ByteBuffer) => {
         buffer.put("test command\n".getBytes)
         123
-      })
+      }).noMoreThanOnce()
       provider.getCommand shouldEqual Success(Some("test command"))
+
+      //check that buffer was cleared
+      (socketChannel.read(_: ByteBuffer)).when(*).onCall((buffer: ByteBuffer) => {
+        buffer.put("tttt\n".getBytes)
+        123
+      }).noMoreThanOnce()
+      provider.getCommand shouldEqual Success(Some("tttt"))
     }
   }
 }

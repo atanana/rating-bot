@@ -2,6 +2,7 @@ package com.atanana
 
 import java.nio.ByteBuffer
 import java.nio.channels.ServerSocketChannel
+import java.util
 
 import scala.io.Source
 import scala.util.Try
@@ -18,6 +19,7 @@ class CommandProvider(socket: ServerSocketChannel) {
         if (read > 0) {
           command = Some(Source.fromBytes(buffer.array()).mkString.trim)
         }
+        util.Arrays.fill(buffer.array(), 0.toByte)
         buffer.clear()
         socketChannel.close()
       }
