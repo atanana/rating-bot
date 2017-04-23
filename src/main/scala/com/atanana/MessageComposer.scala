@@ -45,10 +45,18 @@ class MessageComposer {
   }
 
   def composeNewRequisition(requisition: Requisition, editors: List[Editor]): String = {
-    val editorsString = editors.map(_.data).mkString(", ")
     s"А в следующий нас поимеют на турнире под названием ${requisition.tournament} который " +
       s"состоится ${requisition.dateTime.format(timePattern)}. Ответственный: ${requisition.agent}." +
-      s"\nРедакторы: $editorsString"
+      s"\nРедакторы: ${getEditorsString(editors)}"
+  }
+
+  def composeRequisitionReminder(requisition: Requisition, editors: List[Editor]): String = {
+    s"Напоминаю, что завтра состоится очередная рейтинг-оргия под названием ${requisition.tournament}. " +
+      s"Заводилы: ${getEditorsString(editors)}"
+  }
+
+  private def getEditorsString(editors: List[Editor]) = {
+    editors.map(_.data).mkString(", ")
   }
 
   def composeCancelledRequisition(requisition: Requisition): String = {
