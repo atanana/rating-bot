@@ -1,10 +1,11 @@
 package com.atanana.processors
 
 import java.time.LocalDate
+import javax.inject.Inject
 
 import com.atanana.{JsonStore, MessageComposer, Poster}
 
-class ReminderProcessor(store: JsonStore, messageComposer: MessageComposer, poster: Poster) extends Processor {
+class ReminderProcessor @Inject()(store: JsonStore, messageComposer: MessageComposer, poster: Poster) extends Processor {
   override def process(): Unit = {
     val data = store.read
     val tomorrow = LocalDate.now().plusDays(1)
