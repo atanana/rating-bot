@@ -3,6 +3,7 @@ package com.atanana
 import java.net.InetSocketAddress
 import java.nio.channels.ServerSocketChannel
 
+import com.atanana.processors.CommandProcessor
 import com.google.inject.{Guice, Injector}
 import com.typesafe.scalalogging.Logger
 import net.codingwell.scalaguice.InjectorExtensions._
@@ -23,7 +24,7 @@ object Main extends App {
   private def start(rootInjector: Injector, config: Config) = {
     val logger = Logger("main")
     val injector = rootInjector.createChildInjector(new ConfigModule(config))
-    val processor = injector.instance[Processor]
+    val processor = injector.instance[CommandProcessor]
     val serverChannel: ServerSocketChannel = createServerChannel(config)
     val commandProvider = new CommandProvider(serverChannel)
 

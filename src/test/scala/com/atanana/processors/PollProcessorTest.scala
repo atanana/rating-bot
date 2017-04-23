@@ -1,15 +1,16 @@
-package com.atanana
+package com.atanana.processors
 
 import java.time.LocalDateTime
 
 import com.atanana.checkers.MainChecker
 import com.atanana.data._
 import com.atanana.providers.PollingDataProvider
+import com.atanana.{CheckResultHandler, JsonStore, Poster}
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
 
-class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter with Matchers {
-  var processor: Processor = _
+class PollProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter with Matchers {
+  var processor: PollProcessor = _
 
   var provider: PollingDataProvider = _
   var store: JsonStore = _
@@ -24,7 +25,7 @@ class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
     poster = mock[Poster]
     checkResultsHandler = mock[CheckResultHandler]
 
-    processor = Processor(provider, store, checker, checkResultsHandler)
+    processor = PollProcessor(provider, store, checker, checkResultsHandler)
   }
 
   "Processor" should {
@@ -37,7 +38,7 @@ class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
       (checker.check _).when(storedData, parsedData).returns(checkResult)
       (checkResultsHandler.processCheckResult _).expects(checkResult)
 
-      processor.processCommand("poll")
+      processor.process()
     }
 
     "save new data" in {
@@ -48,7 +49,7 @@ class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
       (checker.check _).when(storedData, parsedData)
       (checkResultsHandler.processCheckResult _).expects(*)
 
-      processor.processCommand("poll")
+      processor.process()
     }
 
     "not save data when no changes" in {
@@ -58,11 +59,7 @@ class ProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
       (checker.check _).when(storedData, parsedData)
       (checkResultsHandler.processCheckResult _).expects(*)
 
-      processor.processCommand("poll")
-    }
-
-    "should fail on unknown command" in {
-      an[RuntimeException] should be thrownBy processor.processCommand("unknown")
+      processor.process()
     }
   }
 

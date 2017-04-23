@@ -1,18 +1,14 @@
-package com.atanana
+package com.atanana.processors
 
 import javax.inject.Inject
 
 import com.atanana.checkers.MainChecker
 import com.atanana.providers.PollingDataProvider
+import com.atanana.{CheckResultHandler, JsonStore}
 
-class Processor @Inject()(pollingDataProvider: PollingDataProvider, store: JsonStore, checker: MainChecker,
-                          checkResultHandler: CheckResultHandler) {
-  def processCommand(command: String): Unit = command match {
-    case "poll" => process()
-    case _ => throw new RuntimeException(s"Unknown command $command!")
-  }
-
-  private def process(): Unit = {
+class PollProcessor @Inject()(pollingDataProvider: PollingDataProvider, store: JsonStore, checker: MainChecker,
+                              checkResultHandler: CheckResultHandler) extends Processor {
+  def process(): Unit = {
     val parsedData = pollingDataProvider.data
     val storedData = store.read
 
@@ -26,7 +22,7 @@ class Processor @Inject()(pollingDataProvider: PollingDataProvider, store: JsonS
   }
 }
 
-object Processor {
+object PollProcessor {
   def apply(pollingDataProvider: PollingDataProvider, jsonStore: JsonStore, mainChecker: MainChecker, checkResultHandler: CheckResultHandler) =
-    new Processor(pollingDataProvider, jsonStore, mainChecker, checkResultHandler)
+    new PollProcessor(pollingDataProvider, jsonStore, mainChecker, checkResultHandler)
 }
