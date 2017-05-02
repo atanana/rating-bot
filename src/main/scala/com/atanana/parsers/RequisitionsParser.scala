@@ -22,7 +22,7 @@ class RequisitionsParser {
   }
 
   private def tryParseRequisitionRow(row: Element) = {
-    Try({
+    Try {
       val data = row.children.toList
       val tournamentLink = data.head >> element("a")
       RequisitionData(
@@ -31,7 +31,7 @@ class RequisitionsParser {
         agent = data(2).text,
         dateTime = LocalDateTime.parse(data(3).text, RequisitionsParser.timePattern)
       )
-    })
+    }
   }
 
   private def getTournamentIdFromLink(tournamentLink: Element) = {

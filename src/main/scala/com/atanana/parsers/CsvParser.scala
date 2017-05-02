@@ -19,7 +19,7 @@ class CsvParser {
   }
 
   private def tryParseTournamentRow(row: Array[String]) = {
-    Try({
+    Try {
       TournamentData(
         row(0).toInt,
         row(1),
@@ -27,7 +27,7 @@ class CsvParser {
         row(8).replace(',', '.').toFloat,
         row(11).toInt,
         row(12).toInt)
-    })
+    }
   }
 }
 

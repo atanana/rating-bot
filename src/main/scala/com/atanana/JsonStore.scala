@@ -29,7 +29,9 @@ class JsonStore @Inject()(fsHandler: FsHandler) {
 
   def read: Data = {
     fsHandler.readFile(FILE_NAME)
-      .flatMap(contents => Try(contents.parseJson.convertTo[Data]))
+      .flatMap(contents => Try {
+        contents.parseJson.convertTo[Data]
+      })
       .getOrElse(Data(Set.empty, Set.empty))
   }
 

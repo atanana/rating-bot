@@ -6,14 +6,14 @@ import scala.util.Try
 
 class Configurator @Inject()(systemWrapper: SystemWrapper) {
   def config: Try[Config] = {
-    Try({
+    Try {
       val token = getStringRequiredValue("token")
       val chat = getIntRequiredValue("chat")
       val team = getIntRequiredValue("team")
       val city = getIntRequiredValue("city")
       val port = getIntOptionalValue("port").getOrElse(11000)
       Config(token, chat, team, city, port)
-    })
+    }
   }
 
   private def getIntRequiredValue(key: String): Int = {

@@ -11,7 +11,7 @@ class CommandProvider(socket: ServerSocketChannel) {
   private val buffer = ByteBuffer.allocate(128)
 
   def getCommand: Try[Option[String]] = {
-    Try({
+    Try {
       var command: Option[String] = None
       val socketChannel = socket.accept()
       if (socketChannel != null) {
@@ -24,6 +24,6 @@ class CommandProvider(socket: ServerSocketChannel) {
         socketChannel.close()
       }
       command
-    })
+    }
   }
 }

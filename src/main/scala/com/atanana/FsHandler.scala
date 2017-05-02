@@ -7,14 +7,14 @@ import scala.util.Try
 
 class FsHandler {
   def readFile(filename: String): Try[String] = {
-    Try({
+    Try {
       val source = Source.fromFile(filename)
       try {
         source.getLines().mkString
       } finally {
         source.close()
       }
-    })
+    }
   }
 
   def writeFile(contents: String, filename: String): Unit = {
