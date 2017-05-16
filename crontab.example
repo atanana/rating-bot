@@ -1,0 +1,5 @@
+*/10 * * * * echo poll | netcat localhost 11000
+
+0 12 * * * echo remind | netcat localhost 11000
+
+0 12 * * FRI echo teamPositions | netcat localhost 11000
