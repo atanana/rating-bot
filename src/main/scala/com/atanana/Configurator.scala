@@ -11,8 +11,10 @@ class Configurator @Inject()(systemWrapper: SystemWrapper) {
       val chat = getIntRequiredValue("chat")
       val team = getIntRequiredValue("team")
       val city = getIntRequiredValue("city")
+      val cityName = getStringRequiredValue("cityName")
+      val countryName = getStringRequiredValue("countryName")
       val port = getIntOptionalValue("port").getOrElse(11000)
-      Config(token, chat, team, city, port)
+      Config(token, chat, team, city, port, cityName, countryName)
     }
   }
 
@@ -44,4 +46,10 @@ class SystemWrapper {
   }
 }
 
-case class Config(token: String, chat: Int, team: Int, city: Int, port: Int)
+case class Config(token: String,
+                  chat: Int,
+                  team: Int,
+                  city: Int,
+                  port: Int,
+                  cityName: String,
+                  countryName: String)
