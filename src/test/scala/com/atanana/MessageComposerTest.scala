@@ -2,7 +2,7 @@ package com.atanana
 
 import java.time.LocalDateTime
 
-import com.atanana.data.{ChangedTournament, Editor, Requisition, TournamentData}
+import com.atanana.data._
 import org.scalatest.{Matchers, WordSpecLike}
 
 class MessageComposerTest extends WordSpecLike with Matchers {
@@ -49,5 +49,19 @@ class MessageComposerTest extends WordSpecLike with Matchers {
     val requisition = Requisition("tournament 1", "agent 1", LocalDateTime.of(2017, 4, 11, 18, 45))
     MessageComposer().composeRequisitionReminder(requisition) shouldEqual
       "Напоминаю, что завтра состоится очередная рейтинг-оргия под названием tournament 1. Командовать парадом будет agent 1"
+  }
+
+  "valid team positions reminder" in {
+    val info = TeamPositionInfo("test team", "test city", 123, 200, 3000, 20.5f, 30)
+    MessageComposer().composeTeamPositionsMessage(info) shouldEqual
+      s"""
+         |Небольшая сводка по новому релизу:
+         |* текущий рейтинг - 3000
+         |* место по городу - 20.5
+         |* место по стране - 30.0
+         |* место в общем рейтинге - 200.0
+         |* до топ-100 осталось - 123
+         |За эту неделю было бы неплохо хотя бы обойти test team(test city)
+    """.stripMargin
   }
 }

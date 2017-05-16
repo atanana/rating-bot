@@ -5,5 +5,5 @@ case class TeamPositionInfo(targetName: String,
                             top100ratingDifference: Int,
                             currentPosition: Float,
                             currentRating: Int,
-                            cityPosition: Int,
-                            countryPosition: Int)
+                            cityPosition: Float,
+                            countryPosition: Float)

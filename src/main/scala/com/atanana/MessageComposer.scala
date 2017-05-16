@@ -5,7 +5,7 @@ import java.time.{DayOfWeek, LocalDate}
 import java.util.Locale
 
 import com.atanana.MessageComposer.{alarms, timePattern}
-import com.atanana.data.{ChangedTournament, Editor, Requisition, TournamentData}
+import com.atanana.data._
 
 import scala.util.Random
 
@@ -66,6 +66,18 @@ class MessageComposer {
 
   private def randomAlarm: String = {
     alarms(Random.nextInt(alarms.size))
+  }
+
+  def composeTeamPositionsMessage(info: TeamPositionInfo): String = {
+    s"""
+       |Небольшая сводка по новому релизу:
+       |* текущий рейтинг - ${info.currentRating}
+       |* место по городу - ${info.cityPosition}
+       |* место по стране - ${info.countryPosition}
+       |* место в общем рейтинге - ${info.currentPosition}
+       |* до топ-100 осталось - ${info.top100ratingDifference}
+       |За эту неделю было бы неплохо хотя бы обойти ${info.targetName}(${info.targetCity})
+    """.stripMargin
   }
 }
 
