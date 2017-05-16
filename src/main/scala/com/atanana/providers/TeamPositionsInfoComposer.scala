@@ -1,17 +1,17 @@
 package com.atanana.providers
 
-import com.atanana.data.{Team, TeamPositionInfo}
+import com.atanana.data.{Team, TeamPositionsInfo}
 
 import scala.util.Try
 
-class TeamPositionsProvider(teamId: Int) {
-  def positionsInfo(teams: List[Team], cityTeams: List[Team], countryTeams: List[Team]): Try[TeamPositionInfo] = {
+class TeamPositionsInfoComposer(teamId: Int) {
+  def positionsInfo(teams: List[Team], cityTeams: List[Team], countryTeams: List[Team]): Try[TeamPositionsInfo] = {
     Try {
       val lastTeam = teams(99)
       val team = teams.find(_.id == teamId)
         .getOrElse(throw new RuntimeException("No target team in top 500!"))
       val targetTeam = teams(teams.indexOf(team) - 1)
-      TeamPositionInfo(
+      TeamPositionsInfo(
         targetTeam.name,
         targetTeam.city,
         lastTeam.rating - team.rating,

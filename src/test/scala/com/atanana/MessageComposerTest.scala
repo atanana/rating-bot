@@ -52,7 +52,7 @@ class MessageComposerTest extends WordSpecLike with Matchers {
   }
 
   "valid team positions reminder" in {
-    val info = TeamPositionInfo("test team", "test city", 123, 200, 3000, 20.5f, 30)
+    val info = TeamPositionsInfo("test team", "test city", 123, 200, 3000, 20.5f, 30)
     MessageComposer().composeTeamPositionsMessage(info) shouldEqual
       s"""
          |Небольшая сводка по новому релизу:

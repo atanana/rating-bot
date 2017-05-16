@@ -68,7 +68,7 @@ class MessageComposer {
     alarms(Random.nextInt(alarms.size))
   }
 
-  def composeTeamPositionsMessage(info: TeamPositionInfo): String = {
+  def composeTeamPositionsMessage(info: TeamPositionsInfo): String = {
     s"""
        |Небольшая сводка по новому релизу:
        |* текущий рейтинг - ${info.currentRating}
