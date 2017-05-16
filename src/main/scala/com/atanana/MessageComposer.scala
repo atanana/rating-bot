@@ -76,7 +76,7 @@ class MessageComposer {
        |* место по стране - ${info.countryPosition}
        |* место в общем рейтинге - ${info.currentPosition}
        |* до топ-100 осталось - ${info.top100ratingDifference}
-       |За эту неделю было бы неплохо хотя бы обойти ${info.targetName}(${info.targetCity})
+       |За эту неделю было бы неплохо хотя бы обойти команду ${info.targetName}(${info.targetCity})
     """.stripMargin
   }
 }
