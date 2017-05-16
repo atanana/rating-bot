@@ -1,7 +1,7 @@
 package com.atanana
 
 import com.atanana.processors.{CommandProcessor, PollProcessor, ReminderProcessor, TeamPositionsProcessor}
-import com.atanana.providers.{PollingDataProvider, TournamentInfoProvider}
+import com.atanana.providers.{PollingDataProvider, TeamPositionsInfoComposer, TeamPositionsInfoProvider, TournamentInfoProvider}
 import com.google.inject.AbstractModule
 import net.codingwell.scalaguice.ScalaModule
 
@@ -15,6 +15,9 @@ class ConfigModule(config: Config) extends AbstractModule with ScalaModule {
 
     bind[NetWrapper]
     bind[Connector]
+
+    bind[TeamPositionsInfoProvider]
+    bind[TeamPositionsInfoComposer].toInstance(new TeamPositionsInfoComposer(config.team))
 
     bind[CommandProcessor]
     bind[PollProcessor]
