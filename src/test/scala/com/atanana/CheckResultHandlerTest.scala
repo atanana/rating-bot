@@ -32,7 +32,7 @@ class CheckResultHandlerTest extends WordSpecLike with Matchers with MockFactory
 
       CheckResultHandler(poster, messageComposer, tournamentInfoProvider).processCheckResult(CheckResult(
         TournamentsCheckResult(Set(tournamentData), Set(changedTournament)),
-        RequisitionsCheckResult(Set(requisitionData), Set(requisitionData.toRequisition))
+        RequisitionsCheckResult(Set(requisitionData), Set(requisitionData))
       ))
     }
   }

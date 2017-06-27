@@ -18,8 +18,7 @@ class TournamentsChecker {
   }
 
   private def getChangedTournaments(oldTournaments: Set[Tournament], newTournaments: Set[TournamentData]): Set[ChangedTournament] = {
-    val newTournamentScores = newTournaments.map(_.toTournament)
-    val changedTournaments = oldTournaments -- newTournamentScores
+    val changedTournaments = oldTournaments -- newTournaments
     changedTournaments
       .map(oldTournament =>
         newTournaments

@@ -19,7 +19,7 @@ class CheckResultHandler @Inject()(poster: Poster, messageComposer: MessageCompo
 
   private def getNewRequisitionMessage(newRequisition: RequisitionData) = {
     val editors = tournamentInfoProvider.getEditors(newRequisition.tournamentId)
-    messageComposer.composeNewRequisition(newRequisition.toRequisition, editors)
+    messageComposer.composeNewRequisition(newRequisition, editors)
   }
 }
 

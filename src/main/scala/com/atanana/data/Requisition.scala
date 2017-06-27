@@ -7,3 +7,9 @@ case class Requisition(tournament: String, agent: String, dateTime: LocalDateTim
 case class RequisitionData(tournament: String, tournamentId: Int, agent: String, dateTime: LocalDateTime) {
   def toRequisition = Requisition(tournament, agent, dateTime)
 }
+
+object RequisitionData {
+  implicit def toRequisition(data: RequisitionData): Requisition = data.toRequisition
+
+  implicit def toRequisitionSet(data: Set[RequisitionData]): Set[Requisition] = data.map(toRequisition)
+}

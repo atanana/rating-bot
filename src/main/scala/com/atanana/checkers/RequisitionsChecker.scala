@@ -8,7 +8,7 @@ class RequisitionsChecker {
   def check(oldRequisitions: Set[Requisition], newRequisitions: Set[RequisitionData]): RequisitionsCheckResult = {
     RequisitionsCheckResult(
       getNewRequisitions(oldRequisitions, newRequisitions),
-      getCancelledRequisitions(getNotFinishedRequisitions(oldRequisitions), newRequisitions.map(_.toRequisition))
+      getCancelledRequisitions(getNotFinishedRequisitions(oldRequisitions), newRequisitions)
     )
   }
 
@@ -17,8 +17,9 @@ class RequisitionsChecker {
     oldRequisitions.filter(requisition => requisition.dateTime.isAfter(finishTime))
   }
 
+  //noinspection FilterOtherContains
   def getNewRequisitions(oldRequisitions: Set[Requisition], newRequisitions: Set[RequisitionData]): Set[RequisitionData] = {
-    newRequisitions.filter(newRequisition => !oldRequisitions.contains(newRequisition.toRequisition))
+    newRequisitions.filter(newRequisition => !oldRequisitions.contains(newRequisition))
   }
 
   def getCancelledRequisitions(oldRequisitions: Set[Requisition], newRequisitions: Set[Requisition]): Set[Requisition] = {
