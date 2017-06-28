@@ -4,8 +4,9 @@ import java.time.LocalDateTime
 
 import com.atanana.checkers.MainChecker
 import com.atanana.data._
+import com.atanana.json.JsonStore
 import com.atanana.providers.PollingDataProvider
-import com.atanana.{CheckResultHandler, JsonStore, Poster}
+import com.atanana.{CheckResultHandler, Poster}
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
 

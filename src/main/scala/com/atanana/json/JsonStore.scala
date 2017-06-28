@@ -1,9 +1,10 @@
-package com.atanana
+package com.atanana.json
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
+import com.atanana.FsHandler
 import com.atanana.data.{Data, Requisition, Tournament}
 import spray.json.DefaultJsonProtocol._
 import spray.json._

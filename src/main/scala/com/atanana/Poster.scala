@@ -3,6 +3,7 @@ package com.atanana
 import java.net.URLEncoder.encode
 import javax.inject.Inject
 
+import com.atanana.json.Config
 import com.typesafe.scalalogging.Logger
 
 import scalaj.http.HttpResponse

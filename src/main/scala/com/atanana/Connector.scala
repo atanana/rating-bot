@@ -4,6 +4,7 @@ import java.net.URLEncoder.encode
 import javax.inject.Inject
 
 import com.atanana.Connector.SITE_URL
+import com.atanana.json.Config
 
 import scalaj.http.{Http, HttpResponse}
 
@@ -26,11 +27,11 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
   def getTeamsPage: String = getPage(SITE_URL + "/teams.php")
 
-  private def getPage(url: String) = netWrapper.getPage(url)
-
   def getCityTeamsPage: String = getPage(SITE_URL + s"/teams.php?town=${encode(config.cityName, "cp1251")}")
 
   def getCountryTeamsPage: String = getPage(SITE_URL + s"/teams.php?country=${encode(config.countryName, "cp1251")}")
+
+  private def getPage(url: String) = netWrapper.getPage(url)
 }
 
 object Connector {

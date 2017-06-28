@@ -1,5 +1,6 @@
 package com.atanana
 
+import com.atanana.json.Config
 import com.atanana.processors.{CommandProcessor, PollProcessor, ReminderProcessor, TeamPositionsProcessor}
 import com.atanana.providers.{PollingDataProvider, TeamPositionsInfoComposer, TeamPositionsInfoProvider, TournamentInfoProvider}
 import com.google.inject.AbstractModule

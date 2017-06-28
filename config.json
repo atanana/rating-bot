@@ -1,0 +1,9 @@
+{
+  "token": "test",
+  "chat": 1,
+  "team": 2,
+  "city": 3,
+  "cityName": "Минск",
+  "countryName": "Беларусь",
+  "port": 11000
+}

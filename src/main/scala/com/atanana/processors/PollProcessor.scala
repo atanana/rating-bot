@@ -2,9 +2,10 @@ package com.atanana.processors
 
 import javax.inject.Inject
 
+import com.atanana.CheckResultHandler
 import com.atanana.checkers.MainChecker
+import com.atanana.json.JsonStore
 import com.atanana.providers.PollingDataProvider
-import com.atanana.{CheckResultHandler, JsonStore}
 
 class PollProcessor @Inject()(pollingDataProvider: PollingDataProvider, store: JsonStore, checker: MainChecker,
                               checkResultHandler: CheckResultHandler) extends Processor {

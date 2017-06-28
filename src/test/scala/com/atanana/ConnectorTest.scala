@@ -1,5 +1,6 @@
 package com.atanana
 
+import com.atanana.json.Config
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
 

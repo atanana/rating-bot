@@ -3,6 +3,7 @@ package com.atanana
 import java.net.InetSocketAddress
 import java.nio.channels.ServerSocketChannel
 
+import com.atanana.json.{Config, JsonConfig}
 import com.atanana.processors.CommandProcessor
 import com.google.inject.{Guice, Injector}
 import com.typesafe.scalalogging.Logger
@@ -13,9 +14,9 @@ import scala.util.{Failure, Success}
 object Main extends App {
   override def main(args: Array[String]): Unit = {
     val rootInjector = Guice.createInjector(new RatingModule)
-    val configurator = rootInjector.instance[Configurator]
+    val jsonConfig = rootInjector.instance[JsonConfig]
 
-    configurator.config match {
+    jsonConfig.read match {
       case Success(config) => start(rootInjector, config)
       case Failure(e) => println(e.getMessage)
     }
