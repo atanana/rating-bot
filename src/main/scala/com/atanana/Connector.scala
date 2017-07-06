@@ -17,6 +17,8 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
     SITE_URL + s"/teams.php?team_id=${config.team}&download_data=export_tournaments"
   }
 
+  private def getPage(url: String) = netWrapper.getPage(url)
+
   def getTournamentPage(id: Int): String = getPage(tournamentUrl(id))
 
   private def tournamentUrl(id: Int): String = SITE_URL + "/tournament/" + id
@@ -31,7 +33,7 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
   def getCountryTeamsPage: String = getPage(SITE_URL + s"/teams.php?country=${encode(config.countryName, "cp1251")}")
 
-  private def getPage(url: String) = netWrapper.getPage(url)
+  def getTournamentRequisitionsPage(tournamentId: Int): String = getPage(SITE_URL + s"/tournament/$tournamentId/requests/")
 }
 
 object Connector {

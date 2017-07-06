@@ -53,5 +53,11 @@ class ConnectorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
       (wrapper.getPage _).when(Connector.SITE_URL + "/teams.php?country=%C1%E5%EB%E0%F0%F3%F1%FC").returns("country teams page")
       connector.getCountryTeamsPage shouldEqual "country teams page"
     }
+
+    "get tournament requisitions page by wrapper" in {
+      val tournamentId = 111
+      (wrapper.getPage _).when(Connector.SITE_URL + s"/tournament/$tournamentId/requests/").returns("tournament requests page")
+      connector.getTournamentRequisitionsPage(tournamentId) shouldEqual "tournament requests page"
+    }
   }
 }
