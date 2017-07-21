@@ -72,18 +72,19 @@ class MessageComposer {
   def composeTeamPositionsMessage(info: TeamPositionsInfo): String = {
     s"""
        |Небольшая сводка по новому релизу:
-       |🏆 текущий рейтинг - ${info.currentRating}
-       |🏆 место по городу - ${info.cityPosition}
-       |🏆 место по стране - ${info.countryPosition}
-       |🏆 место в общем рейтинге - ${info.currentPosition}
-       |🏆 до топ-100 осталось - ${info.top100ratingDifference}
-       |🏆 ${info.targetCountryRatingTeam.ratingDifference} осталось до следующей команды по стране - ${printTeam(info.targetCountryRatingTeam)}
+       |🏆 текущий рейтинг — ${info.currentRating}
+       |🏆 место по городу — ${info.cityPosition}
+       |🏆 место по стране — ${info.countryPosition}
+       |🏆 место в общем рейтинге — ${info.currentPosition}
+       |🏆 до топ-100 осталось — ${info.top100ratingDifference}
+       |🏆 ${info.targetCountryRatingTeam.ratingDifference} осталось до следующей команды по стране — ${printTeam(info.targetCountryRatingTeam)}
        |🏆 ${-info.overtakingCountryRatingTeam.ratingDifference} осталось команде ${printTeam(info.overtakingCountryRatingTeam)} чтобы догнать нас по стране
-       |За эту неделю было бы неплохо обойти хотя бы команду ${printTeam(info.targetAllRatingTeam)} до которой осталось ${info.targetAllRatingTeam.ratingDifference} очков
+       |
+       |За эту неделю было бы неплохо обойти хотя бы команду ${printTeam(info.targetAllRatingTeam)}, до которой осталось ${info.targetAllRatingTeam.ratingDifference} очков
     """.stripMargin
   }
 
-  private def printTeam(team: TargetTeam):String = s"${team.name}(${team.city})"
+  private def printTeam(team: TargetTeam):String = s"${team.name} (${team.city})"
 }
 
 object MessageComposer {
