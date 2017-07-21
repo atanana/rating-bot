@@ -1,9 +1,19 @@
 package com.atanana.data
 
-case class TeamPositionsInfo(targetName: String,
-                             targetCity: String,
-                             top100ratingDifference: Int,
-                             currentPosition: Float,
-                             currentRating: Int,
-                             cityPosition: Float,
-                             countryPosition: Float)
+case class TeamPositionsInfo(
+                              targetAllRatingTeam: TargetTeam,
+                              targetCountryRatingTeam: TargetTeam,
+                              overtakingCountryRatingTeam: TargetTeam,
+                              top100ratingDifference: Int,
+                              currentPosition: Float,
+                              currentRating: Int,
+                              cityPosition: Float,
+                              countryPosition: Float
+                            )
+
+case class TargetTeam(name: String, city: String, ratingDifference: Int)
+
+object TargetTeam {
+  def apply(team: Team, teamToCompare: Team): TargetTeam =
+    new TargetTeam(team.name, team.city, team.rating - teamToCompare.rating)
+}

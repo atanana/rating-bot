@@ -1,6 +1,6 @@
 package com.atanana.processors
 
-import com.atanana.data.TeamPositionsInfo
+import com.atanana.data.{TargetTeam, TeamPositionsInfo}
 import com.atanana.providers.TeamPositionsInfoProvider
 import com.atanana.{MessageComposer, Poster}
 import org.scalamock.scalatest.MockFactory
@@ -23,7 +23,8 @@ class TeamPositionsProcessorTest extends WordSpecLike with MockFactory with Befo
 
   "TeamPositionsProcessor" should {
     "post correct message" in {
-      val info = TeamPositionsInfo("test team", "test city", 123, 200, 3000, 20, 30)
+      val targetTeam = TargetTeam("test team", "test city", 100)
+      val info = TeamPositionsInfo(targetTeam, targetTeam, targetTeam, 123, 200, 3000, 20, 30)
       (provider.data _).when().returns(Success(info))
       (messageComposer.composeTeamPositionsMessage _).when(info).returns("test message")
       (poster.post _).expects("test message")
