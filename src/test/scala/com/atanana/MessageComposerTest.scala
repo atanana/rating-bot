@@ -61,7 +61,7 @@ class MessageComposerTest extends WordSpecLike with Matchers {
          |* место по стране - 30.0
          |* место в общем рейтинге - 200.0
          |* до топ-100 осталось - 123
-         |За эту неделю было бы неплохо хотя бы обойти команду test team(test city)
+         |За эту неделю было бы неплохо обойти хотя бы команду test team(test city)
     """.stripMargin
   }
 }
