@@ -71,11 +71,11 @@ class MessageComposer {
   def composeTeamPositionsMessage(info: TeamPositionsInfo): String = {
     s"""
        |Небольшая сводка по новому релизу:
-       |* текущий рейтинг - ${info.currentRating}
-       |* место по городу - ${info.cityPosition}
-       |* место по стране - ${info.countryPosition}
-       |* место в общем рейтинге - ${info.currentPosition}
-       |* до топ-100 осталось - ${info.top100ratingDifference}
+       |🏆 текущий рейтинг - ${info.currentRating}
+       |🏆 место по городу - ${info.cityPosition}
+       |🏆 место по стране - ${info.countryPosition}
+       |🏆 место в общем рейтинге - ${info.currentPosition}
+       |🏆 до топ-100 осталось - ${info.top100ratingDifference}
        |За эту неделю было бы неплохо обойти хотя бы команду ${info.targetName}(${info.targetCity})
     """.stripMargin
   }
