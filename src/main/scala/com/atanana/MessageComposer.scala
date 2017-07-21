@@ -7,6 +7,7 @@ import java.util.Locale
 import com.atanana.MessageComposer.{alarms, timePattern}
 import com.atanana.data._
 
+import scala.language.implicitConversions
 import scala.util.Random
 
 class MessageComposer {
@@ -76,9 +77,13 @@ class MessageComposer {
        |🏆 место по стране - ${info.countryPosition}
        |🏆 место в общем рейтинге - ${info.currentPosition}
        |🏆 до топ-100 осталось - ${info.top100ratingDifference}
-       |За эту неделю было бы неплохо обойти хотя бы команду ${info.targetAllRatingTeam.name}(${info.targetAllRatingTeam.city})
+       |🏆 ${info.targetCountryRatingTeam.ratingDifference} осталось до следующей команды по стране - ${printTeam(info.targetCountryRatingTeam)}
+       |🏆 ${-info.overtakingCountryRatingTeam.ratingDifference} осталось команде ${printTeam(info.overtakingCountryRatingTeam)} чтобы догнать нас по стране
+       |За эту неделю было бы неплохо обойти хотя бы команду ${printTeam(info.targetAllRatingTeam)} до которой осталось ${info.targetAllRatingTeam.ratingDifference} очков
     """.stripMargin
   }
+
+  private def printTeam(team: TargetTeam):String = s"${team.name}(${team.city})"
 }
 
 object MessageComposer {
