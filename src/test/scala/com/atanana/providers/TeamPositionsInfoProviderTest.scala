@@ -1,7 +1,7 @@
 package com.atanana.providers
 
 import com.atanana.Connector
-import com.atanana.data.{Team, TeamPositionsInfo}
+import com.atanana.data.{TargetTeam, Team, TeamPositionsInfo}
 import com.atanana.parsers.TeamsPageParser
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
@@ -34,11 +34,12 @@ class TeamPositionsInfoProviderTest extends WordSpecLike with MockFactory with M
       (parser.getTeams _).when("city teams page").returns(List(cityTeam))
       (parser.getTeams _).when("country teams page").returns(List(countryTeam))
 
+      val targetTeam = TargetTeam("test team", "test city", 100)
       (composer.positionsInfo _).when(List(team), List(cityTeam), List(countryTeam)).returns(
-        Success(TeamPositionsInfo("test team", "test city", 123, 200, 3000, 20, 30))
+        Success(TeamPositionsInfo(targetTeam, targetTeam, targetTeam, 123, 200, 3000, 20, 30))
       )
 
-      provider.data shouldEqual Success(TeamPositionsInfo("test team", "test city", 123, 200, 3000, 20, 30))
+      provider.data shouldEqual Success(TeamPositionsInfo(targetTeam, targetTeam, targetTeam, 123, 200, 3000, 20, 30))
     }
   }
 }

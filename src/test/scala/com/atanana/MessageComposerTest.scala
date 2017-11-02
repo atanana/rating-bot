@@ -52,16 +52,22 @@ class MessageComposerTest extends WordSpecLike with Matchers {
   }
 
   "valid team positions reminder" in {
-    val info = TeamPositionsInfo("test team", "test city", 123, 200, 3000, 20.5f, 30)
+    val targetTeam = TargetTeam("target team", "target city", 20)
+    val targetCountryTeam = TargetTeam("country team", "country city", 10)
+    val overtakingTeam = TargetTeam("overtaking team", "overtaking city", -10)
+    val info = TeamPositionsInfo(targetTeam, targetCountryTeam, overtakingTeam, 123, 200, 100, 20.5f, 30)
     MessageComposer().composeTeamPositionsMessage(info) shouldEqual
       s"""
          |Небольшая сводка по новому релизу:
-         |* текущий рейтинг - 3000
-         |* место по городу - 20.5
-         |* место по стране - 30.0
-         |* место в общем рейтинге - 200.0
-         |* до топ-100 осталось - 123
-         |За эту неделю было бы неплохо хотя бы обойти команду test team(test city)
+         |🏆 текущий рейтинг — 100
+         |🏆 место по городу — 20.5
+         |🏆 место по стране — 30.0
+         |🏆 место в общем рейтинге — 200.0
+         |🏆 до топ-100 осталось — 123
+         |🏆 10 осталось до следующей команды по стране — country team (country city)
+         |🏆 10 осталось команде overtaking team (overtaking city) чтобы догнать нас по стране
+         |
+         |За эту неделю было бы неплохо обойти хотя бы команду target team (target city), до которой осталось 20 очков
     """.stripMargin
   }
 }
