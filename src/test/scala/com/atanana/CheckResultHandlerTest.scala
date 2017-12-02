@@ -3,6 +3,7 @@ package com.atanana
 import java.time.LocalDateTime
 
 import com.atanana.data._
+import com.atanana.posters.Poster
 import com.atanana.providers.TournamentInfoProvider
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{Matchers, WordSpecLike}

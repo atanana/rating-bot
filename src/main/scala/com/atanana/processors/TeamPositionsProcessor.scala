@@ -2,8 +2,9 @@ package com.atanana.processors
 
 import javax.inject.Inject
 
+import com.atanana.MessageComposer
+import com.atanana.posters.Poster
 import com.atanana.providers.TeamPositionsInfoProvider
-import com.atanana.{MessageComposer, Poster}
 
 class TeamPositionsProcessor @Inject()(infoProvider: TeamPositionsInfoProvider,
                                        messageComposer: MessageComposer,

@@ -1,18 +1,19 @@
-package com.atanana
+package com.atanana.posters
 
 import java.net.URLEncoder.encode
 import javax.inject.Inject
 
+import com.atanana.Connector
 import com.atanana.json.Config
 import com.typesafe.scalalogging.Logger
 
 import scalaj.http.HttpResponse
 
-class Poster @Inject()(connector: Connector, config: Config) {
+class RealPoster @Inject()(connector: Connector, config: Config) extends Poster {
 
-  import Poster.logger
+  import RealPoster.logger
 
-  def post(message: String): Unit = {
+  override def post(message: String): Unit = {
     val encodedMessage: String = encode(message, "UTF-8")
     val response: HttpResponse[String] = connector.get(url(encodedMessage))
     logger.debug(response.body)
@@ -23,8 +24,8 @@ class Poster @Inject()(connector: Connector, config: Config) {
   }
 }
 
-object Poster {
-  val logger = Logger(classOf[Poster])
+object RealPoster {
+  val logger = Logger(classOf[RealPoster])
 
-  def apply(connector: Connector, config: Config): Poster = new Poster(connector, config)
+  def apply(connector: Connector, config: Config): RealPoster = new RealPoster(connector, config)
 }

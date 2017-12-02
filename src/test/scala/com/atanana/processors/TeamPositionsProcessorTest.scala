@@ -1,8 +1,9 @@
 package com.atanana.processors
 
+import com.atanana.MessageComposer
 import com.atanana.data.{TargetTeam, TeamPositionsInfo}
+import com.atanana.posters.Poster
 import com.atanana.providers.TeamPositionsInfoProvider
-import com.atanana.{MessageComposer, Poster}
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, WordSpecLike}
 

@@ -1,6 +1,7 @@
 package com.atanana
 
 import com.atanana.json.Config
+import com.atanana.posters.{Poster, RealPoster}
 import com.atanana.processors.{CommandProcessor, PollProcessor, ReminderProcessor, TeamPositionsProcessor}
 import com.atanana.providers.{PollingDataProvider, TeamPositionsInfoComposer, TeamPositionsInfoProvider, TournamentInfoProvider}
 import com.google.inject.AbstractModule
@@ -9,7 +10,7 @@ import net.codingwell.scalaguice.ScalaModule
 class ConfigModule(config: Config) extends AbstractModule with ScalaModule {
   override def configure(): Unit = {
     bind[Config].toInstance(config)
-    bind[Poster]
+    bind[Poster].to[RealPoster]
     bind[CheckResultHandler]
     bind[TournamentInfoProvider]
     bind[PollingDataProvider]

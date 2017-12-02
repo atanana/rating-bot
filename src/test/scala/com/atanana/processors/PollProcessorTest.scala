@@ -2,11 +2,12 @@ package com.atanana.processors
 
 import java.time.LocalDateTime
 
+import com.atanana.CheckResultHandler
 import com.atanana.checkers.MainChecker
 import com.atanana.data._
 import com.atanana.json.JsonStore
+import com.atanana.posters.Poster
 import com.atanana.providers.PollingDataProvider
-import com.atanana.{CheckResultHandler, Poster}
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
 

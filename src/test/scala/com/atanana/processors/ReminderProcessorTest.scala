@@ -2,9 +2,10 @@ package com.atanana.processors
 
 import java.time.LocalDateTime
 
+import com.atanana.MessageComposer
 import com.atanana.data.{Data, Requisition}
 import com.atanana.json.JsonStore
-import com.atanana.{MessageComposer, Poster}
+import com.atanana.posters.Poster
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, WordSpecLike}
 

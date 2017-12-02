@@ -3,6 +3,7 @@ package com.atanana
 import javax.inject.Inject
 
 import com.atanana.data.{CheckResult, RequisitionData}
+import com.atanana.posters.Poster
 import com.atanana.providers.TournamentInfoProvider
 
 class CheckResultHandler @Inject()(poster: Poster, messageComposer: MessageComposer, tournamentInfoProvider: TournamentInfoProvider) {
