@@ -11,7 +11,7 @@ import com.atanana.providers.PollingDataProvider
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
 
-import scala.util.Success
+import scala.util.{Failure, Success}
 
 class PollProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter with Matchers {
   var processor: PollProcessor = _
@@ -59,6 +59,17 @@ class PollProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfte
     "not save data when no changes" in {
       val parsedData = setUpDefaults()
       val storedData = parsedData.toData
+      (store.read _).expects().returns(storedData)
+      (checker.check _).when(storedData, parsedData)
+      (checkResultsHandler.processCheckResult _).expects(*)
+
+      processor.process()
+    }
+
+    "not save data when requisitions failed" in {
+      var parsedData = setUpDefaults()
+      val storedData = parsedData.toData
+      parsedData = parsedData.copy(requisitions = Failure(new RuntimeException))
       (store.read _).expects().returns(storedData)
       (checker.check _).when(storedData, parsedData)
       (checkResultsHandler.processCheckResult _).expects(*)

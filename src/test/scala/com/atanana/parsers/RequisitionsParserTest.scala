@@ -6,7 +6,7 @@ import com.atanana.data.RequisitionData
 import org.scalatest.{Matchers, WordSpecLike}
 
 import scala.io.Source
-import scala.util.Success
+import scala.util.{Failure, Success}
 
 class RequisitionsParserTest extends WordSpecLike with Matchers {
   "RequisitionsParser" should {
@@ -21,6 +21,10 @@ class RequisitionsParserTest extends WordSpecLike with Matchers {
     "parse empty data" in {
       val html = Source.fromFile("src/test/scala/com/atanana/parsers/emptyRequisitions.html", "cp1251").getLines().mkString
       RequisitionsParser().getRequisitionsData(html) shouldEqual Success(List.empty)
+    }
+
+    "parse incorrect data" in {
+      RequisitionsParser().getRequisitionsData("html") shouldBe a[Failure[_]]
     }
   }
 }

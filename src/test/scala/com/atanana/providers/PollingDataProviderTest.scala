@@ -80,5 +80,19 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
 
       provider.data shouldEqual ParsedData(Set.empty, Success(Set(requisitionData2)))
     }
+
+    "should pass failed requisitions" in {
+      val teamPage = "team page"
+      val requisitionsPage = "requisitions page"
+      (connector.getTeamPage _).when().returns(teamPage)
+      (connector.getRequisitionPage _).when().returns(requisitionsPage)
+
+      val tournamentData = mock[TournamentData]
+      val requisitionData = Failure(new RuntimeException)
+      (csvParser.getTournamentsData _).when(teamPage).returns(List(tournamentData))
+      (requisitionsParser.getRequisitionsData _).when(requisitionsPage).returns(requisitionData)
+
+      provider.data shouldEqual ParsedData(Set(tournamentData), requisitionData)
+    }
   }
 }
