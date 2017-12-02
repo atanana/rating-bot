@@ -13,7 +13,3 @@ class MainChecker @Inject()(tournamentsChecker: TournamentsChecker, requisitions
     )
   }
 }
-
-object MainChecker {
-  def apply(tournamentsChecker: TournamentsChecker, requisitionsChecker: RequisitionsChecker): MainChecker = new MainChecker(tournamentsChecker, requisitionsChecker)
-}

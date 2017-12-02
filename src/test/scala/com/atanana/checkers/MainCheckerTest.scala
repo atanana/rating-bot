@@ -14,7 +14,7 @@ class MainCheckerTest extends WordSpecLike with MockFactory with Matchers with B
   before {
     tournamentsChecker = stub[TournamentsChecker]
     requisitionsChecker = stub[RequisitionsChecker]
-    checker = MainChecker(tournamentsChecker, requisitionsChecker)
+    checker = new MainChecker(tournamentsChecker, requisitionsChecker)
   }
 
   "MainChecker" should {

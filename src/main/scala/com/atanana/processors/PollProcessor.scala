@@ -22,8 +22,3 @@ class PollProcessor @Inject()(pollingDataProvider: PollingDataProvider, store: J
     }
   }
 }
-
-object PollProcessor {
-  def apply(pollingDataProvider: PollingDataProvider, jsonStore: JsonStore, mainChecker: MainChecker, checkResultHandler: CheckResultHandler) =
-    new PollProcessor(pollingDataProvider, jsonStore, mainChecker, checkResultHandler)
-}

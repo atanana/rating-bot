@@ -23,7 +23,3 @@ class CheckResultHandler @Inject()(poster: Poster, messageComposer: MessageCompo
     messageComposer.composeNewRequisition(newRequisition, editors)
   }
 }
-
-object CheckResultHandler {
-  def apply(poster: Poster, messageComposer: MessageComposer, tournamentInfoProvider: TournamentInfoProvider): CheckResultHandler = new CheckResultHandler(poster, messageComposer, tournamentInfoProvider)
-}

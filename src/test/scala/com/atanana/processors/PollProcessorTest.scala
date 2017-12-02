@@ -27,7 +27,7 @@ class PollProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfte
     poster = mock[Poster]
     checkResultsHandler = mock[CheckResultHandler]
 
-    processor = PollProcessor(provider, store, checker, checkResultsHandler)
+    processor = new PollProcessor(provider, store, checker, checkResultsHandler)
   }
 
   "Processor" should {

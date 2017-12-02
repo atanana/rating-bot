@@ -31,7 +31,7 @@ class CheckResultHandlerTest extends WordSpecLike with Matchers with MockFactory
       (poster.post _).expects("new requisition")
       (poster.post _).expects("cancelled requisition")
 
-      CheckResultHandler(poster, messageComposer, tournamentInfoProvider).processCheckResult(CheckResult(
+      new CheckResultHandler(poster, messageComposer, tournamentInfoProvider).processCheckResult(CheckResult(
         TournamentsCheckResult(Set(tournamentData), Set(changedTournament)),
         RequisitionsCheckResult(Set(requisitionData), Set(requisitionData))
       ))
