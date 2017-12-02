@@ -6,6 +6,8 @@ import com.atanana.data._
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
 
+import scala.util.Success
+
 class MainCheckerTest extends WordSpecLike with MockFactory with Matchers with BeforeAndAfter {
   var tournamentsChecker: TournamentsChecker = _
   var requisitionsChecker: RequisitionsChecker = _
@@ -31,7 +33,7 @@ class MainCheckerTest extends WordSpecLike with MockFactory with Matchers with B
       (tournamentsChecker.check _).when(data.tournaments, newTournaments).returns(tournamentsCheckResult)
       (requisitionsChecker.check _).when(data.requisitions, newRequisitions).returns(requisitionsCheckResult)
 
-      checker.check(data, ParsedData(newTournaments, newRequisitions)) shouldEqual CheckResult(tournamentsCheckResult, requisitionsCheckResult)
+      checker.check(data, ParsedData(newTournaments, Success(newRequisitions))) shouldEqual CheckResult(tournamentsCheckResult, requisitionsCheckResult)
     }
 
     "return no new tournaments on first run" in {
@@ -43,7 +45,7 @@ class MainCheckerTest extends WordSpecLike with MockFactory with Matchers with B
       )
       (requisitionsChecker.check _).when(*, *).returns(mock[RequisitionsCheckResult])
 
-      checker.check(data, ParsedData(newTournaments, Set.empty)).tournamentsCheckResult shouldEqual TournamentsCheckResult(Set.empty, Set(ChangedTournament(tournament, 4)))
+      checker.check(data, ParsedData(newTournaments, Success(Set.empty))).tournamentsCheckResult shouldEqual TournamentsCheckResult(Set.empty, Set(ChangedTournament(tournament, 4)))
     }
   }
 }

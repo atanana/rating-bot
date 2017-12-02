@@ -9,7 +9,10 @@ class MainChecker @Inject()(tournamentsChecker: TournamentsChecker, requisitions
     val tournamentsCheckResult = tournamentsChecker.check(storedData.tournaments, parsedData.tournaments)
     CheckResult(
       if (storedData.tournaments.nonEmpty) tournamentsCheckResult else tournamentsCheckResult.copy(newTournaments = Set.empty),
-      requisitionsChecker.check(storedData.requisitions, parsedData.requisitions)
+      parsedData.requisitions.fold(
+        _ => RequisitionsCheckResult.EMPTY,
+        requisitions => requisitionsChecker.check(storedData.requisitions, requisitions)
+      )
     )
   }
 }

@@ -11,6 +11,8 @@ import com.atanana.providers.PollingDataProvider
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
 
+import scala.util.Success
+
 class PollProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter with Matchers {
   var processor: PollProcessor = _
 
@@ -68,7 +70,7 @@ class PollProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfte
   private def setUpDefaults() = {
     val parsedData = ParsedData(
       Set(TournamentData(1, "tournament 1", "link 1", 1f, 1, 1)),
-      Set(RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now()))
+      Success(Set(RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now())))
     )
     (provider.data _).when().returns(parsedData)
     parsedData

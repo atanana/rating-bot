@@ -4,6 +4,7 @@ import javax.inject.Inject
 
 import com.atanana.CheckResultHandler
 import com.atanana.checkers.MainChecker
+import com.atanana.data.{Data, ParsedData}
 import com.atanana.json.JsonStore
 import com.atanana.providers.PollingDataProvider
 
@@ -16,9 +17,15 @@ class PollProcessor @Inject()(pollingDataProvider: PollingDataProvider, store: J
     val checkResult = checker.check(storedData, parsedData)
     checkResultHandler.processCheckResult(checkResult)
 
-    val newData = parsedData.toData
-    if (storedData != newData) {
-      store.write(newData)
+    if (hasChanges(storedData, parsedData)) {
+      store.write(parsedData.toData)
     }
+  }
+
+  private def hasChanges(storedData: Data, parsedData: ParsedData) = {
+    storedData.tournaments != parsedData.tournaments.map(_.toTournament) || parsedData.requisitions.fold(
+      _ => false,
+      requisitions => storedData.requisitions != requisitions.map(_.toRequisition)
+    )
   }
 }

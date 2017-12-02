@@ -10,6 +10,7 @@ import com.atanana.parsers.{CsvParser, RequisitionsPageParser, RequisitionsParse
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
+import scala.util.Try
 
 class PollingDataProvider @Inject()(connector: Connector, csvParser: CsvParser, requisitionsParser: RequisitionsParser,
                                     requisitionsPageParser: RequisitionsPageParser) {
@@ -20,12 +21,14 @@ class PollingDataProvider @Inject()(connector: Connector, csvParser: CsvParser, 
     )
   }
 
-  private def getNewRequisitions = {
+  private def getNewRequisitions: Try[Set[RequisitionData]] = {
     val requisitionPage = connector.getRequisitionPage
-    val requisitions = requisitionsParser.getRequisitionsData(requisitionPage).toSet
-    zipWithTeamsCount(requisitions)
-      .filter({ case (_, teamsCount) => teamsCount > 1 })
-      .map({ case (requisition, _) => requisition })
+    requisitionsParser.getRequisitionsData(requisitionPage)
+      .map(requisitions =>
+        zipWithTeamsCount(requisitions.toSet)
+          .filter({ case (_, teamsCount) => teamsCount > 1 })
+          .map({ case (requisition, _) => requisition })
+      )
   }
 
   private def zipWithTeamsCount(requisitions: Set[RequisitionData]) = {

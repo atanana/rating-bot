@@ -38,10 +38,10 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
       val tournamentData = mock[TournamentData]
       val requisitionData = RequisitionData("test tournament", tournamentId, "test agent", LocalDateTime.now())
       (csvParser.getTournamentsData _).when(teamPage).returns(List(tournamentData))
-      (requisitionsParser.getRequisitionsData _).when(requisitionsPage).returns(List(requisitionData))
+      (requisitionsParser.getRequisitionsData _).when(requisitionsPage).returns(Success(List(requisitionData)))
       (requisitionsPageParser.teamsCount _).when(requisitionData.agent, tournamentRequisitionsPage).returns(Success(5))
 
-      provider.data shouldEqual ParsedData(Set(tournamentData), Set(requisitionData))
+      provider.data shouldEqual ParsedData(Set(tournamentData), Success(Set(requisitionData)))
     }
 
     "should filter small requisitions" in {
@@ -55,10 +55,10 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
       val requisitionData2 = RequisitionData("test tournament", 2, "test agent 2", LocalDateTime.now())
       val requisitionData3 = RequisitionData("test tournament", 3, "test agent 3", LocalDateTime.now())
       (csvParser.getTournamentsData _).when(teamPage).returns(List.empty)
-      (requisitionsParser.getRequisitionsData _).when(requisitionsPage).returns(List(requisitionData1, requisitionData2, requisitionData3))
+      (requisitionsParser.getRequisitionsData _).when(requisitionsPage).returns(Success(List(requisitionData1, requisitionData2, requisitionData3)))
       (requisitionsPageParser.teamsCount _).when(*, *).onCall((_: String, page: String) => Success(page.toInt))
 
-      provider.data shouldEqual ParsedData(Set.empty, Set(requisitionData2, requisitionData3))
+      provider.data shouldEqual ParsedData(Set.empty, Success(Set(requisitionData2, requisitionData3)))
     }
 
     "should filter failed requisitions" in {
@@ -72,13 +72,13 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
       val requisitionData2 = RequisitionData("test tournament", 2, "test agent 2", LocalDateTime.now())
       val requisitionData3 = RequisitionData("test tournament", 3, "test agent 3", LocalDateTime.now())
       (csvParser.getTournamentsData _).when(teamPage).returns(List.empty)
-      (requisitionsParser.getRequisitionsData _).when(requisitionsPage).returns(List(requisitionData1, requisitionData2, requisitionData3))
+      (requisitionsParser.getRequisitionsData _).when(requisitionsPage).returns(Success(List(requisitionData1, requisitionData2, requisitionData3)))
       (requisitionsPageParser.teamsCount _).when(*, *).onCall(
         (_: String, page: String) =>
           if (page.toInt % 2 == 0) Success(2) else Failure(new RuntimeException)
       )
 
-      provider.data shouldEqual ParsedData(Set.empty, Set(requisitionData2))
+      provider.data shouldEqual ParsedData(Set.empty, Success(Set(requisitionData2)))
     }
   }
 }
