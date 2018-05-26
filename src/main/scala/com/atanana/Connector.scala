@@ -1,11 +1,10 @@
 package com.atanana
 
 import java.net.URLEncoder.encode
-import javax.inject.Inject
 
 import com.atanana.Connector.SITE_URL
 import com.atanana.json.Config
-
+import javax.inject.Inject
 import scalaj.http.{Http, HttpResponse}
 
 class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
@@ -27,7 +26,7 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
   private def requisitionUrl: String = SITE_URL + "/synch_town/" + config.city
 
-  def getTeamsPage: String = getPage(SITE_URL + "/teams.php")
+  def getTeamsPage: String = getPage(SITE_URL + "/teams.php?dont_show_irregulars=on")
 
   def getCityTeamsPage: String = getPage(SITE_URL + s"/teams.php?town=${encode(config.cityName, "cp1251")}")
 

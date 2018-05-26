@@ -3,7 +3,6 @@ package com.atanana
 import com.atanana.json.Config
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
-
 import scalaj.http.HttpResponse
 
 class ConnectorTest extends WordSpecLike with MockFactory with BeforeAndAfter with Matchers {
@@ -40,7 +39,7 @@ class ConnectorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
     }
 
     "get teams page by wrapper" in {
-      (wrapper.getPage _).when(Connector.SITE_URL + "/teams.php").returns("teams page")
+      (wrapper.getPage _).when(Connector.SITE_URL + "/teams.php?dont_show_irregulars=on").returns("teams page")
       connector.getTeamsPage shouldEqual "teams page"
     }
 
