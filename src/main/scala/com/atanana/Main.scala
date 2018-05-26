@@ -1,6 +1,6 @@
 package com.atanana
 
-import java.net.InetSocketAddress
+import java.net.{InetSocketAddress, SocketTimeoutException}
 import java.nio.channels.ServerSocketChannel
 
 import com.atanana.json.{Config, JsonConfig}
@@ -22,7 +22,7 @@ object Main extends App {
     }
   }
 
-  private def start(rootInjector: Injector, config: Config) = {
+  private def start(rootInjector: Injector, config: Config): Unit = {
     val logger = Logger("main")
     val injector = rootInjector.createChildInjector(new ConfigModule(config))
     val processor = injector.instance[CommandProcessor]
@@ -33,6 +33,7 @@ object Main extends App {
       try {
         commandProvider.getCommand.get.foreach(processor.processCommand)
       } catch {
+        case _: SocketTimeoutException => logger.debug("Timeout!")
         case e: Throwable => logger.debug("Error occurred!", e)
       }
     }
