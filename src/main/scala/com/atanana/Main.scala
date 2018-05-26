@@ -1,6 +1,6 @@
 package com.atanana
 
-import java.net.{InetSocketAddress, SocketTimeoutException}
+import java.net.{ConnectException, InetSocketAddress, SocketTimeoutException}
 import java.nio.channels.ServerSocketChannel
 
 import com.atanana.json.{Config, JsonConfig}
@@ -33,7 +33,8 @@ object Main extends App {
       try {
         commandProvider.getCommand.get.foreach(processor.processCommand)
       } catch {
-        case _: SocketTimeoutException => logger.debug("Timeout!")
+        case e: SocketTimeoutException => logger.info("Timeout!", e)
+        case e: ConnectException => logger.info("Connect error!", e)
         case e: Throwable => logger.debug("Error occurred!", e)
       }
     }
