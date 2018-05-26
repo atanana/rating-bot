@@ -44,12 +44,12 @@ class ConnectorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
     }
 
     "get city teams page by wrapper" in {
-      (wrapper.getPage _).when(Connector.SITE_URL + "/teams.php?town=%CC%E8%ED%F1%EA").returns("city teams page")
+      (wrapper.getPage _).when(Connector.SITE_URL + "/teams.php?town=%CC%E8%ED%F1%EA&dont_show_irregulars=on").returns("city teams page")
       connector.getCityTeamsPage shouldEqual "city teams page"
     }
 
     "get country teams page by wrapper" in {
-      (wrapper.getPage _).when(Connector.SITE_URL + "/teams.php?country=%C1%E5%EB%E0%F0%F3%F1%FC").returns("country teams page")
+      (wrapper.getPage _).when(Connector.SITE_URL + "/teams.php?country=%C1%E5%EB%E0%F0%F3%F1%FC&dont_show_irregulars=on").returns("country teams page")
       connector.getCountryTeamsPage shouldEqual "country teams page"
     }
 

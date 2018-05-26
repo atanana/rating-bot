@@ -28,9 +28,9 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
   def getTeamsPage: String = getPage(SITE_URL + "/teams.php?dont_show_irregulars=on")
 
-  def getCityTeamsPage: String = getPage(SITE_URL + s"/teams.php?town=${encode(config.cityName, "cp1251")}")
+  def getCityTeamsPage: String = getPage(SITE_URL + s"/teams.php?town=${encode(config.cityName, "cp1251")}&dont_show_irregulars=on")
 
-  def getCountryTeamsPage: String = getPage(SITE_URL + s"/teams.php?country=${encode(config.countryName, "cp1251")}")
+  def getCountryTeamsPage: String = getPage(SITE_URL + s"/teams.php?country=${encode(config.countryName, "cp1251")}&dont_show_irregulars=on")
 
   def getTournamentRequisitionsPage(tournamentId: Int): String = getPage(SITE_URL + s"/tournament/$tournamentId/requests/")
 }
