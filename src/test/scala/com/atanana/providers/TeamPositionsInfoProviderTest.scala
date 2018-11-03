@@ -9,6 +9,10 @@ import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
 import scala.util.Success
 
 class TeamPositionsInfoProviderTest extends WordSpecLike with MockFactory with Matchers with BeforeAndAfter {
+  val teamPage = "teams page"
+  val cityTeamsPage = "city teams page"
+  val countryTeamsPage = "country teams page"
+
   var connector: Connector = _
   var parser: TeamsPageParser = _
   var composer: TeamPositionsInfoComposer = _
@@ -23,23 +27,43 @@ class TeamPositionsInfoProviderTest extends WordSpecLike with MockFactory with M
 
   "TeamPositionsInfoProvider" should {
     "provide correct info" in {
-      (connector.getTeamsPage _).when().returns("teams page")
-      (connector.getCityTeamsPage _).when().returns("city teams page")
-      (connector.getCountryTeamsPage _).when().returns("country teams page")
+      setupDefaultExpectations()
+      val team = createTeam(1)
+      val cityTeam = createTeam(2)
+      val countryTeam = createTeam(3)
+      (parser.getTeams _).when(teamPage).returns(List(team))
+      (parser.getTeams _).when(cityTeamsPage).returns(List(cityTeam))
+      (parser.getTeams _).when(countryTeamsPage).returns(List(countryTeam))
 
-      val team = mock[Team]
-      val cityTeam = mock[Team]
-      val countryTeam = mock[Team]
-      (parser.getTeams _).when("teams page").returns(List(team))
-      (parser.getTeams _).when("city teams page").returns(List(cityTeam))
-      (parser.getTeams _).when("country teams page").returns(List(countryTeam))
+      checkTeams(team, cityTeam, countryTeam)
+    }
 
-      val targetTeam = TargetTeam("test team", "test city", 100)
-      (composer.positionsInfo _).when(List(team), List(cityTeam), List(countryTeam)).returns(
-        Success(TeamPositionsInfo(targetTeam, targetTeam, targetTeam, 123, 200, 3000, 20, 30))
-      )
+    "filter virtual teams" in {
+      setupDefaultExpectations()
+      val realTeam = createTeam(1)
+      val fakeTeam = createTeam(2, isReal = false)
+      (parser.getTeams _).when(teamPage).returns(List(realTeam, fakeTeam))
+      (parser.getTeams _).when(cityTeamsPage).returns(List(fakeTeam, realTeam))
+      (parser.getTeams _).when(countryTeamsPage).returns(List(fakeTeam, realTeam, fakeTeam))
 
-      provider.data shouldEqual Success(TeamPositionsInfo(targetTeam, targetTeam, targetTeam, 123, 200, 3000, 20, 30))
+      checkTeams(realTeam, realTeam, realTeam)
     }
   }
+
+  private def checkTeams(team: Team, cityTeam: Team, countryTeam: Team) = {
+    val targetTeam = TargetTeam("test team", "test city", 100)
+    (composer.positionsInfo _).when(List(team), List(cityTeam), List(countryTeam)).returns(
+      Success(TeamPositionsInfo(targetTeam, targetTeam, targetTeam, 123, 200, 3000, 20, 30))
+    )
+
+    provider.data shouldEqual Success(TeamPositionsInfo(targetTeam, targetTeam, targetTeam, 123, 200, 3000, 20, 30))
+  }
+
+  private def setupDefaultExpectations(): Unit = {
+    (connector.getTeamsPage _).when().returns(teamPage)
+    (connector.getCityTeamsPage _).when().returns(cityTeamsPage)
+    (connector.getCountryTeamsPage _).when().returns(countryTeamsPage)
+  }
+
+  private def createTeam(id: Int, isReal: Boolean = true): Team = Team(id, "", "", 0, 0f, isReal)
 }
