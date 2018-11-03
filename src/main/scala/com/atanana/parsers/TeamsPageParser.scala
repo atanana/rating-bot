@@ -18,13 +18,28 @@ class TeamsPageParser {
   private def tryParseTeam(row: Element) = {
     Try {
       val data = row.children.toList
+      val isRealTeam = isReal(data(7))
       Team(
-        data(6).text.filter(_.toInt != 160).toInt,
-        data(7).text,
-        data(8).text,
-        data(3).text.toInt,
-        data(1).text.replace(',', '.').toFloat
+        id = parseId(data(6)),
+        name = parseName(data(7), isRealTeam),
+        city = data(8).text,
+        rating = data(3).text.toInt,
+        position = data(1).text.replace(',', '.').toFloat,
+        isReal = isRealTeam
       )
     }
   }
+
+  private def parseId(idElement: Element): Int = idElement.text.filter(_.toInt != 160).toInt
+
+  private def parseName(nameElement: Element, isReal: Boolean): String = {
+    val name = nameElement.text
+    if (!isReal && name.endsWith(" #")) {
+      name.dropRight(2)
+    } else {
+      name
+    }
+  }
+
+  private def isReal(nameElement: Element): Boolean = (nameElement >?> element(".half_regular_team")).isEmpty
 }

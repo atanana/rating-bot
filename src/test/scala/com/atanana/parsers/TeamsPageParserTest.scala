@@ -7,13 +7,20 @@ import scala.io.Source
 
 class TeamsPageParserTest extends WordSpecLike with Matchers {
   val parser = new TeamsPageParser
+  private val html = Source.fromFile("src/test/scala/com/atanana/parsers/allTeams.html", "cp1251").getLines().mkString
+  private val teams = parser.getTeams(html)
 
   "TeamsPageParser" should {
-    "provide valid teams data" in {
-      val html = Source.fromFile("src/test/scala/com/atanana/parsers/allTeams.html", "cp1251").getLines().mkString
-      val teams = parser.getTeams(html)
-      teams should have size 500
-      teams.head shouldEqual Team(45556, "Рабочее название", "Санкт-Петербург", 11196, 1.0f)
+    "parse valid teams count" in {
+      teams should have size 596
+    }
+
+    "parse valid real team" in {
+      teams.head shouldEqual Team(45556, "Рабочее название", "Санкт-Петербург", 9921, 1.0f)
+    }
+
+    "parse valid virtual team" in {
+      teams(3) shouldEqual Team(49804, "Борский корабел", "Москва", 8360, 3.5f, isReal = false)
     }
   }
 }
