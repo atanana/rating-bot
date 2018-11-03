@@ -2,7 +2,7 @@ name := "rating-bot"
 
 version := "1.14.4"
 
-scalaVersion := "2.12.2"
+scalaVersion := "2.12.7"
 
 libraryDependencies += "org.scalaj" %% "scalaj-http" % "2.3.0"
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3"
