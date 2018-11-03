@@ -20,7 +20,7 @@ class TeamsPageParserTest extends WordSpecLike with Matchers {
     }
 
     "parse valid virtual team" in {
-      teams(3) shouldEqual Team(49804, "Борский корабел", "Москва", 8360, 3.5f, isReal = false)
+      teams(13) shouldEqual Team(64861, "Рислинг", "сборная", 7381, 10.5f, isReal = false)
     }
   }
 }

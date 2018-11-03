@@ -41,5 +41,5 @@ class TeamsPageParser {
     }
   }
 
-  private def isReal(nameElement: Element): Boolean = (nameElement >?> element(".half_regular_team")).isEmpty
+  private def isReal(nameElement: Element): Boolean = (nameElement >?> element(".non_dbs_team")).isEmpty
 }
