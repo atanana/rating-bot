@@ -36,7 +36,7 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 }
 
 object Connector {
-  val SITE_URL = "http://rating.chgk.info"
+  val SITE_URL = "https://rating.chgk.info"
   val TOURNAMENT_URL_TEMPLATE: String = SITE_URL + "/tournament/"
 }
 
