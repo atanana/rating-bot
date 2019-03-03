@@ -9,28 +9,28 @@ class MessageComposerTest extends WordSpecLike with Matchers {
   "MessageComposer" should {
     "valid message new result 1" in {
       MessageComposer().composeNewResult(TournamentData(123, "test name", "test link", 123, -33, 0)) shouldEqual
-        "Воздрочим же! На турнире [test name](test link) нас слегка поимели. По итогам команда заняла *123.0* место и получила *-33* рейта."
+        "Воздрочим же! На турнире [test name](test link) нас слегка поимели. По итогам команда заняла *123* место и получила *-33* рейта."
     }
   }
 
   "valid message new result 2" in {
     MessageComposer().composeNewResult(TournamentData(123, "test name", "test link", 123, 0, 0)) shouldEqual
-      "Воздрочим же! На турнире [test name](test link) мы сыграли ровно. По итогам команда заняла *123.0* место и получила *0* рейта."
+      "Воздрочим же! На турнире [test name](test link) мы сыграли ровно. По итогам команда заняла *123* место и получила *0* рейта."
   }
 
   "valid message new result 3" in {
     MessageComposer().composeNewResult(TournamentData(123, "test name", "test link", 123, 15, 0)) shouldEqual
-      "Воздрочим же! На турнире [test name](test link) нам немного повезло. По итогам команда заняла *123.0* место и получила *15* рейта."
+      "Воздрочим же! На турнире [test name](test link) нам немного повезло. По итогам команда заняла *123* место и получила *15* рейта."
   }
 
   "valid message new result 4" in {
-    MessageComposer().composeNewResult(TournamentData(123, "test name", "test link", 123, 120, 0)) shouldEqual
-      "Воздрочим же! На турнире [test name](test link) мы видимо кому-то заплатили. По итогам команда заняла *123.0* место и получила *120* рейта."
+    MessageComposer().composeNewResult(TournamentData(123, "test name", "test link", 123.5f, 120, 0)) shouldEqual
+      "Воздрочим же! На турнире [test name](test link) мы видимо кому-то заплатили. По итогам команда заняла *123.5* место и получила *120* рейта."
   }
 
   "valid changed result" in {
     MessageComposer().composeChangedResult(ChangedTournament(TournamentData(123, "test name", "test link", 123, 15, 20), 10)) shouldEqual
-      s"Сегодня ${MessageComposer().currentDay()}, а значит настало время дрочить на рейтинг! На турнире test name у нас было 10, а стало 20 взятых. Новый результат: 123.0 место и 15 рейтига. \ntest link"
+      s"Сегодня ${MessageComposer().currentDay()}, а значит настало время дрочить на рейтинг! На турнире test name у нас было 10, а стало 20 взятых. Новый результат: 123 место и 15 рейтига. \ntest link"
   }
 
   "valid new requisition" in {

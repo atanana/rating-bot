@@ -12,7 +12,7 @@ import scala.util.Random
 
 class MessageComposer {
   def composeNewResult(data: TournamentData): String = {
-    s"Воздрочим же! На турнире [${data.name}](${data.link}) ${scoreDescription(data.bonus)}. По итогам команда заняла *${data.place}* " +
+    s"Воздрочим же! На турнире [${data.name}](${data.link}) ${scoreDescription(data.bonus)}. По итогам команда заняла *${printPlace(data.place)}* " +
       s"место и получила *${data.bonus}* рейта."
   }
 
@@ -28,11 +28,12 @@ class MessageComposer {
     case _ if score > 0 => "нам немного повезло"
   }
 
-  def composeChangedResult(changedTournament: ChangedTournament): String = {
-    val data = changedTournament.tournament
-    val oldResult = changedTournament.oldScore
-    s"Сегодня ${currentDay()}, а значит настало время дрочить на рейтинг! На турнире ${data.name} у нас было $oldResult, " +
-      s"а стало ${data.questions} взятых. Новый результат: ${data.place} место и ${data.bonus} рейтига. \n${data.link}"
+  private def printPlace(place: Float): String = {
+    if (place % 1 == 0) {
+      place.toInt.toString
+    } else {
+      place.toString
+    }
   }
 
   def currentDay(): String = LocalDate.now().getDayOfWeek match {
@@ -86,6 +87,13 @@ class MessageComposer {
   }
 
   private def printTeam(team: TargetTeam): String = s"${team.name} (${team.city})"
+
+  def composeChangedResult(changedTournament: ChangedTournament): String = {
+    val data = changedTournament.tournament
+    val oldResult = changedTournament.oldScore
+    s"Сегодня ${currentDay()}, а значит настало время дрочить на рейтинг! На турнире ${data.name} у нас было $oldResult, " +
+      s"а стало ${data.questions} взятых. Новый результат: ${printPlace(data.place)} место и ${data.bonus} рейтига. \n${data.link}"
+  }
 }
 
 object MessageComposer {
