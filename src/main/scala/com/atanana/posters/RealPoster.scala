@@ -9,15 +9,18 @@ class RealPoster @Inject()(connector: Connector, config: Config) extends Poster 
 
   import RealPoster.logger
 
+  private val url = s"https://api.telegram.org/bot${config.token}/sendMessage"
+
   override def post(message: String): Unit = {
-    val url = s"https://api.telegram.org/bot${config.token}/sendMessage"
-    val params = Map(
-      "chat_id" -> config.chat.toString,
-      "text" -> message
-    )
-    val response = connector.post(url, params)
+    val response = connector.post(url, params(message))
     logger.debug(response)
   }
+
+  private def params(message: String): Map[String, String] = Map(
+    "chat_id" -> config.chat.toString,
+    "text" -> message,
+    "disable_web_page_preview" -> "true"
+  )
 }
 
 object RealPoster {
