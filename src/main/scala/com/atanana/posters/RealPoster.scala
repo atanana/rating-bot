@@ -1,26 +1,22 @@
 package com.atanana.posters
 
-import java.net.URLEncoder.encode
-import javax.inject.Inject
-
 import com.atanana.Connector
 import com.atanana.json.Config
 import com.typesafe.scalalogging.Logger
-
-import scalaj.http.HttpResponse
+import javax.inject.Inject
 
 class RealPoster @Inject()(connector: Connector, config: Config) extends Poster {
 
   import RealPoster.logger
 
   override def post(message: String): Unit = {
-    val encodedMessage: String = encode(message, "UTF-8")
-    val response: HttpResponse[String] = connector.get(url(encodedMessage))
-    logger.debug(response.body)
-  }
-
-  private def url(message: String): String = {
-    s"https://api.vk.com/method/messages.send?chat_id=${config.chat}&message=$message&access_token=${config.token}&v=5.57"
+    val url = s"https://api.telegram.org/bot${config.token}/sendMessage"
+    val params = Map(
+      "chat_id" -> config.chat.toString,
+      "text" -> message
+    )
+    val response = connector.post(url, params)
+    logger.debug(response)
   }
 }
 
