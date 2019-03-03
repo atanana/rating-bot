@@ -19,7 +19,8 @@ class RealPoster @Inject()(connector: Connector, config: Config) extends Poster 
   private def params(message: String): Map[String, String] = Map(
     "chat_id" -> config.chat.toString,
     "text" -> message,
-    "disable_web_page_preview" -> "true"
+    "disable_web_page_preview" -> "true",
+    "parse_mode" -> "Markdown"
   )
 }
 

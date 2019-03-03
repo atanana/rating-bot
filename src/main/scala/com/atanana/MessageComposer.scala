@@ -12,8 +12,8 @@ import scala.util.Random
 
 class MessageComposer {
   def composeNewResult(data: TournamentData): String = {
-    s"Воздрочим же! На турнире ${data.name} ${scoreDescription(data.bonus)}. По итогам команда заняла ${data.place} " +
-      s"место и получила ${data.bonus} рейта. \n${data.link}"
+    s"Воздрочим же! На турнире [${data.name}](${data.link}) ${scoreDescription(data.bonus)}. По итогам команда заняла *${data.place}* " +
+      s"место и получила *${data.bonus}* рейта."
   }
 
   private def scoreDescription(score: Int): String = score match {
@@ -84,7 +84,7 @@ class MessageComposer {
     """.stripMargin
   }
 
-  private def printTeam(team: TargetTeam):String = s"${team.name} (${team.city})"
+  private def printTeam(team: TargetTeam): String = s"${team.name} (${team.city})"
 }
 
 object MessageComposer {
