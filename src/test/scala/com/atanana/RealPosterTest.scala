@@ -6,7 +6,6 @@ import org.scalamock.scalatest.MockFactory
 import org.scalatest.{FunSuite, Matchers}
 
 import scala.collection.immutable.Map
-import scalaj.http.HttpResponse
 
 class RealPosterTest extends FunSuite with MockFactory with Matchers {
   test("testPost") {
@@ -14,7 +13,13 @@ class RealPosterTest extends FunSuite with MockFactory with Matchers {
     val poster: RealPoster = RealPoster(connector, Config("token", 123, 321, 456, 10000, "test city", "test country"))
     val message: String = "test message"
 
-    (connector.get _).expects("https://api.vk.com/method/messages.send?chat_id=123&message=test+message&access_token=token&v=5.57").returns(HttpResponse("test", 0, Map.empty))
+    val params = Map(
+      "chat_id" -> 123.toString,
+      "text" -> message,
+      "disable_web_page_preview" -> "true",
+      "parse_mode" -> "Markdown"
+    )
+    (connector.post _).expects("https://api.telegram.org/bottoken/sendMessage", params)
 
     poster.post(message)
   }
