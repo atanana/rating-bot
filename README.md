@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/atanana/rating-bot.svg?branch=master)](https://travis-ci.org/atanana/rating-bot)
 
-Следит за командой и спамит чат вконтакте мотивирующими сообщениями
+Следит за командой и спамит чат в телеграме мотивирующими сообщениями
 
 Настройки в config.json:
 
