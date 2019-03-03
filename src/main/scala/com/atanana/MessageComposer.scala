@@ -46,8 +46,8 @@ class MessageComposer {
   }
 
   def composeNewRequisition(requisition: Requisition, editors: List[Editor]): String = {
-    s"А в следующий раз нас поимеют на турнире под названием ${requisition.tournament} который " +
-      s"состоится ${requisition.dateTime.format(timePattern)}. Ответственный: ${requisition.agent}." +
+    s"А в следующий раз нас поимеют на турнире под названием *${requisition.tournament}* который " +
+      s"состоится *${requisition.dateTime.format(timePattern)}*. Ответственный: ${requisition.agent}." +
       s"\nРедакторы: ${getEditorsString(editors)}"
   }
 
@@ -56,13 +56,13 @@ class MessageComposer {
   }
 
   def composeRequisitionReminder(requisition: Requisition): String = {
-    s"Напоминаю, что завтра состоится очередная рейтинг-оргия под названием ${requisition.tournament}. " +
+    s"Напоминаю, что завтра состоится очередная рейтинг-оргия под названием *${requisition.tournament}*. " +
       s"Командовать парадом будет ${requisition.agent}"
   }
 
   def composeCancelledRequisition(requisition: Requisition): String = {
-    randomAlarm + s"! ${requisition.agent} вёл себя подозрительно и посему ${requisition.tournament} в " +
-      s"${requisition.dateTime.format(timePattern)} отменяется!"
+    randomAlarm + s"! ${requisition.agent} вёл себя подозрительно и посему *${requisition.tournament}* в " +
+      s"*${requisition.dateTime.format(timePattern)}* отменяется!"
   }
 
   private def randomAlarm: String = {
@@ -72,13 +72,14 @@ class MessageComposer {
   def composeTeamPositionsMessage(info: TeamPositionsInfo): String = {
     s"""
        |Небольшая сводка по новому релизу:
-       |🏆 текущий рейтинг — ${info.currentRating}
-       |🏆 место по городу — ${info.cityPosition}
-       |🏆 место по стране — ${info.countryPosition}
-       |🏆 место в общем рейтинге — ${info.currentPosition}
-       |🏆 до топ-100 осталось — ${info.top100ratingDifference}
-       |🏆 ${info.targetCountryRatingTeam.ratingDifference} осталось до следующей команды по стране — ${printTeam(info.targetCountryRatingTeam)}
-       |🏆 ${-info.overtakingCountryRatingTeam.ratingDifference} осталось команде ${printTeam(info.overtakingCountryRatingTeam)} чтобы догнать нас по стране
+       |
+       |🏆 текущий рейтинг — *${info.currentRating}*
+       |🏆 место по городу — *${info.cityPosition}*
+       |🏆 место по стране — *${info.countryPosition}*
+       |🏆 место в общем рейтинге — *${info.currentPosition}*
+       |🏆 до топ-100 осталось — *${info.top100ratingDifference}*
+       |🏆 *${info.targetCountryRatingTeam.ratingDifference}* осталось до следующей команды по стране — *${printTeam(info.targetCountryRatingTeam)}*
+       |🏆 *${-info.overtakingCountryRatingTeam.ratingDifference}* осталось команде *${printTeam(info.overtakingCountryRatingTeam)}* чтобы догнать нас по стране
        |
        |За эту неделю было бы неплохо обойти хотя бы команду ${printTeam(info.targetAllRatingTeam)}, до которой осталось ${info.targetAllRatingTeam.ratingDifference} очков
     """.stripMargin
