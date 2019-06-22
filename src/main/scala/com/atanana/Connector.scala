@@ -43,6 +43,8 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
   def getCountryTeamsPage: String = getPage(SITE_URL + s"/teams.php?country=${encode(config.countryName, "cp1251")}&dont_show_irregulars=on")
 
   def getTournamentRequisitionsPage(tournamentId: Int): String = getPage(SITE_URL + s"/tournament/$tournamentId/requests/")
+
+  def getTournamentInfo(tournamentId: Int): String = getPage(SITE_URL + s"/api/tournaments/$tournamentId.json")
 }
 
 object Connector {
