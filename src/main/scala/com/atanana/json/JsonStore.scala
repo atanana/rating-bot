@@ -24,7 +24,7 @@ class JsonStore @Inject()(fsHandler: FsHandler) {
     }
   }
 
-  private implicit val requisitionFormat = jsonFormat3(Requisition)
+  private implicit val requisitionFormat = jsonFormat4(Requisition)
   private implicit val tournamentFormat = jsonFormat2(Tournament)
   private implicit val dataFormat = jsonFormat2(Data)
 

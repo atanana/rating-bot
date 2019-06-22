@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-import com.atanana.data.RequisitionData
+import com.atanana.data.PartialRequisitionData
 import com.typesafe.scalalogging.Logger
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
 import net.ruippeixotog.scalascraper.dsl.DSL.Extract._
@@ -14,7 +14,7 @@ import net.ruippeixotog.scalascraper.model.Element
 import scala.util.{Failure, Try}
 
 class RequisitionsParser {
-  def getRequisitionsData(html: String): Try[List[RequisitionData]] = {
+  def getRequisitionsData(html: String): Try[List[PartialRequisitionData]] = {
     Try {
       val document = JsoupBrowser().parseString(html)
       document >> element(".navbar") // just check that we have valid html
@@ -33,7 +33,7 @@ class RequisitionsParser {
     Try {
       val data = row.children.toList
       val tournamentLink = data.head >> element("a")
-      RequisitionData(
+      PartialRequisitionData(
         tournament = tournamentLink.text,
         tournamentId = getTournamentIdFromLink(tournamentLink),
         agent = data(2).text,
