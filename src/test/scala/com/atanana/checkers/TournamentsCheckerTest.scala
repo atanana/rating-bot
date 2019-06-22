@@ -56,5 +56,15 @@ class TournamentsCheckerTest extends WordSpecLike with Matchers {
         TournamentData(3, "name 3", "link 3", 3.0f, 3, 3)
       )).changedTournaments shouldEqual Set.empty
     }
+
+    "handle new scores with errors" in {
+      TournamentsChecker().check(Set(
+        Tournament(1, 1),
+        Tournament(2, 2)
+      ), Set(
+        TournamentData(1, "name 1", "link 1", 1.0f, 1, 1),
+        TournamentData(2, "name 2", "link 2", 2.0f, 2, 0),
+      )).changedTournaments shouldEqual Set.empty
+    }
   }
 }

@@ -26,6 +26,7 @@ class TournamentsChecker {
           .map(ChangedTournament(_, oldTournament.score))
       )
       .flatMap(_.toList)
+      .filter(_.tournament.questions > 0) //handle site errors when score actually not changed
   }
 }
 
