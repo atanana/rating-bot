@@ -34,10 +34,10 @@ class MessageComposerTest extends WordSpecLike with Matchers {
   }
 
   "valid new requisition" in {
-    val requisition = Requisition("tournament 1", "agent 1", LocalDateTime.of(2017, 4, 11, 18, 45))
+    val requisition = Requisition("tournament 1", "agent 1", LocalDateTime.of(2017, 4, 11, 18, 45), 36)
     val editors = List(Editor("editor 1"), Editor("editor 2"))
     MessageComposer().composeNewRequisition(requisition, editors) shouldEqual
-      "А в следующий раз нас поимеют на турнире под названием *tournament 1* который состоится *11 апреля 2017 18:45:00*. Ответственный: agent 1.\nРедакторы: editor 1, editor 2"
+      "А в следующий раз нас поимеют на турнире под названием *tournament 1* который состоится *11 апреля 2017 18:45:00*. Ответственный: agent 1.\nРедакторы: editor 1, editor 2\n*36 вопросов*"
   }
 
   "valid cancelled requisition" in {
@@ -46,9 +46,9 @@ class MessageComposerTest extends WordSpecLike with Matchers {
   }
 
   "valid requisition reminder" in {
-    val requisition = Requisition("tournament 1", "agent 1", LocalDateTime.of(2017, 4, 11, 18, 45))
+    val requisition = Requisition("tournament 1", "agent 1", LocalDateTime.of(2017, 4, 11, 18, 45), 36)
     MessageComposer().composeRequisitionReminder(requisition) shouldEqual
-      "Напоминаю, что завтра состоится очередная рейтинг-оргия под названием *tournament 1*. Командовать парадом будет agent 1"
+      "Напоминаю, что завтра состоится очередная рейтинг-оргия под названием *tournament 1 (36 вопросов)*. Командовать парадом будет agent 1"
   }
 
   "valid team positions reminder" in {

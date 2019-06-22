@@ -49,7 +49,7 @@ class MessageComposer {
   def composeNewRequisition(requisition: Requisition, editors: List[Editor]): String = {
     s"А в следующий раз нас поимеют на турнире под названием *${requisition.tournament}* который " +
       s"состоится *${requisition.dateTime.format(timePattern)}*. Ответственный: ${requisition.agent}." +
-      s"\nРедакторы: ${getEditorsString(editors)}"
+      s"\nРедакторы: ${getEditorsString(editors)}\n*${requisition.questionsCount} вопросов*"
   }
 
   private def getEditorsString(editors: List[Editor]) = {
@@ -57,7 +57,7 @@ class MessageComposer {
   }
 
   def composeRequisitionReminder(requisition: Requisition): String = {
-    s"Напоминаю, что завтра состоится очередная рейтинг-оргия под названием *${requisition.tournament}*. " +
+    s"Напоминаю, что завтра состоится очередная рейтинг-оргия под названием *${requisition.tournament} (${requisition.questionsCount} вопросов)*. " +
       s"Командовать парадом будет ${requisition.agent}"
   }
 
