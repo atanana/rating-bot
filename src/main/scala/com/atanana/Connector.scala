@@ -36,11 +36,11 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
   private def requisitionUrl: String = SITE_URL + "/synch_town/" + config.city
 
-  def getTeamsPage: String = getPage(SITE_URL + "/teams.php?dont_show_irregulars=on")
+  def getTeamsPage: String = getPage(SITE_URL + "/teams.php")
 
-  def getCityTeamsPage: String = getPage(SITE_URL + s"/teams.php?town=${encode(config.cityName, "cp1251")}&dont_show_irregulars=on")
+  def getCityTeamsPage: String = getPage(SITE_URL + s"/teams.php?town=${encode(config.cityName, "UTF-8")}")
 
-  def getCountryTeamsPage: String = getPage(SITE_URL + s"/teams.php?country=${encode(config.countryName, "cp1251")}&dont_show_irregulars=on")
+  def getCountryTeamsPage: String = getPage(SITE_URL + s"/teams.php?country=${encode(config.countryName, "UTF-8")}")
 
   def getTournamentRequisitionsPage(tournamentId: Int): String = getPage(SITE_URL + s"/tournament/$tournamentId/requests/")
 
@@ -55,7 +55,7 @@ object Connector {
 class NetWrapper {
   private val client = HttpClientBuilder.create().build()
 
-  def getPage(url: String): String = Http(url).charset("cp1251").asString.body
+  def getPage(url: String): String = Http(url).charset("UTF-8").asString.body
 
   def get(url: String): HttpResponse[String] = Http(url).asString
 
