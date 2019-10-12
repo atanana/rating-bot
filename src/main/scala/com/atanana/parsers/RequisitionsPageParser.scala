@@ -27,7 +27,7 @@ class RequisitionsPageParser {
       val teamsData = data.last.text
       val teamsCount = teamsData.substring(teamsData.lastIndexOf('/') + 1).trim.toInt
       RequisitionRowData(
-        data(3).text.trim,
+        data(4).text.trim,
         teamsCount
       )
     }

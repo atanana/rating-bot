@@ -1,121 +1,95 @@
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
 
 
-<html>
-<head profile="http://www.w3.org/2005/10/profile">
+<html lang="ru">
+<head profile="https://www.w3.org/2005/10/profile">
 
     <link rel="icon"
           type="image/x-icon"
           href="/favicon.yellow.ico?n=1">
 
-    <title>Список заявок - Спортивное &quot;Что? Где? Когда?&quot; Официальный рейтинг МАК</title>
+    <title>РЎРїРёСЃРѕРє Р·Р°СЏРІРѕРє - РЎРїРѕСЂС‚РёРІРЅРѕРµ &quot;Р§С‚Рѕ? Р“РґРµ? РљРѕРіРґР°?&quot; РћС„РёС†РёР°Р»СЊРЅС‹Р№ СЂРµР№С‚РёРЅРі РњРђРљ</title>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="Content-Language" content="ru">
 
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700&subset=cyrillic,latin'
-          rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700&subset=cyrillic,latin' rel='stylesheet' type='text/css'>
 
     <link rel="alternate" type="application/rss+xml" title="RSS"
-          href="/changes.php?rss"/>
+          href="changes.php?rss" />
 
-    <meta name="keywords" content="МАК, рейтинг, Что? Где? Когда?"/>
+    <meta name="keywords" content="РњРђРљ, СЂРµР№С‚РёРЅРі, Р§С‚Рѕ? Р“РґРµ? РљРѕРіРґР°?" />
 
-    <meta name="description" content="Спортивное Что? Где? Когда? Официальный рейтинг МАК"/>
+    <meta name="description" content="РЎРїРѕСЂС‚РёРІРЅРѕРµ Р§С‚Рѕ? Р“РґРµ? РљРѕРіРґР°? РћС„РёС†РёР°Р»СЊРЅС‹Р№ СЂРµР№С‚РёРЅРі РњРђРљ" />
 
     <!--[if IE]>
     <style type="text/css">
-        BODY {
-            behavior: url("/js/csshover.htc");
-        }
+        BODY { behavior: url("js/csshover.htc"); }
     </style>
     <![endif]-->
 
     <!--[if lte IE 6]>
     <script type="text/javascript" src="/js/iepngfix_tilebg.js"></script>
     <style>
-        .fixpng, img {
-            behavior: url("/js/iepngfix.htc");
-        }
+        .fixpng, img { behavior: url("/js/iepngfix.htc"); }
     </style>
     <![endif]-->
 
-    <link rel="stylesheet" href="/public/all-04f4b052bc.min.css" type="text/css" media="all"/>
-    <link rel="stylesheet" href="/public/main3b-cb764f8e92.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="/assets/all-010d45f12e.min.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="/assets/main3b-00f8bb2570.css" type="text/css" media="all" />
 
-    <script type="text/javascript" src="/public/all-7f17e91d60.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/assets/all-76187fbe6a.min.js" charset="utf-8"></script>
+
+    <!--<script type="text/javascript" src="/js/global.js" charset="utf-8"></script>-->
 
 
     <script type="text/javascript">
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function () {
-                    (i[r].q = i[r].q || []).push(arguments)
-                }, i[r].l = 1 * new Date();
-            a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0];
-            a.async = 1;
-            a.src = g;
-            m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
         ga('create', 'UA-84174071-1', 'auto');
         ga('send', 'pageview');
 
     </script>
-
+    <script type="text/javascript">
+        var api_v3_token = '';
+    </script>
+    <script src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
+    <link href='https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css' rel='stylesheet' type='text/css'>
 </head>
 <body>
 <noindex>
 
-    <!-- Yandex.Metrika counter -->
-    <script type="text/javascript"> (function (d, w, c) {
-        (w[c] = w[c] || []).push(function () {
-            try {
-                w.yaCounter3973894 = new Ya.Metrika({
-                    id: 3973894,
-                    clickmap: true,
-                    trackLinks: true,
-                    accurateTrackBounce: true,
-                    ut: "noindex"
-                });
-            } catch (e) {
-            }
-        });
-        var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () {
-            n.parentNode.insertBefore(s, n);
-        };
-        s.type = "text/javascript";
-        s.async = true;
-        s.src = "https://mc.yandex.ru/metrika/watch.js";
-        if (w.opera == "[object Opera]") {
-            d.addEventListener("DOMContentLoaded", f, false);
-        } else {
-            f();
-        }
-    })(document, window, "yandex_metrika_callbacks"); </script>
-    <noscript>
-        <div><img src="https://mc.yandex.ru/watch/3973894?ut=noindex" style="position:absolute; left:-9999px;" alt=""/>
-        </div>
-    </noscript> <!-- /Yandex.Metrika counter -->
+    <!-- Yandex.Metrika counter --> <script type="text/javascript"> (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter3973894 = new Ya.Metrika({ id:3973894, clickmap:true, trackLinks:true, accurateTrackBounce:true, ut:"noindex" }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks"); </script> <noscript><div><img src="https://mc.yandex.ru/watch/3973894?ut=noindex" style="position:absolute; left:-9999px;" alt="" /></div></noscript> <!-- /Yandex.Metrika counter -->
+
+
+
+
+
+
+
+
 
 
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <ul class="nav navbar-nav">
+
                 <li class="set-formula ">
-                    <a title="Переключиться на систему с Аддитивной формулой"
-                       href="http://rating.chgk.info/tournament/4236/requests/&amp;formula=a"
+                    <a title="РџРµСЂРµРєР»СЋС‡РёС‚СЊСЃСЏ РЅР° СЃРёСЃС‚РµРјСѓ СЃ РђРґРґРёС‚РёРІРЅРѕР№ С„РѕСЂРјСѓР»РѕР№" href="/tournament/5991/requests?idtournament=5991&amp;layout=requests&amp;formula=a"
                        class="formula-changer">
-                        А
+                        Рђ
                     </a>
                 </li>
 
                 <li class="set-formula active">
-                    <a title="Переключиться на систему с Балансной формулой" href="#"
+                    <a title="РџРµСЂРµРєР»СЋС‡РёС‚СЊСЃСЏ РЅР° СЃРёСЃС‚РµРјСѓ СЃ Р‘Р°Р»Р°РЅСЃРЅРѕР№ С„РѕСЂРјСѓР»РѕР№" href="/tournament/5991/requests?idtournament=5991&amp;layout=requests&amp;formula=b"
                        class="formula-changer">
-                        Б
+                        Р‘
                     </a>
                 </li>
 
@@ -123,56 +97,64 @@
 
                 <li
                 >
-                    <a href="/index.php">
-                        Главная
+                    <a href="/">
+                        Р“Р»Р°РІРЅР°СЏ
                     </a>
                 </li>
 
                 <li
                 >
                     <a href="/teams.php">
-                        Команды
+                        РљРѕРјР°РЅРґС‹
                     </a>
                 </li>
 
                 <li
                 >
                     <a href="/players.php">
-                        Игроки
+                        РРіСЂРѕРєРё
                     </a>
                 </li>
 
                 <li
                 >
                     <a href="/tournaments.php">
-                        Турниры
+                        РўСѓСЂРЅРёСЂС‹
                     </a>
                 </li>
 
-                <li class="active"
+                <li             class="active"
                 >
                     <a href="/synch.php">
-                        Синхроны
+                        РЎРёРЅС…СЂРѕРЅС‹
                     </a>
                 </li>
 
                 <li
                 >
                     <a href="/documents.php">
-                        Документы
+                        Р”РѕРєСѓРјРµРЅС‚С‹
                     </a>
                 </li>
+
+                <li
+                >
+                    <a href="/venues.php">
+                        РџР»РѕС‰Р°РґРєРё
+                    </a>
+                </li>
+
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">
-                        Ещё
+                        Р•С‰С‘
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <li
                         >
                             <a href="/news.php">
-                                Новости
+                                РќРѕРІРѕСЃС‚Рё
 
                             </a>
                         </li>
@@ -180,42 +162,49 @@
                         <li
                         >
                             <a href="/releases.php">
-                                Релизы
+                                Р РµР»РёР·С‹
                             </a>
                         </li>
 
                         <li
                         >
-                            <a href="/index.php/api">
-                                Документация по API
+                            <a href="/appellants.php">
+                                РђРїРµР»Р»СЏРЅС‚С‹
+                            </a>
+                        </li>
+
+                        <li
+                        >
+                            <a href="/api-doc">
+                                Р”РѕРєСѓРјРµРЅС‚Р°С†РёСЏ РїРѕ API
                             </a>
                         </li>
 
                         <li
                         >
                             <a href="/geo.php?layout=town_list">
-                                Города и страны
+                                Р“РѕСЂРѕРґР° Рё СЃС‚СЂР°РЅС‹
                             </a>
                         </li>
 
                         <li
                         >
                             <a href="/list_check.php">
-                                Проверка списков и прогноз
+                                РџСЂРѕРІРµСЂРєР° СЃРїРёСЃРєРѕРІ
                             </a>
                         </li>
 
                         <li
                         >
                             <a href="/changes.php">
-                                Изменения на сайте
+                                РР·РјРµРЅРµРЅРёСЏ РЅР° СЃР°Р№С‚Рµ
                             </a>
                         </li>
 
                         <li
                         >
                             <a href="/basket.php">
-                                Экспорт
+                                Р­РєСЃРїРѕСЂС‚
                             </a>
                         </li>
                     </ul>
@@ -225,12 +214,12 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">
-                        Вход/регистрация
+                        Р’С…РѕРґ/СЂРµРіРёСЃС‚СЂР°С†РёСЏ
                         <span class="caret"></span>
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right" id="login-container">
-                        <form method="post" action="" id="login_form">
+                        <form method="post" id="login_form">
                             <input type="hidden" name="auth_action" value="login"/>
                             <input type="hidden" name="mode" id="login_mode" value="very_old"/>
 
@@ -238,8 +227,8 @@
                             <input type="hidden" name="shash" id="login_shash" value=""/>
 
                             <div class="form-group links">
-                                <a href="/user.php" class="pull-left">Забыли пароль?</a>
-                                <a href="/user.php" class="pull-right">Регистрация</a>
+                                <a href="/user.php" class="pull-left">Р—Р°Р±С‹Р»Рё РїР°СЂРѕР»СЊ?</a>
+                                <a href="/user.php" class="pull-right">Р РµРіРёСЃС‚СЂР°С†РёСЏ</a>
                             </div>
 
                             <div class="form-group">
@@ -248,12 +237,17 @@
                             </div>
 
                             <div class="form-group">
-                                <input placeholder="Пароль" type="password" id="login_pass" name="pass"
+                                <input placeholder="РџР°СЂРѕР»СЊ" type="password" id="login_pass" name="pass"
                                        class="form-control"/>
                             </div>
 
+                            <div class="form-group">
+                                <input type="checkbox" id="remember_me" name="_remember_me"/>
+                                <label for="remember_me" class="remember-me">РћСЃС‚Р°РІР°С‚СЊСЃСЏ Р°РІС‚РѕСЂРёР·РѕРІР°РЅРЅС‹Рј</label>
+                            </div>
+
                             <button type="submit" class="btn btn-default btn-lg col-md-8 col-md-offset-2" id="login_go"
-                                    name="go">Вход
+                                    name="go">Р’С…РѕРґ
                             </button>
                         </form>
                     </div>
@@ -264,133 +258,109 @@
     </nav>
 
 
+
+
+
+
+
     <div class="synch_navigation_block">
         <div>
+            <i class="fa fa-minus-circle" title="РўСѓСЂРЅРёСЂ РЅРµ СѓС‡РёС‚С‹РІР°РµС‚СЃСЏ РІ СЂРµР№С‚РёРЅРіРµ Рђ"></i>
+            <i class="fa fa-minus-circle" title="РўСѓСЂРЅРёСЂ РЅРµ СѓС‡РёС‚С‹РІР°РµС‚СЃСЏ РІ СЂРµР№С‚РёРЅРіРµ Р‘"></i>
 
-            <a href="/tournament/4236" target="_blank">
-                "Кубок Квасира"
-                (30 июня - 4 июля 2017)
+            <a href="/tournament/5991" target="_blank">
+                "Joystick Cup"
+                (28 СЃРµРЅС‚СЏР±СЂСЏ - 24 РґРµРєР°Р±СЂСЏ 2019)
             </a>
+            - <i class="fa fa-calendar" tooltip-id="synch-dates-tooltip"></i>
+            <div style="display: none;" id="synch-dates-tooltip">
+                Р”РѕРїСѓСЃС‚РёРјС‹Рµ РґР°С‚С‹ РѕС‚С‹РіСЂС‹С€Р°: 28 СЃРµРЅС‚СЏР±СЂСЏ 2019 - 24 РґРµРєР°Р±СЂСЏ 2019<br/>
+                Р”Р°С‚С‹ СЃРєР°С‡РёРІР°РЅРёСЏ РїР°РєРµС‚РѕРІ: 28 СЃРµРЅС‚СЏР±СЂСЏ 2019 - 17 РЅРѕСЏР±СЂСЏ 2019<br/>
+                РџСЂРёС‘Рј Р·Р°СЏРІРѕРє: 28 РёСЋР»СЏ 2019 - 23 РґРµРєР°Р±СЂСЏ 2019<br/>
+                РџСЂРёС‘Рј СЃРѕСЃС‚Р°РІРѕРІ: 28 СЃРµРЅС‚СЏР±СЂСЏ 2019 - 29 РґРµРєР°Р±СЂСЏ 2019<br/>
+                РџСЂРёС‘Рј СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ: 28 СЃРµРЅС‚СЏР±СЂСЏ 2019 - 29 РґРµРєР°Р±СЂСЏ 2019<br/>
+                РџСЂРёС‘Рј Р°РїРµР»Р»СЏС†РёР№: 28 СЃРµРЅС‚СЏР±СЂСЏ 2019 - 31 РґРµРєР°Р±СЂСЏ 2019<br/>
+                РСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РІРµР±-РёРЅС‚РµСЂС„РµР№СЃР°: 28 СЃРµРЅС‚СЏР±СЂСЏ 2019 - 31 РґРµРєР°Р±СЂСЏ 2019<br/>
+            </div>
         </div>
 
 
         <div class="synch_submenu">
 
 
+
             <div class="tournament_submenu">
                 <ul class="tournament_links">
                     <li>
-                        <a href="/tournament/4236/"
-                           title="Перейти на страницу с составами команд и результатами выступлений">
+                        <a href="/tournament/5991/" title="РџРµСЂРµР№С‚Рё РЅР° СЃС‚СЂР°РЅРёС†Сѓ СЃ СЃРѕСЃС‚Р°РІР°РјРё РєРѕРјР°РЅРґ Рё СЂРµР·СѓР»СЊС‚Р°С‚Р°РјРё РІС‹СЃС‚СѓРїР»РµРЅРёР№"      >
                             <i class="fa fa-list-ol"></i>
-                            результаты
+                            СЂРµР·СѓР»СЊС‚Р°С‚С‹
                         </a>
                     </li>
 
                     <li>
-                        <a href="/tournament/4236/tours/" title="Перейти на повопросную страницу">
+                        <a href="/tournament/5991/tours/" title="РџРµСЂРµР№С‚Рё РЅР° РїРѕРІРѕРїСЂРѕСЃРЅСѓСЋ СЃС‚СЂР°РЅРёС†Сѓ"     >
                             <i class="fa fa-plus-square-o"></i>
-                            туры
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="/tournament/4236/statistics/" title="Перейти на страницу статистики отыгрыша">
-                            <i class="fa fa-bar-chart"></i>
-                            статистика
+                            С‚СѓСЂС‹
                         </a>
                     </li>
 
 
+
+
+
                     <li>
-                        <a href="/tournament/4236/teams/" title="Перейти на страницу списка команд по площадкам">
+                        <a href="/tournament/5991/teams/" title="РџРµСЂРµР№С‚Рё РЅР° СЃС‚СЂР°РЅРёС†Сѓ СЃРїРёСЃРєР° РєРѕРјР°РЅРґ РїРѕ РїР»РѕС‰Р°РґРєР°Рј"      >
                             <i class="fa fa-users"></i>
-                            команды
+                            РєРѕРјР°РЅРґС‹
                         </a>
                     </li>
                     <li>
-                        <a href="/tournament/4236/requests/"
-                           title="Перейти на страницу списка заявок от площадок отыгрыша" style="color: black;"
+                        <a href="/tournament/5991/requests/" title="РџРµСЂРµР№С‚Рё РЅР° СЃС‚СЂР°РЅРёС†Сѓ СЃРїРёСЃРєР° Р·Р°СЏРІРѕРє РѕС‚ РїР»РѕС‰Р°РґРѕРє РѕС‚С‹РіСЂС‹С€Р°"             style="color: black;"
                         >
                             <i class="fa fa-cubes"></i>
-                            заявки
+                            Р·Р°СЏРІРєРё
                         </a>
                     </li>
+
+
+
+
+
+
+
+
+
 
 
                 </ul>
             </div>
 
 
+
+
         </div>
     </div>
 
     <div class="center-title-with-margin">
-        Список заявок синхрона
-        <a href="/synch.php?download_data=requests_download&tournament_id=4236" title="скачать">
+        РЎРїРёСЃРѕРє Р·Р°СЏРІРѕРє СЃРёРЅС…СЂРѕРЅР°
+        <a href="/synch.php?download_data=requests_download&tournament_id=5991" title="СЃРєР°С‡Р°С‚СЊ">
             <i class="fa fa-download"></i>
         </a>
     </div>
 
-    <table class='synch_dates_table'>
-        <tr>
-            <td>Допустимые даты отыгрыша:</td>
-            <td>30 июня 2017 - 4 июля 2017</td>
-        </tr>
-        <tr>
-            <td>Приём заявок:</td>
-            <td>30 апреля 2017 - 29 июня 2017</td>
-        </tr>
-        <tr>
-            <td>Приём составов:</td>
-            <td>30 июня 2017 - 8 июля 2017</td>
-        </tr>
-        <tr>
-            <td>Приём результатов:</td>
-            <td>30 июня 2017 - 8 июля 2017</td>
-        </tr>
-        <tr>
-            <td>Приём апелляций:</td>
-            <td>4 июля 2017 - 9 июля 2017</td>
-        </tr>
-        <tr>
-            <td>Использование веб-интерфейса:
-                <i class="fa fa-question-circle" tooltip-id="web-interface"></i>
-                <div style="display: none;" id="web-interface">
-                    Веб-интерфейс - это возможность ввода составов и результатов напрямую средствами сайта рейтинга
-                    без использования загружаемых файлов формата csv, т.е.:<br/>
-                    - кнопка "Добавить команды" на странице списка команд турнира;<br/>
-                    - кнопка "Подать спорный" и соответствующие плюсы на странице спорных;<br/>
-                    - таблица управления расплюсовками команд на странице с повопросными результатами.<br/>
-                    <br/>
-                    Если даты использования веб-интерфейса и подачи результатов/составов отличаются, то по истечении
-                    срока приёма
-                    составов и результатов (в случае, если в свойствах турнира организаторы не указали иное),
-                    представители могут изменять через веб-интерфейс только: <br/>
-                    - составы уже введённых ранее команд своей площадки;<br/>
-                    - результаты (&quot;+/-&quot;) этих команд;<br/>
-                    - привязки этих команд к уже существующим спорным.<br/>
-                    <br/>
-                    Следующие действия разрешены через веб-интерфейс только при дополнительных условиях:<br/>
-                    - добавление участия новых команд и/или полное удаление участия ранее введённых команд (если ещё
-                    разрешён приём составов);<br/>
-                    - добавление новых спорных (если ещё разрешён приём результатов ИЛИ организаторы установили турниру
-                    свойство &quot;Разрешена подача спорных после дедлайна&quot;).
-                </div>
-            </td>
-            <td>30 июня 2017 - 8 июля 2017</td>
-        </tr>
-    </table>
-    <table width="100%" class="bigger_vertical_margin">
+
+    <table width="100%">
         <colgroup>
-            <col width="43%"/>
-            <col width="*"/>
+            <col width="43%" />
+            <col width="*" />
         </colgroup>
+
 
         <tr>
             <td colspan="2" align="center">
-                <a href="/synch.php?layout=request&tournament_id=4236">
-                    Подать заявку
+                <a href="/synch.php?layout=request&tournament_id=5991">
+                    <button class="btn btn-default">РџРѕРґР°С‚СЊ Р·Р°СЏРІРєСѓ</button>
                 </a>
             </td>
         </tr>
@@ -405,6 +375,7 @@
                         <col width="200"/>
                         <col width="*"/>
                         <col width="*"/>
+                        <col width="*"/>
                         <col width="70"/>
                         <col width="70"/>
                         <col width="100"/>
@@ -413,13 +384,14 @@
                     <thead>
                     <tr>
                         <td></td>
-                        <td>Статус</td>
-                        <td>Город</td>
-                        <td>Представитель</td>
-                        <td>Ведущий</td>
-                        <td>Составы</td>
-                        <td>Результаты</td>
-                        <td>Команды</td>
+                        <td>РЎС‚Р°С‚СѓСЃ</td>
+                        <td>Р“РѕСЂРѕРґ</td>
+                        <td>РџР»РѕС‰Р°РґРєР°</td>
+                        <td>РџСЂРµРґСЃС‚Р°РІРёС‚РµР»СЊ</td>
+                        <td>Р’РµРґСѓС‰РёР№</td>
+                        <td>РЎРѕСЃС‚Р°РІС‹</td>
+                        <td>Р РµР·СѓР»СЊС‚Р°С‚С‹</td>
+                        <td>РљРѕРјР°РЅРґС‹</td>
                     </tr>
                     </thead>
 
@@ -430,43 +402,47 @@
                         </td>
 
                         <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
+                            <i class="fa fa-check-circle" title="Р—Р°СЏРІРєР° РїСЂРёРЅСЏС‚Р°"></i>
                         </td>
 
                         <td>
-                            <a href="/teams.php?town=%C0%EB%EC%E0%F2%FB&idtown=1468">Алматы</a>
+                            <a href="/teams.php?town=%D0%92%D0%B8%D1%82%D0%B5%D0%B1%D1%81%D0%BA&idtown=59">Р’РёС‚РµР±СЃРє</a>
                         </td>
 
                         <td>
-                            <a href="/player/100348" target="blank">
-                                Алейников Дмитрий Сергеевич
+                            <a href="/venues.php?id=3162">Р’РёС‚РµР±СЃРє</a>
+                        </td>
+
+                        <td>
+                            <a href="/player/82347" target="blank">
+                                РЎРµСЂРµРґР° РђР»РµРєСЃР°РЅРґСЂ РђР»РµРєСЃР°РЅРґСЂРѕРІРёС‡
                             </a>
 
                         </td>
 
                         <td>
-                            <a href="/player/100347" target="blank">
-                                Ларионов Дмитрий Викторович
+                            <a href="/player/145593" target="blank">
+                                РњРёСЂР·РѕРµРІ Р’Р°РіРёС„ Р’Р°Р»РµС…РѕРІРёС‡
                             </a>
 
                         </td>
 
 
                         <td>
-                            <span style="color: red;">Нет</span>
+                            <span style="color: green;">Р”Р°</span>
 
 
                         </td>
 
                         <td>
-                            <span style="color: red;">Нет</span>
+                            <span style="color: green;">Р”Р°</span>
 
 
                         </td>
 
 
                         <td>
-                            <span title="реальные 0, заявленные 4">0 / 4</span>
+                            <span title="СЂРµР°Р»СЊРЅС‹Рµ 1, Р·Р°СЏРІР»РµРЅРЅС‹Рµ 1">1 / 1</span>
                         </td>
 
                     </tr>
@@ -476,43 +452,47 @@
                         </td>
 
                         <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
+                            <i class="fa fa-check-circle" title="Р—Р°СЏРІРєР° РїСЂРёРЅСЏС‚Р°"></i>
                         </td>
 
                         <td>
-                            <a href="/teams.php?town=%C0%EF%E0%F2%E8%F2%FB&idtown=7">Апатиты</a>
+                            <a href="/teams.php?town=%D0%9C%D0%B0%D0%B0%D1%80%D0%B4%D1%83&idtown=423">РњР°Р°СЂРґСѓ</a>
                         </td>
 
                         <td>
-                            <a href="/player/17617" target="blank">
-                                Кушинов Константин Анатольевич
+                            <a href="/venues.php?id=3423">РњР°Р°СЂРґСѓ</a>
+                        </td>
+
+                        <td>
+                            <a href="/player/114342" target="blank">
+                                РќРµРґР°С€РєРѕРІСЃРєРёР№ РќРёРєРёС‚Р° Р®СЂСЊРµРІРёС‡
                             </a>
 
                         </td>
 
                         <td>
-                            <a href="/player/79532" target="blank">
-                                Кушинова Юлия Олеговна
+                            <a href="/player/152694" target="blank">
+                                РќРµРґР°С€РєРѕРІСЃРєР°СЏ РђР»РёРЅР° Р®СЂСЊРµРІРЅР°
                             </a>
 
                         </td>
 
 
                         <td>
-                            <span style="color: red;">Нет</span>
+                            <span style="color: green;">Р”Р°</span>
 
 
                         </td>
 
                         <td>
-                            <span style="color: red;">Нет</span>
+                            <span style="color: green;">Р”Р°</span>
 
 
                         </td>
 
 
                         <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
+                            <span title="СЂРµР°Р»СЊРЅС‹Рµ 1, Р·Р°СЏРІР»РµРЅРЅС‹Рµ 1">1 / 1</span>
                         </td>
 
                     </tr>
@@ -522,43 +502,47 @@
                         </td>
 
                         <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
+                            <i class="fa fa-check-circle" title="Р—Р°СЏРІРєР° РїСЂРёРЅСЏС‚Р°"></i>
                         </td>
 
                         <td>
-                            <a href="/teams.php?town=%C0%F1%F2%E0%ED%E0&idtown=1512">Астана</a>
+                            <a href="/teams.php?town=%D0%9C%D0%B8%D0%BD%D1%81%D0%BA&idtown=197">РњРёРЅСЃРє</a>
                         </td>
 
                         <td>
-                            <a href="/player/71752" target="blank">
-                                Калдыбаев Марат Советулы
+                            <a href="/venues.php?id=3112">РњРёРЅСЃРє</a>
+                        </td>
+
+                        <td>
+                            <a href="/player/15381" target="blank">
+                                РљРѕРЅРґСЂР°С‚РµРЅСЏ РђРЅРґСЂРµР№ РђР»РµРєСЃР°РЅРґСЂРѕРІРёС‡
                             </a>
 
                         </td>
 
                         <td>
-                            <a href="/player/71752" target="blank">
-                                Калдыбаев Марат Советулы
+                            <a href="/player/32247" target="blank">
+                                РўСЂСѓСЃРѕРІР° РћР»СЊРіР° РРіРѕСЂРµРІРЅР°
                             </a>
 
                         </td>
 
 
                         <td>
-                            <span style="color: red;">Нет</span>
+                            <span style="color: red;">РќРµС‚</span>
 
 
                         </td>
 
                         <td>
-                            <span style="color: red;">Нет</span>
+                            <span style="color: red;">РќРµС‚</span>
 
 
                         </td>
 
 
                         <td>
-                            <span title="реальные 0, заявленные 2">0 / 2</span>
+                            <span title="СЂРµР°Р»СЊРЅС‹Рµ 0, Р·Р°СЏРІР»РµРЅРЅС‹Рµ 1">0 / 1</span>
                         </td>
 
                     </tr>
@@ -568,43 +552,47 @@
                         </td>
 
                         <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
+                            <i class="fa fa-circle" title="Р—Р°СЏРІРєР° РЅРµ СЂР°СЃСЃРјРѕС‚СЂРµРЅР°"></i>
                         </td>
 
                         <td>
-                            <a href="/teams.php?town=%C0%F8%F5%E0%E1%E0%E4&idtown=17">Ашхабад</a>
+                            <a href="/teams.php?town=%D0%9D%D0%BE%D0%B2%D0%BE%D0%BF%D0%BE%D0%BB%D0%BE%D1%86%D0%BA&idtown=222">РќРѕРІРѕРїРѕР»РѕС†Рє</a>
                         </td>
 
                         <td>
-                            <a href="/player/24481" target="blank">
-                                Перепелица Антон Юрьевич
+                            <a href="/venues.php?id=3171">РќРѕРІРѕРїРѕР»РѕС†Рє</a>
+                        </td>
+
+                        <td>
+                            <a href="/player/108902" target="blank">
+                                Р”РѕР»РіРёР№ РџР°РІРµР» РЎРµСЂРіРµРµРІРёС‡
                             </a>
 
                         </td>
 
                         <td>
-                            <a href="/player/43518" target="blank">
-                                Руненкова Анна Дмитриевна
+                            <a href="/player/108902" target="blank">
+                                Р”РѕР»РіРёР№ РџР°РІРµР» РЎРµСЂРіРµРµРІРёС‡
                             </a>
 
                         </td>
 
 
                         <td>
-                            <span style="color: red;">Нет</span>
+                            <span style="color: red;">РќРµС‚</span>
 
 
                         </td>
 
                         <td>
-                            <span style="color: red;">Нет</span>
+                            <span style="color: red;">РќРµС‚</span>
 
 
                         </td>
 
 
                         <td>
-                            <span title="реальные 0, заявленные 4">0 / 4</span>
+                            <span title="СЂРµР°Р»СЊРЅС‹Рµ 0, Р·Р°СЏРІР»РµРЅРЅС‹Рµ 7">0 / 7</span>
                         </td>
 
                     </tr>
@@ -614,43 +602,47 @@
                         </td>
 
                         <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
+                            <i class="fa fa-check-circle" title="Р—Р°СЏРІРєР° РїСЂРёРЅСЏС‚Р°"></i>
                         </td>
 
                         <td>
-                            <a href="/teams.php?town=%C1%E0%F2-%DF%EC&idtown=1498">Бат-Ям</a>
+                            <a href="/teams.php?town=%D0%9E%D0%B4%D0%B5%D1%81%D1%81%D0%B0&idtown=236">РћРґРµСЃСЃР°</a>
                         </td>
 
                         <td>
-                            <a href="/player/29521" target="blank">
-                                Слоущ Дмитрий Александрович
+                            <a href="/venues.php?id=3134">РћРґРµСЃСЃР°</a>
+                        </td>
+
+                        <td>
+                            <a href="/player/7533" target="blank">
+                                Р“РѕРЅС‡Р°СЂ Р”РµРЅРёСЃ РђРЅРґСЂРµРµРІРёС‡
                             </a>
 
                         </td>
 
                         <td>
-                            <a href="/player/95740" target="blank">
-                                Доскалюк Галина
+                            <a href="/player/7533" target="blank">
+                                Р“РѕРЅС‡Р°СЂ Р”РµРЅРёСЃ РђРЅРґСЂРµРµРІРёС‡
                             </a>
 
                         </td>
 
 
                         <td>
-                            <span style="color: red;">Нет</span>
+                            <span style="color: red;">РќРµС‚</span>
 
 
                         </td>
 
                         <td>
-                            <span style="color: red;">Нет</span>
+                            <span style="color: red;">РќРµС‚</span>
 
 
                         </td>
 
 
                         <td>
-                            <span title="реальные 0, заявленные 2">0 / 2</span>
+                            <span title="СЂРµР°Р»СЊРЅС‹Рµ 0, Р·Р°СЏРІР»РµРЅРЅС‹Рµ 5">0 / 5</span>
                         </td>
 
                     </tr>
@@ -660,1746 +652,47 @@
                         </td>
 
                         <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
+                            <i class="fa fa-circle" title="Р—Р°СЏРІРєР° РЅРµ СЂР°СЃСЃРјРѕС‚СЂРµРЅР°"></i>
                         </td>
 
                         <td>
-                            <a href="/teams.php?town=%C1%EE%F0%E8%F1%EE%E2&idtown=1451">Борисов</a>
+                            <a href="/teams.php?town=%D0%A0%D0%BE%D0%B2%D0%BD%D0%BE&idtown=276">Р РѕРІРЅРѕ</a>
                         </td>
 
                         <td>
-                            <a href="/player/136199" target="blank">
-                                Саковец Дмитрий Владимирович
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/136199" target="blank">
-                                Саковец Дмитрий Владимирович
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            7
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%C2%E8%ED%ED%E8%F6%E0&idtown=57">Винница</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/42476" target="blank">
-                                Штельмах Сергей Анатольевич
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/40045" target="blank">
-                                Головатюк Руслан Васильевич
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 7">0 / 7</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            8
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%C2%E8%F2%E5%E1%F1%EA&idtown=59">Витебск</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/37939" target="blank">
-                                Денисёнок Максим Геннадьевич
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/16335" target="blank">
-                                Красавцев Игорь Георгиевич
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            9
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%C2%EE%F0%EE%ED%E5%E6&idtown=67">Воронеж</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/26101" target="blank">
-                                Прошин Алексей Евгеньевич
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/26101" target="blank">
-                                Прошин Алексей Евгеньевич
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            10
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%C3%EE%EC%E5%EB%FC&idtown=74">Гомель</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/14868" target="blank">
-                                Кожедуб Олег Анатольевич
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/83954" target="blank">
-                                Саварина Валерия Александровна
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 3">0 / 3</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            11
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%C3%F3%F1%FC-%D5%F0%F3%F1%F2%E0%EB%FC%ED%FB%E9&idtown=409">Гусь-Хрустальный</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/16715" target="blank">
-                                Крючков Максим Валерьевич
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/16718" target="blank">
-                                Крючкова Антонина Викторовна
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            12
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%C4%ED%E5%EF%F0%20%28%C4%ED%E5%EF%F0%EE%EF%E5%F2%F0%EE%E2%F1%EA%29&idtown=90">Днепр
-                                (Днепропетровск)</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/2251" target="blank">
-                                Балазанова Оксана Евгеньевна
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/2251" target="blank">
-                                Балазанова Оксана Евгеньевна
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 2">0 / 2</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            13
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%C4%F3%F8%E0%ED%E1%E5&idtown=1954">Душанбе</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/98872" target="blank">
-                                Муратова Мадина Акбаровна
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/98872" target="blank">
-                                Муратова Мадина Акбаровна
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            14
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%C7%E0%F0%E0%F4%F8%E0%ED&idtown=107">Зарафшан</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/94980" target="blank">
-                                Мельников Иван Александрович
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/94980" target="blank">
-                                Мельников Иван Александрович
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            15
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%C8%E2%E0%ED%F2%E5%E5%E2%EA%E0&idtown=116">Ивантеевка</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/46339" target="blank">
-                                Волосатов Антон Валерьевич
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/84919" target="blank">
-                                Волосатова Дарья Александровна
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            16
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%CA%E0%EB%E8%ED%E8%ED%E3%F0%E0%E4&idtown=128">Калининград</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/38734" target="blank">
-                                Халямин Николай Александрович
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/38276" target="blank">
-                                Костенко Елизавета Евгеньевна
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 3">0 / 3</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            17
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%CA%E8%E5%E2&idtown=139">Киев</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/95117" target="blank">
-                                Крутова Мария Владимировна
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/123186" target="blank">
-                                Ромащенко Нина Александровна
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            18
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%CA%E8%E5%E2&idtown=139">Киев</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/104626" target="blank">
-                                Дудник Вадим Юрьевич
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/60923" target="blank">
-                                Григорьев Александр Александрович
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 5">0 / 5</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            19
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%CA%EB%E0%E9%EF%E5%E4%E0&idtown=474">Клайпеда</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/52311" target="blank">
-                                Барановский Вадим Иванович
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/52311" target="blank">
-                                Барановский Вадим Иванович
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 3">0 / 3</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            20
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%CA%EE%F0%EE%EB%B8%E2&idtown=158">Королёв</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/98263" target="blank">
-                                Рудковский Анатолий Михайлович
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/98265" target="blank">
-                                Фомина Валерия Владимировна
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 3">0 / 3</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            21
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%CC%E8%ED%F1%EA&idtown=197">Минск</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/32004" target="blank">
-                                Топчий Иван Александрович
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/28656" target="blank">
-                                Семёнов Валерий Александрович
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 5">0 / 5</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            22
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%CC%EE%F1%EA%E2%E0&idtown=201">Москва</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/64686" target="blank">
-                                Пронькин Виталий Анатольевич
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/64686" target="blank">
-                                Пронькин Виталий Анатольевич
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 5">0 / 5</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            23
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%CC%EE%F1%EA%E2%E0&idtown=201">Москва</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/16581" target="blank">
-                                Кругов Андрей Викторович
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/16581" target="blank">
-                                Кругов Андрей Викторович
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            24
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%CC%EE%F1%EA%E2%E0&idtown=201">Москва</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/38656" target="blank">
-                                Бычкова Дарья Андреевна
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/38656" target="blank">
-                                Бычкова Дарья Андреевна
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 7">0 / 7</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            25
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%CC%EE%F1%EA%E2%E0&idtown=201">Москва</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/64975" target="blank">
-                                Шалмиев Эмиль Леонидович
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/72203" target="blank">
-                                Шалмиев Леонид Борисович
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            26
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%CC%EE%F1%EA%E2%E0&idtown=201">Москва</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/92960" target="blank">
-                                Цыбульский Олег Алексеевич
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/16914" target="blank">
-                                Кузнецов Игорь Владимирович
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 10">0 / 10</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            27
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%CC%F3%F0%EC%E0%ED%F1%EA&idtown=202">Мурманск</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/82739" target="blank">
-                                Сирбиладзе Тимур Автандилович
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/94673" target="blank">
-                                Липодат Борис Викторович
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            28
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%CD%E5%E2%E8%ED%ED%EE%EC%FB%F1%F1%EA&idtown=1853">Невинномысск</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/67051" target="blank">
-                                Кичкарь Михаил Юрьевич
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/67051" target="blank">
-                                Кичкарь Михаил Юрьевич
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            29
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%CD%EE%E2%EE%F0%EE%F1%F1%E8%E9%F1%EA&idtown=224">Новороссийск</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/38483" target="blank">
-                                Нечаев Максим Анатольевич
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/38483" target="blank">
-                                Нечаев Максим Анатольевич
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            30
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%CE%E4%E5%F1%F1%E0&idtown=236">Одесса</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/7533" target="blank">
-                                Гончар Денис Андреевич
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/7533" target="blank">
-                                Гончар Денис Андреевич
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 5">0 / 5</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            31
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%CE%EC%F1%EA&idtown=241">Омск</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/87508" target="blank">
-                                Кокуленко Андрей Александрович
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/87508" target="blank">
-                                Кокуленко Андрей Александрович
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            32
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%CF%E0%E2%EB%EE%E4%E0%F0&idtown=1680">Павлодар</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/9120" target="blank">
-                                Денисенко Тимофей Алексеевич
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/78815" target="blank">
-                                Рафиков Ильдус Ирулович
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 2">0 / 2</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            33
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%D1%E0%EC%E0%F0%E0&idtown=282">Самара</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/36583" target="blank">
-                                Штриков Александр Борисович
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/36583" target="blank">
-                                Штриков Александр Борисович
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            34
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%D1%E5%F0%EF%F3%F5%EE%E2&idtown=297">Серпухов</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/34075" target="blank">
-                                Холодов Олег Викторович
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/34075" target="blank">
-                                Холодов Олег Викторович
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            35
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%D2%E0%F8%EA%E5%ED%F2&idtown=322">Ташкент</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/27852" target="blank">
-                                Садковский Ян Игоревич
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/28654" target="blank">
-                                Семёнов Артём Александрович
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            36
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%D2%EE%EB%FC%FF%F2%F2%E8&idtown=332">Тольятти</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/70222" target="blank">
-                                Балашов Дмитрий Николаевич
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/70222" target="blank">
-                                Балашов Дмитрий Николаевич
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            37
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%D2%EE%F0%EE%ED%F2%EE&idtown=335">Торонто</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/91752" target="blank">
-                                Дрозд Максим Романович
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/122204" target="blank">
-                                Дрозд Виктория Ивановна
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            38
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%D3%E4%EE%EC%EB%FF&idtown=2080">Удомля</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/126183" target="blank">
-                                Зайцев Сергей Владимирович
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/126188" target="blank">
-                                Зайцева Ольга Сергеевна
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 1">0 / 1</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            39
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%D3%EB%E0%ED-%D3%E4%FD&idtown=344">Улан-Удэ</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/67807" target="blank">
-                                Покацкий Антон Иванович
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/5124" target="blank">
-                                Васильев Станислав Сергеевич
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 3">0 / 3</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            40
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%D5%E0%E1%E0%F0%EE%E2%F1%EA&idtown=358">Хабаровск</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/92452" target="blank">
-                                Дмитренко Фёдор Васильевич
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/92454" target="blank">
-                                Дмитренко Наталия Сергеевна
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 5">0 / 5</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            41
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%D7%E5%F0%E2%E5%ED%FC&idtown=375">Червень</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/122697" target="blank">
-                                Батурчик Борис Петрович
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/15814" target="blank">
-                                Королькевич Наталья Евгеньевна
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 2">0 / 2</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            42
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%D7%E5%F0%ED%EE%E2%F6%FB&idtown=380">Черновцы</a>
-                        </td>
-
-                        <td>
-                            <a href="/player/66309" target="blank">
-                                Мудрый Александр Васильевич
-                            </a>
-
-                        </td>
-
-                        <td>
-                            <a href="/player/101940" target="blank">
-                                Бабюк Юрий Владимирович
-                            </a>
-
-                        </td>
-
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-                        <td>
-                            <span style="color: red;">Нет</span>
-
-
-                        </td>
-
-
-                        <td>
-                            <span title="реальные 0, заявленные 2">0 / 2</span>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            43
-                        </td>
-
-                        <td class="center">
-                            <i class="fa fa-check-circle" title="Заявка принята"></i>
-                        </td>
-
-                        <td>
-                            <a href="/teams.php?town=%D7%E8%F2%E0&idtown=385">Чита</a>
+                            <a href="/venues.php?id=3043">Р РѕРІРЅРѕ</a>
                         </td>
 
                         <td>
-                            <a href="/player/128257" target="blank">
-                                Сидоров Иван Игоревич
+                            <a href="/player/115179" target="blank">
+                                РњР°Р»Р°С€ Р•РєР°С‚РµСЂРёРЅР°
                             </a>
 
                         </td>
 
                         <td>
-                            <a href="/player/98688" target="blank">
-                                Герасимов Александр Александрович
+                            <a href="/player/115179" target="blank">
+                                РњР°Р»Р°С€ Р•РєР°С‚РµСЂРёРЅР°
                             </a>
 
                         </td>
 
 
                         <td>
-                            <span style="color: red;">Нет</span>
+                            <span style="color: red;">РќРµС‚</span>
 
 
                         </td>
 
                         <td>
-                            <span style="color: red;">Нет</span>
+                            <span style="color: red;">РќРµС‚</span>
 
 
                         </td>
 
 
                         <td>
-                            <span title="реальные 0, заявленные 2">0 / 2</span>
+                            <span title="СЂРµР°Р»СЊРЅС‹Рµ 0, Р·Р°СЏРІР»РµРЅРЅС‹Рµ 1">0 / 1</span>
                         </td>
 
                     </tr>
@@ -2413,115 +706,130 @@
     <nav class="navbar navbar-default with-top-margin">
         <div class="container-fluid">
             <ul class="nav navbar-nav centered">
+
                 <li class="set-formula ">
-                    <a title="Переключиться на систему с Аддитивной формулой"
-                       href="http://rating.chgk.info/tournament/4236/requests/&amp;formula=a"
+                    <a title="РџРµСЂРµРєР»СЋС‡РёС‚СЊСЃСЏ РЅР° СЃРёСЃС‚РµРјСѓ СЃ РђРґРґРёС‚РёРІРЅРѕР№ С„РѕСЂРјСѓР»РѕР№" href="/tournament/5991/requests?idtournament=5991&amp;layout=requests&amp;formula=a"
                        class="formula-changer">
-                        А
+                        Рђ
                     </a>
                 </li>
 
                 <li class="set-formula active">
-                    <a title="Переключиться на систему с Балансной формулой" href="#"
+                    <a title="РџРµСЂРµРєР»СЋС‡РёС‚СЊСЃСЏ РЅР° СЃРёСЃС‚РµРјСѓ СЃ Р‘Р°Р»Р°РЅСЃРЅРѕР№ С„РѕСЂРјСѓР»РѕР№" href="/tournament/5991/requests?idtournament=5991&amp;layout=requests&amp;formula=b"
                        class="formula-changer">
-                        Б
+                        Р‘
                     </a>
                 </li>
 
                 <li class="divider-vertical"></li>
 
-                <li>
-                    <a href="/index.php">
-                        Главная
+                <li
+                >
+                    <a href="/">
+                        Р“Р»Р°РІРЅР°СЏ
                     </a>
                 </li>
 
-                <li>
+                <li
+                >
                     <a href="/teams.php">
-                        Команды
+                        РљРѕРјР°РЅРґС‹
                     </a>
                 </li>
 
-                <li>
+                <li
+                >
                     <a href="/players.php">
-                        Игроки
+                        РРіСЂРѕРєРё
                     </a>
                 </li>
 
-                <li>
+                <li
+                >
                     <a href="/tournaments.php">
-                        Турниры
+                        РўСѓСЂРЅРёСЂС‹
                     </a>
                 </li>
 
-                <li>
+                <li             class="active"
+                >
                     <a href="/synch.php">
-                        Синхроны
+                        РЎРёРЅС…СЂРѕРЅС‹
                     </a>
                 </li>
 
-                <li>
+                <li
+                >
                     <a href="/documents.php">
-                        Документы
+                        Р”РѕРєСѓРјРµРЅС‚С‹
+                    </a>
+                </li>
+
+                <li
+                >
+                    <a href="/venues.php">
+                        РџР»РѕС‰Р°РґРєРё
                     </a>
                 </li>
             </ul>
         </div>
     </nav>
-    <span id="gzip" style="display: none;">
-        Уважаемые посетители!
-        <br/><br/>
-
-        Обращаем ваше внимание, что для экономии трафика и ускорения <br/>
-        загрузки страницы может быть задействовано gzip-сжатие страницы.<br/><br/>
-        Напоминаем, gzip-сжатие может не функционировать из-за вмешательства <br/>
-        ваших сетевых экранов (firewall), а также если вы работаете через прокси-сервер.
-    </span>
-
     <div id="footer">
-        <a href="/index.php/yo"><img id="info_yo" src="/img/info_yo.png" alt=""/> Сайт ёфицирован.</a>
+        <a href="/yo"><img id="info_yo" src="/img/info_yo.png" alt=""/> РЎР°Р№С‚ С‘С„РёС†РёСЂРѕРІР°РЅ.</a>
 
         <noindex>
-            Copyright © Сайт рейтинга спортивного ЧГК, 2009-2017.
+            Copyright В© РЎР°Р№С‚ СЂРµР№С‚РёРЅРіР° СЃРїРѕСЂС‚РёРІРЅРѕРіРѕ Р§Р“Рљ, 2009-2019.
         </noindex>
-        <br/>
+        <br />
+
+        РџРѕ РІРѕР·РЅРёРєР°СЋС‰РёРј РІРѕРїСЂРѕСЃР°Рј РїРёС€РёС‚Рµ:<br/>
 
         <strong>
-            По всем возникающим вопросам пишите нам <a href="mailto:r-chgk@yandex.ru"> по электронной почте </a>.
+            РџРѕ РІРѕР·РЅРёРєР°СЋС‰РёРј РІРѕРїСЂРѕСЃР°Рј РїРёС€РёС‚Рµ С…СЂР°РЅРёС‚РµР»СЏРј СЂРµР№С‚РёРЅРіР° РїРѕ СЌР»РµРєС‚СЂРѕРЅРЅРѕР№ РїРѕС‡С‚Рµ  <a href="mailto:r-chgk@yandex.ru">r-chgk@yandex.ru</a>.
         </strong>
-        <br/>
+        <br />
 
         <strong>
-            Жалобы на действия оргкомитетов турниров направляйте на адрес <a href="mailto:mak-dk@googlegroups.com">дисциплинарной
-            комиссии МАК</a>.
+            Р”Р»СЏ СЂР°СЃСЃРјРѕС‚СЂРµРЅРёСЏ РІРѕРїСЂРѕСЃРѕРІ Рѕ СЂРµР№С‚РёРЅРіРѕРІР°РЅРёРё С‚СѓСЂРЅРёСЂРѕРІ РѕР±СЂР°С‰Р°Р№С‚РµСЃСЊ РїРѕ Р°РґСЂРµСЃСѓ <a href="mailto:makrating@yahoogroups.com">РєРѕРјРёСЃСЃРёРё РњРђРљ РїРѕ СЂРµР№С‚РёРЅРіСѓ</a>.
         </strong>
-        <br/>
+        <br />
 
-        <a href="#" tooltip-id="gzip">Примечание по gzip-сжатию</a>
-        <br/>
 
-        <a href="/index.php/api">API</a>
+        <strong>
+            Р–Р°Р»РѕР±С‹ РЅР° РґРµР№СЃС‚РІРёСЏ РѕСЂРіРєРѕРјРёС‚РµС‚РѕРІ С‚СѓСЂРЅРёСЂРѕРІ РЅР°РїСЂР°РІР»СЏР№С‚Рµ РЅР° Р°РґСЂРµСЃ <a href="mailto:mak-dk@googlegroups.com">РґРёСЃС†РёРїР»РёРЅР°СЂРЅРѕР№ РєРѕРјРёСЃСЃРёРё РњРђРљ</a>.
+        </strong>
+        <br />
+
+        <a href="/api-doc">API</a>
         <br>
 
-        Последнее обновление движка: 29-06-2017 15:12
+        РџРѕСЃР»РµРґРЅРµРµ РѕР±РЅРѕРІР»РµРЅРёРµ РґРІРёР¶РєР°: 21-02-2019 02:59
 
-        <br/>
-        <br/>
+        <br />
+        <br />
+
+        РќР•РћР¤РР¦РРђР›Р¬РќРћР• РїСЂРёР»РѕР¶РµРЅРёРµ РґР»СЏ iOS:
+
+        <br>
+
+        <a href="https://apps.apple.com/ru/app/%D1%80%D0%B5%D0%B9%D1%82%D0%B8%D0%BD%D0%B3-%D1%87%D0%B3%D0%BA/id1473491668?mt=8" style="display:inline-block;overflow:hidden;background:url(https://linkmaker.itunes.apple.com/en-us/badge-lrg.svg?releaseDate=2019-07-26&kind=iossoftware&bubble=apple_music) no-repeat;width:135px;height:40px;"></a>
+
+        <br>
+        <br>
 
         Powered by:
-        <a href="http://jquery.com/">jQuery</a>,
-        <a href="http://jqueryui.com/">jQuery UI</a>,
-        <a href="http://fontawesome.io/">Font Awesome</a>,
+        <a href="https://jquery.com/">jQuery</a>,
+        <a href="https://jqueryui.com/">jQuery UI</a>,
+        <a href="https://fontawesome.io/">Font Awesome</a>,
         <a href="https://code.google.com/p/crypto-js/">CryptoJS</a>,
-        <a href="http://ivaynberg.github.io/select2">Select2</a>,
+        <a href="https://ivaynberg.github.io/select2">Select2</a>,
         <a href="https://github.com/CodeSeven/toastr">toastr</a>,
-        <a href="http://www.datatables.net/">DataTables</a>,
+        <a href="https://www.datatables.net/">DataTables</a>,
         <a href="https://github.com/jquery/Globalize">Globalize</a>,
         <a href="https://fgelinas.com/code/timepicker/">jQuery UI Timepicker</a>,
         <a href="https://github.com/maman/JVFloat.js">JVFloat</a>,
-        <a href="http://underscorejs.org/">Underscore.js</a>,
-        <a href="http://www.highcharts.com/products/highstock/" title="Under CC BY-NC 3.0 license">Highstock.js by
-            Highsoft</a>
+        <a href="https://underscorejs.org/">Underscore.js</a>,
+        <a href="https://www.highcharts.com/products/highstock/" title="Under CC BY-NC 3.0 license">Highstock.js by Highsoft</a>
     </div>
 
 </noindex>
