@@ -55,7 +55,7 @@ class ConnectorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
 
     "get tournament requisitions page by wrapper" in {
       val tournamentId = 111
-      (wrapper.getPage _).when(Connector.SITE_URL + s"/tournament/$tournamentId/requests/").returns("tournament requests page")
+      (wrapper.getPage _).when(Connector.SITE_URL + s"/tournament/$tournamentId/requests").returns("tournament requests page")
       connector.getTournamentRequisitionsPage(tournamentId) shouldEqual "tournament requests page"
     }
 
