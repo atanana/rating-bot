@@ -5,7 +5,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import com.atanana.Connector
 import com.atanana.data.{ParsedData, PartialRequisitionData, RequisitionData}
-import com.atanana.parsers.{CsvParser, RequisitionsPageParser, RequisitionsParser, TournamentInfoParser}
+import com.atanana.json.Config
+import com.atanana.parsers.{CsvParser, RequisitionAdditionalData, RequisitionsPageParser, RequisitionsParser, TournamentInfoParser}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
@@ -17,7 +18,8 @@ class PollingDataProvider @Inject()(
                                      csvParser: CsvParser,
                                      requisitionsParser: RequisitionsParser,
                                      requisitionsPageParser: RequisitionsPageParser,
-                                     tournamentInfoParser: TournamentInfoParser
+                                     tournamentInfoParser: TournamentInfoParser,
+                                     config: Config
                                    ) {
   def data: ParsedData = {
     ParsedData(
@@ -32,21 +34,25 @@ class PollingDataProvider @Inject()(
     requisitionsParser.getRequisitionsData(requisitionPage)
       .map(requisitions =>
         zipWithTeamsCount(requisitions.toSet)
-          .filter({ case (_, teamsCount) => teamsCount > 1 })
+          .filter({ case (_, additionalData) => checkRequisition(additionalData) })
           .map({ case (requisition, _) => requisition })
       )
       .map(addQuestionCount)
   }
+
+  private def checkRequisition(additionalData: RequisitionAdditionalData) =
+    additionalData.teamsCount > 1 && !config.ignoredVenues.contains(additionalData.venue)
 
   private def zipWithTeamsCount(requisitions: Set[PartialRequisitionData]) =
     Await.result(Future.sequence(
       requisitions
         .map(requisition => Future {
           val requisitionsPage = connector.getTournamentRequisitionsPage(requisition.tournamentId)
-          val teamsCount = requisitionsPageParser.teamsCount(requisition.agent, requisitionsPage).getOrElse(0)
-          (requisition, teamsCount)
+          requisitionsPageParser.additionalData(requisition.agent, requisitionsPage)
+            .map(data => (requisition, data))
         })
     ), Duration(10, TimeUnit.MINUTES))
+      .flatMap(_.toOption.toList)
 
   private def addQuestionCount(requisitions: Set[PartialRequisitionData]): Set[RequisitionData] = {
     Await.result(Future.sequence(

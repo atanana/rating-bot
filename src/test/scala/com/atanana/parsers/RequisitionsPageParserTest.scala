@@ -9,7 +9,7 @@ class RequisitionsPageParserTest extends WordSpecLike with Matchers {
   "RequisitionsPageParser" should {
     "parse valid teams count" in {
       val html = Source.fromFile("src/test/scala/com/atanana/parsers/requisitionsPage.html").getLines().mkString
-      RequisitionsPageParser().teamsCount("Кондратеня Андрей Александрович", html) shouldEqual Success(1)
+      RequisitionsPageParser().additionalData("Кондратеня Андрей Александрович", html) shouldEqual Success(RequisitionAdditionalData("Минск", 1))
     }
   }
 }

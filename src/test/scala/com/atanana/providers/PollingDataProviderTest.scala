@@ -4,7 +4,8 @@ import java.time.LocalDateTime
 
 import com.atanana.Connector
 import com.atanana.data.{ParsedData, PartialRequisitionData, TournamentData}
-import com.atanana.parsers.{CsvParser, RequisitionsPageParser, RequisitionsParser, TournamentInfoParser}
+import com.atanana.json.Config
+import com.atanana.parsers.{CsvParser, RequisitionAdditionalData, RequisitionsPageParser, RequisitionsParser, TournamentInfoParser}
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
 
@@ -17,6 +18,7 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
   var requisitionsPageParser: RequisitionsPageParser = _
   var provider: PollingDataProvider = _
   var tournamentInfoParser: TournamentInfoParser = _
+  val config: Config = Config("token", 1, 1, 1, 1, "test", "test", List("test venue 1", "test venue 2"))
 
   before {
     connector = stub[Connector]
@@ -24,7 +26,7 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
     requisitionsParser = stub[RequisitionsParser]
     requisitionsPageParser = stub[RequisitionsPageParser]
     tournamentInfoParser = stub[TournamentInfoParser]
-    provider = new PollingDataProvider(connector, csvParser, requisitionsParser, requisitionsPageParser, tournamentInfoParser)
+    provider = new PollingDataProvider(connector, csvParser, requisitionsParser, requisitionsPageParser, tournamentInfoParser, config)
   }
 
   "PollingDataProvider" should {
@@ -38,7 +40,7 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
 
       val requisitionData = PartialRequisitionData("test tournament", tournamentId, "test agent", LocalDateTime.now())
       setRequisitionData(Success(List(requisitionData)))
-      (requisitionsPageParser.teamsCount _).when(requisitionData.agent, tournamentRequisitionsPage).returns(Success(5))
+      (requisitionsPageParser.additionalData _).when(requisitionData.agent, tournamentRequisitionsPage).returns(Success(RequisitionAdditionalData("test", 5)))
 
       provider.data shouldEqual ParsedData(Set(tournamentData), Success(Set(requisitionData.toRequisitionData(36))))
     }
@@ -53,9 +55,25 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
       val requisitionData2 = PartialRequisitionData("test tournament", 2, "test agent 2", LocalDateTime.now())
       val requisitionData3 = PartialRequisitionData("test tournament", 3, "test agent 3", LocalDateTime.now())
       setRequisitionData(Success(List(requisitionData1, requisitionData2, requisitionData3)))
-      (requisitionsPageParser.teamsCount _).when(*, *).onCall((_: String, page: String) => Success(page.toInt))
+      (requisitionsPageParser.additionalData _).when(*, *).onCall((_: String, page: String) => Success(RequisitionAdditionalData("test", page.toInt)))
 
       provider.data shouldEqual ParsedData(Set.empty, Success(Set(requisitionData2.toRequisitionData(36), requisitionData3.toRequisitionData(45))))
+    }
+
+    "should filter requisitions from ignored venues" in {
+      (connector.getTournamentRequisitionsPage _).when(*).onCall((i: Int) => i.toString)
+      setTournamentsData(List.empty)
+      setQuestionsCount(1, Success(36))
+      setQuestionsCount(2, Success(36))
+      setQuestionsCount(3, Success(45))
+
+      val requisitionData1 = PartialRequisitionData("test tournament", 3, "test venue 1", LocalDateTime.now())
+      val requisitionData2 = PartialRequisitionData("test tournament", 2, "test venue 2", LocalDateTime.now())
+      val requisitionData3 = PartialRequisitionData("test tournament", 3, "test venue 3", LocalDateTime.now())
+      setRequisitionData(Success(List(requisitionData1, requisitionData2, requisitionData3)))
+      (requisitionsPageParser.additionalData _).when(*, *).onCall((agent: String, page: String) => Success(RequisitionAdditionalData(agent, page.toInt)))
+
+      provider.data shouldEqual ParsedData(Set.empty, Success(Set(requisitionData3.toRequisitionData(45))))
     }
 
     "should filter failed requisitions" in {
@@ -67,9 +85,9 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
       val requisitionData2 = PartialRequisitionData("test tournament", 2, "test agent 2", LocalDateTime.now())
       val requisitionData3 = PartialRequisitionData("test tournament", 3, "test agent 3", LocalDateTime.now())
       setRequisitionData(Success(List(requisitionData1, requisitionData2, requisitionData3)))
-      (requisitionsPageParser.teamsCount _).when(*, *).onCall(
+      (requisitionsPageParser.additionalData _).when(*, *).onCall(
         (_: String, page: String) =>
-          if (page.toInt % 2 == 0) Success(2) else Failure(new RuntimeException)
+          if (page.toInt % 2 == 0) Success(RequisitionAdditionalData("test", 2)) else Failure(new RuntimeException)
       )
 
       provider.data shouldEqual ParsedData(Set.empty, Success(Set(requisitionData2.toRequisitionData(36))))
