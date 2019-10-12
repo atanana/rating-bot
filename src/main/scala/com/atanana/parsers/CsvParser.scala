@@ -2,24 +2,22 @@ package com.atanana.parsers
 
 import com.atanana.Connector
 import com.atanana.data.TournamentData
+import com.github.tototoshi.csv.CSVReader
 
+import scala.io.Source
 import scala.util.Try
 
 class CsvParser {
   def getTournamentsData(csv: String): List[TournamentData] = {
-    csv.split("\r\n").toList match {
-      case _ :: data =>
-        data
-          .map(_.split(';'))
-          .map(tryParseTournamentRow)
-          .flatMap(_.toOption.toList)
-          .filter(_.place != 9999)
-      case _ => List.empty
-    }
+    CSVReader.open(Source.fromString(csv)).all()
+      .map(tryParseTournamentRow)
+      .flatMap(_.toOption.toList)
+      .filter(_.place != 9999)
   }
 
-  private def tryParseTournamentRow(row: Array[String]) = {
+  private def tryParseTournamentRow(row: List[String]) = {
     Try {
+      //noinspection ZeroIndexToHead
       TournamentData(
         row(0).toInt,
         row(1),
