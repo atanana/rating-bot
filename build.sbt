@@ -4,7 +4,7 @@ assemblyJarName in assembly := "rating-bot.jar"
 
 version := "2.2.0"
 
-scalaVersion := "2.12.7"
+scalaVersion := "2.12.10"
 
 libraryDependencies += "org.scalaj" %% "scalaj-http" % "2.3.0"
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3"
