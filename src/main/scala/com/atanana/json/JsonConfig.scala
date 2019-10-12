@@ -12,7 +12,7 @@ class JsonConfig @Inject()(fsHandler: FsHandler) {
 
   import JsonConfig.FILE_NAME
 
-  private implicit val configFormat = jsonFormat7(Config)
+  private implicit val configFormat: RootJsonFormat[Config] = jsonFormat8(Config)
 
   def read: Try[Config] = {
     fsHandler.readFile(FILE_NAME)
@@ -35,5 +35,6 @@ case class Config(
                    city: Int,
                    port: Int,
                    cityName: String,
-                   countryName: String
+                   countryName: String,
+                   ignoredVenues: List[String]
                  )

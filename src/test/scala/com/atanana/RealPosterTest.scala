@@ -10,7 +10,7 @@ import scala.collection.immutable.Map
 class RealPosterTest extends FunSuite with MockFactory with Matchers {
   test("testPost") {
     val connector: Connector = mock[Connector]
-    val poster: RealPoster = RealPoster(connector, Config("token", 123, 321, 456, 10000, "test city", "test country"))
+    val poster: RealPoster = RealPoster(connector, Config("token", 123, 321, 456, 10000, "test city", "test country", List.empty))
     val message: String = "test message"
 
     val params = Map(

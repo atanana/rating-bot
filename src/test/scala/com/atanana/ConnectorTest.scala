@@ -6,7 +6,7 @@ import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
 import scalaj.http.HttpResponse
 
 class ConnectorTest extends WordSpecLike with MockFactory with BeforeAndAfter with Matchers {
-  val config: Config = Config("token", 123, 321, 456, 10000, "Минск", "Беларусь")
+  val config: Config = Config("token", 123, 321, 456, 10000, "Минск", "Беларусь", List.empty)
   var wrapper: NetWrapper = _
   var connector: Connector = _
 

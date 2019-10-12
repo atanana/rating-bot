@@ -27,10 +27,11 @@ class JsonConfigTest extends WordSpecLike with BeforeAndAfter with MockFactory w
           |  "city": 3,
           |  "cityName": "Минск",
           |  "countryName": "Беларусь",
+          |  "ignoredVenues": ["test", "test2"],
           |  "port": 11000
           |}""".stripMargin
       ))
-      jsonConfig.read shouldEqual Success(Config("test token", 1, 2, 3, 11000, "Минск", "Беларусь"))
+      jsonConfig.read shouldEqual Success(Config("test token", 1, 2, 3, 11000, "Минск", "Беларусь", List("test", "test2")))
     }
 
     "not fails on reading config" in {
