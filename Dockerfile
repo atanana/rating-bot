@@ -1,7 +1,7 @@
-FROM openjdk:8-jre-alpine
+FROM openjdk:11
 
 ENV APPLICATION_USER rating-bot
-RUN adduser -D -g '' $APPLICATION_USER
+RUN useradd -ms /bin/bash $APPLICATION_USER
 
 RUN mkdir /app
 RUN chown -R $APPLICATION_USER /app
