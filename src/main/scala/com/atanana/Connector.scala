@@ -1,6 +1,7 @@
 package com.atanana
 
 import java.net.URLEncoder.encode
+import java.nio.charset.StandardCharsets
 
 import com.atanana.Connector.SITE_URL
 import com.atanana.json.Config
@@ -55,7 +56,7 @@ object Connector {
 class NetWrapper {
   private val client = HttpClientBuilder.create().build()
 
-  def getPage(url: String): String = Http(url).charset("UTF-8").asString.body
+  def getPage(url: String): String = new String(Http(url).asBytes.body, StandardCharsets.UTF_8)
 
   def get(url: String): HttpResponse[String] = Http(url).asString
 
