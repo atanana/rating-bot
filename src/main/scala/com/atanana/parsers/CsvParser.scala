@@ -12,19 +12,24 @@ class CsvParser {
     CSVReader.open(Source.fromString(csv)).all()
       .map(tryParseTournamentRow)
       .flatMap(_.toOption.toList)
-      .filter(_.place != 9999)
+      .filter(Function.tupled(isInteresting))
+      .map(_._2)
   }
+
+  private def isInteresting(tournamentType: String, data: TournamentData) = tournamentType != "Общий зачёт" && data.place != 9999
 
   private def tryParseTournamentRow(row: List[String]) = {
     Try {
+      val tournamentType = row(3)
       //noinspection ZeroIndexToHead
-      TournamentData(
+      val tournamentData = TournamentData(
         row(0).toInt,
         row(1),
         Connector.TOURNAMENT_URL_TEMPLATE + row(0),
         row(8).replace(',', '.').toFloat,
         row(11).toInt,
         row(12).toInt)
+      (tournamentType, tournamentData)
     }
   }
 }

@@ -4,7 +4,7 @@ import com.atanana.data.TournamentData
 import org.scalatest.{Matchers, WordSpecLike}
 
 class CsvParserTest extends WordSpecLike with Matchers {
-  val parser = CsvParser()
+  private val parser = CsvParser()
 
   "CsvParser" should {
     "correct parse data" in {
@@ -38,7 +38,16 @@ class CsvParserTest extends WordSpecLike with Matchers {
       val data = StringContext.treatEscapes(
         """
           |Ид;Турнир;Город;Тип;С;По;RG;MP;M;BP;B;D;Взято;Из \r
-          |4228;Чемпионат Беларуси;Минск;Обычный;2017-04-01 13:00:00;2017-04-02 15:00:00;4456;6;9999;1043;998;-16;46;90
+          |"5756","Жизнь и время Михаэля К.","","Синхрон","2019-10-03 19:00:00","2019-10-09 19:00:00","6608","55","9999","1596","1764","116","23","36"
+        """.stripMargin)
+      parser.getTournamentsData(data) shouldBe empty
+    }
+
+    "filter not interesting tournaments" in {
+      val data = StringContext.treatEscapes(
+        """
+          |Ид;Турнир;Город;Тип;С;По;RG;MP;M;BP;B;D;Взято;Из \r
+          |"5756","Жизнь и время Михаэля К.","","Общий зачёт","2019-10-03 19:00:00","2019-10-09 19:00:00","6608","55","24","1596","1764","116","23","36"
         """.stripMargin)
       parser.getTournamentsData(data) shouldBe empty
     }
