@@ -15,16 +15,17 @@ object Main extends App {
   override def main(args: Array[String]): Unit = {
     val rootInjector = Guice.createInjector(new RatingModule)
     val jsonConfig = rootInjector.instance[JsonConfig]
+    val isDebug = args.contains("-debug")
 
     jsonConfig.read match {
-      case Success(config) => start(rootInjector, config)
+      case Success(config) => start(rootInjector, config, isDebug)
       case Failure(e) => println(e.getMessage)
     }
   }
 
-  private def start(rootInjector: Injector, config: Config): Unit = {
+  private def start(rootInjector: Injector, config: Config, isDebug: Boolean): Unit = {
     val logger = Logger("main")
-    val injector = rootInjector.createChildInjector(new ConfigModule(config))
+    val injector = rootInjector.createChildInjector(new ConfigModule(config, isDebug))
     val processor = injector.instance[CommandProcessor]
     val serverChannel: ServerSocketChannel = createServerChannel(config)
     val commandProvider = new CommandProvider(serverChannel)
