@@ -26,7 +26,7 @@ class TeamPositionsProcessorTest extends WordSpecLike with MockFactory with Befo
     "post correct message" in {
       val targetTeam = TargetTeam("test team", "test city", 100)
       val info = TeamPositionsInfo(targetTeam, targetTeam, targetTeam, 123, 200, 3000, 20, 30)
-      (provider.data _).when().returns(Success(info))
+      (provider.data _).when().returns(Right(info))
       (messageComposer.composeTeamPositionsMessage _).when(info).returns("test message")
       (poster.post _).expects("test message")
 
