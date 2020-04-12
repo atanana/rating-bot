@@ -24,9 +24,9 @@ class JsonStore @Inject()(fsHandler: FsHandler) {
     }
   }
 
-  private implicit val requisitionFormat = jsonFormat4(Requisition)
-  private implicit val tournamentFormat = jsonFormat2(Tournament)
-  private implicit val dataFormat = jsonFormat2(Data)
+  private implicit val requisitionFormat: RootJsonFormat[Requisition] = jsonFormat4(Requisition)
+  private implicit val tournamentFormat: RootJsonFormat[Tournament] = jsonFormat2(Tournament)
+  private implicit val dataFormat: RootJsonFormat[Data] = jsonFormat2(Data)
 
   def read: Data = {
     fsHandler.readFile(FILE_NAME)

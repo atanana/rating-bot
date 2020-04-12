@@ -1,5 +1,6 @@
 package com.atanana.data
 
+import scala.language.implicitConversions
 import scala.util.Try
 
 case class Data(tournaments: Set[Tournament], requisitions: Set[Requisition])

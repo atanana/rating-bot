@@ -25,7 +25,7 @@ class RealPoster @Inject()(connector: Connector, config: Config) extends Poster 
 }
 
 object RealPoster {
-  val logger = Logger(classOf[RealPoster])
+  private val logger = Logger(classOf[RealPoster])
 
   def apply(connector: Connector, config: Config): RealPoster = new RealPoster(connector, config)
 }

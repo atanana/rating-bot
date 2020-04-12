@@ -2,12 +2,13 @@ package com.atanana.parsers
 
 import java.time.LocalDateTime
 
-import com.atanana.data.{PartialRequisitionData, RequisitionData}
+import com.atanana.data.PartialRequisitionData
 import org.scalatest.{Matchers, WordSpecLike}
 
 import scala.io.Source
 import scala.util.{Failure, Success}
 
+//noinspection SourceNotClosed
 class RequisitionsParserTest extends WordSpecLike with Matchers {
   "RequisitionsParser" should {
     "parse valid data" in {

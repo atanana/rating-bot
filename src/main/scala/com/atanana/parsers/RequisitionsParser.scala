@@ -14,6 +14,8 @@ import net.ruippeixotog.scalascraper.model.Element
 import scala.util.{Failure, Try}
 
 class RequisitionsParser {
+  import RequisitionsParser.logger
+
   def getRequisitionsData(html: String): Try[List[PartialRequisitionData]] = {
     Try {
       val document = JsoupBrowser().parseString(html)
@@ -24,7 +26,7 @@ class RequisitionsParser {
         .flatMap(_.toOption.toList)
     } recoverWith {
       case e: Throwable =>
-        RequisitionsParser.logger.error("Cannot parse requisitions!", e)
+        logger.error("Cannot parse requisitions!", e)
         Failure(e)
     }
   }
@@ -48,7 +50,7 @@ class RequisitionsParser {
 }
 
 object RequisitionsParser {
-  val logger = Logger(classOf[RequisitionsParser])
+  private val logger = Logger(classOf[RequisitionsParser])
 
   val timePattern: DateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy HH:mm:ss", new Locale("ru"))
 

@@ -5,6 +5,7 @@ import org.scalatest.{Matchers, WordSpecLike}
 
 import scala.io.Source
 
+//noinspection SourceNotClosed
 class TournamentPageParserTest extends WordSpecLike with Matchers {
   "TournamentPageParser" should {
     "provide correct editors data" in {

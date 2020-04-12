@@ -9,5 +9,5 @@ case class RequisitionsCheckResult(newRequisitions: Set[RequisitionData], cancel
 case class CheckResult(tournamentsCheckResult: TournamentsCheckResult, requisitionsCheckResult: RequisitionsCheckResult)
 
 object RequisitionsCheckResult {
-  val EMPTY = RequisitionsCheckResult(Set.empty, Set.empty)
+  val EMPTY: RequisitionsCheckResult = RequisitionsCheckResult(Set.empty, Set.empty)
 }

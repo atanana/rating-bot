@@ -12,7 +12,7 @@ class TeamPositionsInfoComposer(teamId: Int) {
       TeamPositionsInfo(
         TargetTeam(findTargetTeam(teams), team),
         TargetTeam(findTargetTeam(countryTeams), team),
-        TargetTeam(findOvercomingTeam(countryTeams, team), team),
+        TargetTeam(findOvercomingTeam(countryTeams), team),
         lastTeam.rating - team.rating,
         team.position,
         team.rating,
@@ -30,7 +30,7 @@ class TeamPositionsInfoComposer(teamId: Int) {
     teams(teams.indexWhere(_.id == teamId) - 1)
   }
 
-  private def findOvercomingTeam(teams: List[Team], team: Team) = {
+  private def findOvercomingTeam(teams: List[Team]) = {
     teams(teams.indexWhere(_.id == teamId) + 1)
   }
 

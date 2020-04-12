@@ -5,6 +5,7 @@ import org.scalatest.{Matchers, WordSpecLike}
 
 import scala.io.Source
 
+//noinspection SourceNotClosed
 class TeamsPageParserTest extends WordSpecLike with Matchers {
   val parser = new TeamsPageParser
   private val html = Source.fromFile("src/test/scala/com/atanana/parsers/allTeams.html", "cp1251").getLines().mkString
