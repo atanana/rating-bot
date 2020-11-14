@@ -1,7 +1,6 @@
 package com.atanana
 
 import java.net.URLEncoder.encode
-import java.nio.charset.StandardCharsets
 
 import com.atanana.Connector.SITE_URL
 import com.atanana.json.Config
@@ -12,6 +11,8 @@ import org.apache.http.client.methods.{CloseableHttpResponse, HttpPost}
 import org.apache.http.impl.client.HttpClientBuilder
 import org.apache.http.message.BasicNameValuePair
 import scalaj.http.{Http, HttpResponse}
+import sttp.client3._
+import sttp.model.Uri
 
 import scala.collection.JavaConverters._
 import scala.io.Source
@@ -21,31 +22,35 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
   def post(url: String, params: Map[String, String]): String = netWrapper.post(url, params)
 
+  private val teamUrl = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
+
   def getTeamPage: String = getPage(teamUrl)
 
-  private def teamUrl: String = {
-    SITE_URL + s"/teams.php?team_id=${config.team}&download_data=export_tournaments"
-  }
-
-  private def getPage(url: String) = netWrapper.getPage(url)
+  private def getPage(uri: Uri) = netWrapper.getPage(uri)
 
   def getTournamentPage(id: Int): String = getPage(tournamentUrl(id))
 
-  private def tournamentUrl(id: Int): String = SITE_URL + "/tournament/" + id
+  private def tournamentUrl(id: Int) = uri"$SITE_URL/tournament/$id"
+
+  private def requisitionUrl = uri"$SITE_URL/synch_town/${config.city}"
 
   def getRequisitionPage: String = getPage(requisitionUrl)
 
-  private def requisitionUrl: String = SITE_URL + "/synch_town/" + config.city
+  private val teamsUrl = uri"$SITE_URL/teams.php"
 
-  def getTeamsPage: String = getPage(SITE_URL + "/teams.php")
+  def getTeamsPage: String = getPage(teamsUrl)
 
-  def getCityTeamsPage: String = getPage(SITE_URL + s"/teams.php?town=${encode(config.cityName, "UTF-8")}")
+  private val cityTeamsUrl = uri"$SITE_URL/teams.php?town=${config.cityName}"
 
-  def getCountryTeamsPage: String = getPage(SITE_URL + s"/teams.php?country=${encode(config.countryName, "UTF-8")}")
+  def getCityTeamsPage: String = getPage(cityTeamsUrl)
 
-  def getTournamentRequisitionsPage(tournamentId: Int): String = getPage(SITE_URL + s"/tournament/$tournamentId/requests")
+  private val countryTeamsUrl = uri"$SITE_URL/teams.php?country=${config.countryName}"
 
-  def getTournamentInfo(tournamentId: Int): String = getPage(SITE_URL + s"/api/tournaments/$tournamentId.json")
+  def getCountryTeamsPage: String = getPage(countryTeamsUrl)
+
+  def getTournamentRequisitionsPage(tournamentId: Int): String = getPage(uri"$SITE_URL/tournament/$tournamentId/requests")
+
+  def getTournamentInfo(tournamentId: Int): String = getPage(uri"$SITE_URL/api/tournaments/$tournamentId.json")
 }
 
 object Connector {
@@ -55,8 +60,9 @@ object Connector {
 
 class NetWrapper {
   private val client = HttpClientBuilder.create().build()
+  private val backend = HttpURLConnectionBackend()
 
-  def getPage(url: String): String = new String(Http(url).asBytes.body, StandardCharsets.UTF_8)
+  def getPage(uri: Uri): String = basicRequest.get(uri).send(backend).body.toOption.get
 
   def get(url: String): HttpResponse[String] = Http(url).asString
 
