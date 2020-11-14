@@ -18,12 +18,6 @@ class ConnectorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
   }
 
   "Connector" should {
-    "get by wrapper" in {
-      val url = "test url"
-      (wrapper.get _).when(url).returns(HttpResponse("test get", 100, Map.empty))
-      connector.get(url) shouldEqual HttpResponse("test get", 100, Map.empty)
-    }
-
     "get team page by wrapper" in {
       (wrapper.getPage _).when(uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments").returns("team page")
       connector.getTeamPage shouldEqual "team page"

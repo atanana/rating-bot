@@ -22,7 +22,7 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
   def post(url: String, params: Map[String, String]): String = netWrapper.post(url, params)
 
-  private val teamUrl = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
+  private def teamUrl = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
 
   def getTeamPage: String = getPage(teamUrl)
 
@@ -40,11 +40,11 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
   def getTeamsPage: String = getPage(teamsUrl)
 
-  private val cityTeamsUrl = uri"$SITE_URL/teams.php?town=${config.cityName}"
+  private def cityTeamsUrl = uri"$SITE_URL/teams.php?town=${config.cityName}"
 
   def getCityTeamsPage: String = getPage(cityTeamsUrl)
 
-  private val countryTeamsUrl = uri"$SITE_URL/teams.php?country=${config.countryName}"
+  private def countryTeamsUrl = uri"$SITE_URL/teams.php?country=${config.countryName}"
 
   def getCountryTeamsPage: String = getPage(countryTeamsUrl)
 
