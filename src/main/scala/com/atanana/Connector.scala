@@ -2,21 +2,13 @@ package com.atanana
 
 import com.atanana.Connector.SITE_URL
 import com.atanana.json.Config
-import com.google.common.base.Charsets
 import javax.inject.Inject
-import org.apache.http.client.entity.UrlEncodedFormEntity
-import org.apache.http.client.methods.{CloseableHttpResponse, HttpPost}
-import org.apache.http.impl.client.HttpClientBuilder
-import org.apache.http.message.BasicNameValuePair
 import sttp.client3._
 import sttp.model.Uri
 
-import scala.collection.JavaConverters._
-import scala.io.Source
-
 class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
-  def post(url: String, params: Map[String, String]): String = netWrapper.post(url, params)
+  def post(uri: Uri, params: Map[String, String]): Either[String, String] = netWrapper.post(uri, params)
 
   private def teamUrl = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
 
@@ -55,16 +47,20 @@ object Connector {
 }
 
 class NetWrapper {
-  private val client = HttpClientBuilder.create().build()
   private val backend = HttpURLConnectionBackend()
 
-  def getPage(uri: Uri): String = basicRequest.get(uri).send(backend).body.toOption.get
+  def getPage(uri: Uri): String =
+    basicRequest
+      .get(uri)
+      .send(backend)
+      .body
+      .toOption
+      .get
 
-  def post(url: String, params: Map[String, String]): String = {
-    val request = new HttpPost(url)
-    val valuePairs = params.toList.map({ case (key, value) => new BasicNameValuePair(key, value) }).asJava
-    request.setEntity(new UrlEncodedFormEntity(valuePairs, Charsets.UTF_8))
-    val response: CloseableHttpResponse = client.execute(request)
-    Source.fromInputStream(response.getEntity.getContent).mkString
-  }
+  def post(uri: Uri, params: Map[String, String]): Either[String, String] =
+    basicRequest
+      .body(params)
+      .post(uri)
+      .send(backend)
+      .body
 }

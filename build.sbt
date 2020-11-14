@@ -6,7 +6,6 @@ version := "2.2.2"
 
 scalaVersion := "2.12.10"
 
-libraryDependencies += "org.scalaj" %% "scalaj-http" % "2.3.0"
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3"
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0"
 libraryDependencies += "io.spray" %% "spray-json" % "1.3.3"

@@ -4,7 +4,6 @@ import com.atanana.Connector.SITE_URL
 import com.atanana.json.Config
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
-import scalaj.http.HttpResponse
 import sttp.client3.UriContext
 
 class ConnectorTest extends WordSpecLike with MockFactory with BeforeAndAfter with Matchers {
