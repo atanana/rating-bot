@@ -16,9 +16,15 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
   private def teamUrl = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
 
-  def getTeamPage: Either[String, String] = getPageSafe(teamUrl).left.map(error => s"Cannot get team's page: $error")
+  def getTeamPage: Either[String, String] = {
+    val url = teamUrl
+    getPageSafe(url).left.map(error => s"Cannot get team's page($url): $error")
+  }
 
-  def getTournamentPage(id: Int): String = getPage(tournamentUrl(id))
+  def getTournamentPage(id: Int): Either[String, String] = {
+    val url = tournamentUrl(id)
+    getPageSafe(url).left.map(error => s"Cannot get tournament's page($url): $error")
+  }
 
   private def tournamentUrl(id: Int) = uri"$SITE_URL/tournament/$id"
 

@@ -23,7 +23,7 @@ class TournamentInfoProviderTest extends WordSpecLike with MockFactory with Matc
       val tournamentId = 123
       val page = "tournament page"
       val editor = mock[Editor]
-      (connector.getTournamentPage _).when(tournamentId).returns(page)
+      (connector.getTournamentPage _).when(tournamentId).returns(Right(page))
       (parser.getEditors _).when(page).returns(List(editor))
 
       provider.getEditors(tournamentId) shouldEqual List(editor)

@@ -8,7 +8,7 @@ import com.atanana.parsers.TournamentPageParser
 
 class TournamentInfoProvider @Inject()(connector: Connector, tournamentPageParser: TournamentPageParser) {
   def getEditors(id: Int): List[Editor] = {
-    val tournamentPage = connector.getTournamentPage(id)
+    val tournamentPage = connector.getTournamentPage(id).right.get
     tournamentPageParser.getEditors(tournamentPage)
   }
 }
