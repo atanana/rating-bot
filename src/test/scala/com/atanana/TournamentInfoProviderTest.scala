@@ -19,6 +19,7 @@ class TournamentInfoProviderTest extends WordSpecLike with MockFactory with Matc
   }
 
   "TournamentInfoProvider" should {
+
     "provide correct info" in {
       val tournamentId = 123
       val page = "tournament page"
@@ -26,7 +27,13 @@ class TournamentInfoProviderTest extends WordSpecLike with MockFactory with Matc
       (connector.getTournamentPage _).when(tournamentId).returns(Right(page))
       (parser.getEditors _).when(page).returns(List(editor))
 
-      provider.getEditors(tournamentId) shouldEqual List(editor)
+      provider.getEditors(tournamentId) shouldEqual Right(List(editor))
+    }
+
+    "pass error from connector" in {
+      val tournamentId = 123
+      (connector.getTournamentPage _).when(tournamentId).returns(Left("tournament page error"))
+      provider.getEditors(tournamentId) shouldEqual Left("tournament page error")
     }
   }
 }

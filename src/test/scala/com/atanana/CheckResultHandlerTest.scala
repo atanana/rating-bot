@@ -17,7 +17,7 @@ class CheckResultHandlerTest extends WordSpecLike with Matchers with MockFactory
 
       val tournamentInfoProvider = stub[TournamentInfoProvider]
       val editor = mock[Editor]
-      (tournamentInfoProvider.getEditors _).when(1).returns(List(editor))
+      (tournamentInfoProvider.getEditors _).when(1).returns(Right(List(editor)))
 
       val messageComposer = stub[MessageComposer]
       (messageComposer.composeNewResult _).when(tournamentData).returns("new result")
