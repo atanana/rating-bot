@@ -18,8 +18,13 @@ class ConnectorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
 
   "Connector" should {
     "get team page by wrapper" in {
-      (wrapper.getPage _).when(uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments").returns("team page")
-      connector.getTeamPage shouldEqual "team page"
+      (wrapper.getPageSafe _).when(uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments").returns(Right("team page"))
+      connector.getTeamPage shouldEqual Right("team page")
+    }
+
+    "pass team page error from wrapper" in {
+      (wrapper.getPageSafe _).when(uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments").returns(Left("123"))
+      connector.getTeamPage shouldEqual Left("Cannot get team's page: 123")
     }
 
     "get tournament page by wrapper" in {

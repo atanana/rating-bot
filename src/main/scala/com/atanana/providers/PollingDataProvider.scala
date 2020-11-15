@@ -21,11 +21,12 @@ class PollingDataProvider @Inject()(
                                      tournamentInfoParser: TournamentInfoParser,
                                      config: Config
                                    ) {
-  def data: ParsedData = {
-    ParsedData(
-      getNewTournaments,
-      getNewRequisitions
-    )
+
+  def data: Either[String, ParsedData] = {
+    for {
+      newTournaments <- getNewTournaments
+      newRequisitions = getNewRequisitions
+    } yield ParsedData(newTournaments, newRequisitions)
   }
 
   //todo make future
@@ -65,8 +66,6 @@ class PollingDataProvider @Inject()(
     ), Duration(10, TimeUnit.MINUTES))
   }
 
-  private def getNewTournaments = {
-    val teamCsv = connector.getTeamPage
-    csvParser.getTournamentsData(teamCsv).toSet
-  }
+  private def getNewTournaments =
+    connector.getTeamPage.map(csvParser.getTournamentsData(_).toSet)
 }

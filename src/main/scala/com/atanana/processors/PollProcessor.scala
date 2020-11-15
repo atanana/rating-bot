@@ -4,13 +4,26 @@ import com.atanana.CheckResultHandler
 import com.atanana.checkers.MainChecker
 import com.atanana.data.{Data, ParsedData}
 import com.atanana.json.JsonStore
+import com.atanana.processors.PollProcessor.logger
 import com.atanana.providers.PollingDataProvider
+import com.typesafe.scalalogging.Logger
 import javax.inject.Inject
 
-class PollProcessor @Inject()(pollingDataProvider: PollingDataProvider, store: JsonStore, checker: MainChecker,
-                              checkResultHandler: CheckResultHandler) extends Processor {
+class PollProcessor @Inject()(
+                               pollingDataProvider: PollingDataProvider,
+                               store: JsonStore,
+                               checker: MainChecker,
+                               checkResultHandler: CheckResultHandler
+                             ) extends Processor {
+
   override def process(): Unit = {
-    val parsedData = pollingDataProvider.data
+    val parsedData = pollingDataProvider.data.fold(
+      error => {
+        logger.error(error)
+        return
+      },
+      identity
+    )
     val storedData = store.read
 
     val checkResult = checker.check(storedData, parsedData)
@@ -32,4 +45,8 @@ class PollProcessor @Inject()(pollingDataProvider: PollingDataProvider, store: J
 
   private def tournamentsChanged(storedData: Data, parsedData: ParsedData) =
     storedData.tournaments != parsedData.tournaments.map(_.toTournament)
+}
+
+object PollProcessor {
+  private val logger = Logger(classOf[PollProcessor])
 }

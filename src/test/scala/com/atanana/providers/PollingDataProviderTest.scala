@@ -30,6 +30,7 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
   }
 
   "PollingDataProvider" should {
+
     "provider valid data" in {
       val tournamentId = 123
       val tournamentRequisitionsPage = "tournament requisitions page"
@@ -42,7 +43,12 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
       setRequisitionData(Success(List(requisitionData)))
       (requisitionsPageParser.additionalData _).when(requisitionData.agent, tournamentRequisitionsPage).returns(Success(RequisitionAdditionalData("test", 5)))
 
-      provider.data shouldEqual ParsedData(Set(tournamentData), Success(Set(requisitionData.toRequisitionData(36))))
+      provider.data shouldEqual Right(ParsedData(Set(tournamentData), Success(Set(requisitionData.toRequisitionData(36)))))
+    }
+
+    "pass team page error" in {
+      (connector.getTeamPage _).when().returns(Left("team page error"))
+      provider.data shouldEqual Left("team page error")
     }
 
     "should filter small requisitions" in {
@@ -57,7 +63,7 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
       setRequisitionData(Success(List(requisitionData1, requisitionData2, requisitionData3)))
       (requisitionsPageParser.additionalData _).when(*, *).onCall((_: String, page: String) => Success(RequisitionAdditionalData("test", page.toInt)))
 
-      provider.data shouldEqual ParsedData(Set.empty, Success(Set(requisitionData2.toRequisitionData(36), requisitionData3.toRequisitionData(45))))
+      provider.data shouldEqual Right(ParsedData(Set.empty, Success(Set(requisitionData2.toRequisitionData(36), requisitionData3.toRequisitionData(45)))))
     }
 
     "should filter requisitions from ignored venues" in {
@@ -73,7 +79,7 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
       setRequisitionData(Success(List(requisitionData1, requisitionData2, requisitionData3)))
       (requisitionsPageParser.additionalData _).when(*, *).onCall((agent: String, page: String) => Success(RequisitionAdditionalData(agent, page.toInt)))
 
-      provider.data shouldEqual ParsedData(Set.empty, Success(Set(requisitionData3.toRequisitionData(45))))
+      provider.data shouldEqual Right(ParsedData(Set.empty, Success(Set(requisitionData3.toRequisitionData(45)))))
     }
 
     "should filter failed requisitions" in {
@@ -90,7 +96,7 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
           if (page.toInt % 2 == 0) Success(RequisitionAdditionalData("test", 2)) else Failure(new RuntimeException)
       )
 
-      provider.data shouldEqual ParsedData(Set.empty, Success(Set(requisitionData2.toRequisitionData(36))))
+      provider.data shouldEqual Right(ParsedData(Set.empty, Success(Set(requisitionData2.toRequisitionData(36)))))
     }
 
     "should pass failed requisitions" in {
@@ -99,7 +105,7 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
       val requisitionData = Failure(new RuntimeException)
       setRequisitionData(requisitionData)
 
-      provider.data shouldEqual ParsedData(Set(tournamentData), requisitionData)
+      provider.data shouldEqual Right(ParsedData(Set(tournamentData), requisitionData))
     }
   }
 
@@ -111,7 +117,7 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
 
   private def setTournamentsData(data: List[TournamentData]): Unit = {
     val teamPage = "team page"
-    (connector.getTeamPage _).when().returns(teamPage)
+    (connector.getTeamPage _).when().returns(Right(teamPage))
     (csvParser.getTournamentsData _).when(teamPage).returns(data)
   }
 

@@ -10,11 +10,13 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
   def post(uri: Uri, params: Map[String, String]): Either[String, String] = netWrapper.post(uri, params)
 
+  private def getPage(uri: Uri) = netWrapper.getPage(uri)
+
+  private def getPageSafe(uri: Uri) = netWrapper.getPageSafe(uri)
+
   private def teamUrl = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
 
-  def getTeamPage: String = getPage(teamUrl)
-
-  private def getPage(uri: Uri) = netWrapper.getPage(uri)
+  def getTeamPage: Either[String, String] = getPageSafe(teamUrl).left.map(error => s"Cannot get team's page: $error")
 
   def getTournamentPage(id: Int): String = getPage(tournamentUrl(id))
 
@@ -49,13 +51,13 @@ object Connector {
 class NetWrapper {
   private val backend = HttpURLConnectionBackend()
 
-  def getPage(uri: Uri): String =
+  def getPageSafe(uri: Uri): Either[String, String] =
     basicRequest
       .get(uri)
       .send(backend)
       .body
-      .toOption
-      .get
+
+  def getPage(uri: Uri): String = getPageSafe(uri).right.get
 
   def post(uri: Uri, params: Map[String, String]): Either[String, String] =
     basicRequest

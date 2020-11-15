@@ -76,6 +76,11 @@ class PollProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfte
 
       processor.process()
     }
+
+    "no posts and saves when no data" in {
+      (provider.data _).when().returns(Left("error"))
+      processor.process()
+    }
   }
 
   private def setUpDefaults() = {
@@ -83,7 +88,7 @@ class PollProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfte
       Set(TournamentData(1, "tournament 1", "link 1", 1f, 1, 1)),
       Success(Set(RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now())))
     )
-    (provider.data _).when().returns(parsedData)
+    (provider.data _).when().returns(Right(parsedData))
     parsedData
   }
 }
