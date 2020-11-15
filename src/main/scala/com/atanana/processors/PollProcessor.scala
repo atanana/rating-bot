@@ -27,9 +27,9 @@ class PollProcessor @Inject()(
     val storedData = store.read
 
     val checkResult = checker.check(storedData, parsedData)
-    checkResultHandler.processCheckResult(checkResult)
+    val isPostSuccessful = checkResultHandler.processCheckResult(checkResult).isRight
 
-    if (hasChanges(storedData, parsedData)) {
+    if (isPostSuccessful && hasChanges(storedData, parsedData)) {
       store.write(parsedData.toData)
     }
   }

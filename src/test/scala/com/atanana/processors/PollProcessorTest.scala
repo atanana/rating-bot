@@ -40,7 +40,7 @@ class PollProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfte
       (store.write _).expects(*)
       val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty), RequisitionsCheckResult(Set.empty, Set.empty))
       (checker.check _).when(storedData, parsedData).returns(checkResult)
-      (checkResultsHandler.processCheckResult _).expects(checkResult)
+      (checkResultsHandler.processCheckResult _).expects(checkResult) returns Right(Unit)
 
       processor.process()
     }
@@ -51,7 +51,7 @@ class PollProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfte
       (store.read _).expects().returns(storedData)
       (store.write _).expects(parsedData.toData)
       (checker.check _).when(storedData, parsedData)
-      (checkResultsHandler.processCheckResult _).expects(*)
+      (checkResultsHandler.processCheckResult _).expects(*) returns Right(Unit)
 
       processor.process()
     }
@@ -61,7 +61,7 @@ class PollProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfte
       val storedData = parsedData.toData
       (store.read _).expects().returns(storedData)
       (checker.check _).when(storedData, parsedData)
-      (checkResultsHandler.processCheckResult _).expects(*)
+      (checkResultsHandler.processCheckResult _).expects(*) returns Right(Unit)
 
       processor.process()
     }
@@ -72,13 +72,24 @@ class PollProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfte
       parsedData = parsedData.copy(requisitions = Failure(new RuntimeException))
       (store.read _).expects().returns(storedData)
       (checker.check _).when(storedData, parsedData)
-      (checkResultsHandler.processCheckResult _).expects(*)
+      (checkResultsHandler.processCheckResult _).expects(*) returns Right(Unit)
 
       processor.process()
     }
 
     "no posts and saves when no data" in {
       (provider.data _).when().returns(Left("error"))
+      processor.process()
+    }
+
+    "not save data when posting failed" in {
+      val parsedData = setUpDefaults()
+      val storedData = Data(Set.empty, Set.empty)
+      (store.read _).expects().returns(storedData)
+      val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty), RequisitionsCheckResult(Set.empty, Set.empty))
+      (checker.check _).when(storedData, parsedData).returns(checkResult)
+      (checkResultsHandler.processCheckResult _).expects(checkResult) returns Left("post error")
+
       processor.process()
     }
   }

@@ -9,23 +9,25 @@ import org.scalamock.scalatest.MockFactory
 import org.scalatest.{Matchers, WordSpecLike}
 
 class CheckResultHandlerTest extends WordSpecLike with Matchers with MockFactory {
+  private val tournamentData = mock[TournamentData]
+  private val changedTournament = mock[ChangedTournament]
+  private val messageComposer = stub[MessageComposer]
+  private val poster = mock[Poster]
+  private val tournamentInfoProvider = stub[TournamentInfoProvider]
+
   "CheckResultHandler" should {
+
     "post all changes" in {
-      val tournamentData = mock[TournamentData]
-      val changedTournament = mock[ChangedTournament]
       val requisitionData = RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now())
 
-      val tournamentInfoProvider = stub[TournamentInfoProvider]
       val editor = mock[Editor]
       (tournamentInfoProvider.getEditors _).when(1).returns(Right(List(editor)))
 
-      val messageComposer = stub[MessageComposer]
       (messageComposer.composeNewResult _).when(tournamentData).returns("new result")
       (messageComposer.composeChangedResult _).when(changedTournament).returns("changed result")
       (messageComposer.composeNewRequisition _).when(requisitionData.toRequisition, List(editor)).returns("new requisition")
       (messageComposer.composeCancelledRequisition _).when(requisitionData.toRequisition).returns("cancelled requisition")
 
-      val poster = mock[Poster]
       (poster.post _).expects("new result")
       (poster.post _).expects("changed result")
       (poster.post _).expects("new requisition")
@@ -35,6 +37,17 @@ class CheckResultHandlerTest extends WordSpecLike with Matchers with MockFactory
         TournamentsCheckResult(Set(tournamentData), Set(changedTournament)),
         RequisitionsCheckResult(Set(requisitionData), Set(requisitionData))
       ))
+    }
+
+    "return an error when cannot get editors" in {
+      val requisitionData = RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now())
+
+      (tournamentInfoProvider.getEditors _).when(1).returns(Left("editors error"))
+
+      new CheckResultHandler(poster, messageComposer, tournamentInfoProvider).processCheckResult(CheckResult(
+        TournamentsCheckResult(Set(tournamentData), Set(changedTournament)),
+        RequisitionsCheckResult(Set(requisitionData), Set(requisitionData))
+      )) shouldEqual Left("editors error")
     }
   }
 }
