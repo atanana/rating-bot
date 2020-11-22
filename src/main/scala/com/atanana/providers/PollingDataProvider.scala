@@ -29,7 +29,7 @@ class PollingDataProvider @Inject()(
     } yield ParsedData(newTournaments, newRequisitions)
   }
 
-  //todo make future
+  //todo refactor
   private def getNewRequisitions: Try[Set[RequisitionData]] = {
     val requisitionPage = connector.getRequisitionPage.right.get
     requisitionsParser.getRequisitionsData(requisitionPage)
