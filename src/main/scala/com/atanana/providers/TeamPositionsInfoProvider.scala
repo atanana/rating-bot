@@ -5,22 +5,23 @@ import com.atanana.data.{Team, TeamPositionsInfo}
 import com.atanana.parsers.TeamsPageParser
 import javax.inject.Inject
 
-import scala.util.Try
+class TeamPositionsInfoProvider @Inject()(
+                                           connector: Connector,
+                                           parser: TeamsPageParser,
+                                           composer: TeamPositionsInfoComposer
+                                         ) {
 
-class TeamPositionsInfoProvider @Inject()(connector: Connector,
-                                          parser: TeamsPageParser,
-                                          composer: TeamPositionsInfoComposer) {
-  def data: Either[String, TeamPositionsInfo] = {
-    val allTeams = parser.getTeams(connector.getTeamsPage.right.get)
-    val cityTeams = parser.getTeams(connector.getCityTeamsPage.right.get)
-    val countryTeams = parser.getTeams(connector.getCountryTeamsPage.right.get)
+  def data: Either[String, TeamPositionsInfo] = for {
+    allTeams <- connector.getTeamsPage.map(parser.getTeams)
+    cityTeams <- connector.getCityTeamsPage.map(parser.getTeams)
+    countryTeams <- connector.getCountryTeamsPage.map(parser.getTeams)
 
-    composer.positionsInfo(
-      filter(allTeams),
-      filter(cityTeams),
-      filter(countryTeams)
+    positionsInfo <- composer.positionsInfo(
+      teams = filter(allTeams),
+      cityTeams = filter(cityTeams),
+      countryTeams = filter(countryTeams)
     )
-  }
+  } yield positionsInfo
 
   private def filter(teams: List[Team]): List[Team] = teams.filter(_.isReal)
 }

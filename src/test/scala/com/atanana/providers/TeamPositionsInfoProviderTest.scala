@@ -4,9 +4,10 @@ import com.atanana.Connector
 import com.atanana.data.{TargetTeam, Team, TeamPositionsInfo}
 import com.atanana.parsers.TeamsPageParser
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
-class TeamPositionsInfoProviderTest extends WordSpecLike with MockFactory with Matchers with BeforeAndAfter {
+class TeamPositionsInfoProviderTest extends AnyWordSpecLike with MockFactory with Matchers {
   private val teamPage = "teams page"
   private val cityTeamsPage = "city teams page"
   private val countryTeamsPage = "country teams page"
