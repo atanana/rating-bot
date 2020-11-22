@@ -14,49 +14,40 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
   private def getPageSafe(uri: Uri) = netWrapper.getPageSafe(uri)
 
-  private def teamUrl = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
-
   def getTeamPage: Either[String, String] = {
-    val url = teamUrl
+    val url = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
     getPageSafe(url).left.map(error => s"Cannot get team's page($url): $error")
   }
 
   def getTournamentPage(id: Int): Either[String, String] = {
-    val url = tournamentUrl(id)
+    val url = uri"$SITE_URL/tournament/$id"
     getPageSafe(url).left.map(error => s"Cannot get tournament's page($url): $error")
   }
 
-  private def tournamentUrl(id: Int) = uri"$SITE_URL/tournament/$id"
-
-  private def requisitionUrl = uri"$SITE_URL/synch_town/${config.city}"
-
   def getRequisitionPage: Either[String, String] = {
-    val url = requisitionUrl
+    val url = uri"$SITE_URL/synch_town/${config.city}"
     getPageSafe(url).left.map(error => s"Cannot get requisitions page($url): $error")
   }
 
-  private val teamsUrl = uri"$SITE_URL/teams.php"
-
   def getTeamsPage: Either[String, String] = {
-    val url = teamsUrl
+    val url = uri"$SITE_URL/teams.php"
     getPageSafe(url).left.map(error => s"Cannot get teams page($url): $error")
   }
 
-  private def cityTeamsUrl = uri"$SITE_URL/teams.php?town=${config.cityName}"
-
   def getCityTeamsPage: Either[String, String] = {
-    val url = cityTeamsUrl
+    val url = uri"$SITE_URL/teams.php?town=${config.cityName}"
     getPageSafe(url).left.map(error => s"Cannot get city teams page($url): $error")
   }
 
-  private def countryTeamsUrl = uri"$SITE_URL/teams.php?country=${config.countryName}"
-
   def getCountryTeamsPage: Either[String, String] = {
-    val url = countryTeamsUrl
+    val url = uri"$SITE_URL/teams.php?country=${config.countryName}"
     getPageSafe(url).left.map(error => s"Cannot get country teams page($url): $error")
   }
 
-  def getTournamentRequisitionsPage(tournamentId: Int): String = getPage(uri"$SITE_URL/tournament/$tournamentId/requests")
+  def getTournamentRequisitionsPage(tournamentId: Int): Either[String, String] = {
+    val url = uri"$SITE_URL/tournament/$tournamentId/requests"
+    getPageSafe(url).left.map(error => s"Cannot ge tournament requisitions page($url): $error")
+  }
 
   def getTournamentInfo(tournamentId: Int): String = getPage(uri"$SITE_URL/api/tournaments/$tournamentId.json")
 }

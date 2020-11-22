@@ -36,7 +36,7 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
       val tournamentRequisitionsPage = "tournament requisitions page"
       val tournamentData = mock[TournamentData]
       setTournamentsData(List(tournamentData))
-      (connector.getTournamentRequisitionsPage _).when(tournamentId).returns(tournamentRequisitionsPage)
+      (connector.getTournamentRequisitionsPage _).when(tournamentId).returns(Right(tournamentRequisitionsPage))
       setQuestionsCount(tournamentId, Success(36))
 
       val requisitionData = PartialRequisitionData("test tournament", tournamentId, "test agent", LocalDateTime.now())
@@ -52,7 +52,7 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
     }
 
     "should filter small requisitions" in {
-      (connector.getTournamentRequisitionsPage _).when(*).onCall((i: Int) => i.toString)
+      (connector.getTournamentRequisitionsPage _).when(*).onCall((i: Int) => Right(i.toString))
       setTournamentsData(List.empty)
       setQuestionsCount(2, Success(36))
       setQuestionsCount(3, Success(45))
@@ -67,7 +67,7 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
     }
 
     "should filter requisitions from ignored venues" in {
-      (connector.getTournamentRequisitionsPage _).when(*).onCall((i: Int) => i.toString)
+      (connector.getTournamentRequisitionsPage _).when(*).onCall((i: Int) => Right(i.toString))
       setTournamentsData(List.empty)
       setQuestionsCount(1, Success(36))
       setQuestionsCount(2, Success(36))
@@ -83,7 +83,7 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
     }
 
     "should filter failed requisitions" in {
-      (connector.getTournamentRequisitionsPage _).when(*).onCall((i: Int) => i.toString)
+      (connector.getTournamentRequisitionsPage _).when(*).onCall((i: Int) => Right(i.toString))
       setTournamentsData(List.empty)
       setQuestionsCount(2, Success(36))
 

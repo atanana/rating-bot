@@ -3,10 +3,12 @@ package com.atanana
 import com.atanana.Connector.SITE_URL
 import com.atanana.json.Config
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 import sttp.client3.UriContext
 
-class ConnectorTest extends WordSpecLike with MockFactory with Matchers {
+class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
+
   val config: Config = Config("token", 123, 321, 456, 10000, "Минск", "Беларусь", List.empty)
   var wrapper: NetWrapper = stub[NetWrapper]
   var connector: Connector = new Connector(wrapper, config)
@@ -84,8 +86,15 @@ class ConnectorTest extends WordSpecLike with MockFactory with Matchers {
 
     "get tournament requisitions page by wrapper" in {
       val tournamentId = 111
-      (wrapper.getPage _).when(uri"$SITE_URL/tournament/$tournamentId/requests").returns("tournament requests page")
-      connector.getTournamentRequisitionsPage(tournamentId) shouldEqual "tournament requests page"
+      (wrapper.getPageSafe _).when(uri"$SITE_URL/tournament/$tournamentId/requests").returns(Right("tournament requests page"))
+      connector.getTournamentRequisitionsPage(tournamentId) shouldEqual Right("tournament requests page")
+    }
+
+    "pass tournament requisitions page error from wrapper" in {
+      val tournamentId = 111
+      val url = uri"$SITE_URL/tournament/$tournamentId/requests"
+      (wrapper.getPageSafe _).when(url).returns(Left("123"))
+      connector.getTournamentRequisitionsPage(tournamentId) shouldEqual Left(s"Cannot ge tournament requisitions page($url): 123")
     }
 
     "get tournament info page by wrapper" in {
