@@ -46,10 +46,13 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
   def getTournamentRequisitionsPage(tournamentId: Int): Either[String, String] = {
     val url = uri"$SITE_URL/tournament/$tournamentId/requests"
-    getPageSafe(url).left.map(error => s"Cannot ge tournament requisitions page($url): $error")
+    getPageSafe(url).left.map(error => s"Cannot get tournament requisitions page($url): $error")
   }
 
-  def getTournamentInfo(tournamentId: Int): String = getPage(uri"$SITE_URL/api/tournaments/$tournamentId.json")
+  def getTournamentInfo(tournamentId: Int): Either[String, String] = {
+    val url = uri"$SITE_URL/api/tournaments/$tournamentId.json"
+    getPageSafe(url).left.map(error => s"Cannot get tournament info page($url): $error")
+  }
 }
 
 object Connector {
