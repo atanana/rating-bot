@@ -6,11 +6,13 @@ import com.atanana.data._
 import com.atanana.posters.Poster
 import com.atanana.providers.TournamentInfoProvider
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
-class CheckResultHandlerTest extends WordSpecLike with Matchers with MockFactory {
-  private val tournamentData = mock[TournamentData]
-  private val changedTournament = mock[ChangedTournament]
+class CheckResultHandlerTest extends AnyWordSpecLike with Matchers with MockFactory {
+
+  private val tournamentData = TournamentData(1, "test", "test link", 1.0f, 1, 12)
+  private val changedTournament = ChangedTournament(tournamentData, 13)
   private val messageComposer = stub[MessageComposer]
   private val poster = mock[Poster]
   private val tournamentInfoProvider = stub[TournamentInfoProvider]

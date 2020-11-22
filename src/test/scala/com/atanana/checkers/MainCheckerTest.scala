@@ -4,22 +4,19 @@ import java.time.LocalDateTime
 
 import com.atanana.data._
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
 import scala.util.{Failure, Success}
 
-class MainCheckerTest extends WordSpecLike with MockFactory with Matchers with BeforeAndAfter {
-  var tournamentsChecker: TournamentsChecker = _
-  var requisitionsChecker: RequisitionsChecker = _
-  var checker: MainChecker = _
+class MainCheckerTest extends AnyWordSpecLike with MockFactory with Matchers {
 
-  before {
-    tournamentsChecker = stub[TournamentsChecker]
-    requisitionsChecker = stub[RequisitionsChecker]
-    checker = new MainChecker(tournamentsChecker, requisitionsChecker)
-  }
+  private val tournamentsChecker = stub[TournamentsChecker]
+  private val requisitionsChecker = stub[RequisitionsChecker]
+  private val checker = new MainChecker(tournamentsChecker, requisitionsChecker)
 
   "MainChecker" should {
+
     "return correct data from underlying checkers" in {
       val data = Data(Set(Tournament(1, 1)), Set(Requisition("tournament 1", "agent 1", LocalDateTime.now())))
       val newTournaments = Set(
@@ -28,8 +25,8 @@ class MainCheckerTest extends WordSpecLike with MockFactory with Matchers with B
       val newRequisitions = Set(
         RequisitionData("tournament 4", 4, "agent 4", LocalDateTime.now())
       )
-      val tournamentsCheckResult = mock[TournamentsCheckResult]
-      val requisitionsCheckResult = mock[RequisitionsCheckResult]
+      val tournamentsCheckResult = TournamentsCheckResult(newTournaments, Set.empty)
+      val requisitionsCheckResult = RequisitionsCheckResult(newRequisitions, Set.empty)
       (tournamentsChecker.check _).when(data.tournaments, newTournaments).returns(tournamentsCheckResult)
       (requisitionsChecker.check _).when(data.requisitions, newRequisitions).returns(requisitionsCheckResult)
 
