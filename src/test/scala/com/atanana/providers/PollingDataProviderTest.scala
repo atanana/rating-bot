@@ -123,7 +123,7 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
 
   private def setRequisitionData(data: Try[List[PartialRequisitionData]]): Unit = {
     val requisitionsPage = "requisitions page"
-    (connector.getRequisitionPage _).when().returns(requisitionsPage)
+    (connector.getRequisitionPage _).when().returns(Right(requisitionsPage))
     (requisitionsParser.getRequisitionsData _).when(requisitionsPage).returns(data)
   }
 }

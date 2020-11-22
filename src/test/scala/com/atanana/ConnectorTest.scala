@@ -44,8 +44,14 @@ class ConnectorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
     }
 
     "get requisitions page by wrapper" in {
-      (wrapper.getPage _).when(uri"$SITE_URL/synch_town/${config.city}").returns("requisitions page")
-      connector.getRequisitionPage shouldEqual "requisitions page"
+      (wrapper.getPageSafe _).when(uri"$SITE_URL/synch_town/${config.city}").returns(Right("requisitions page"))
+      connector.getRequisitionPage shouldEqual Right("requisitions page")
+    }
+
+    "pass requisitions page error from wrapper" in {
+      val requisitionsUrl = uri"$SITE_URL/synch_town/${config.city}"
+      (wrapper.getPageSafe _).when(requisitionsUrl).returns(Left("123"))
+      connector.getRequisitionPage shouldEqual Left(s"Cannot get requisitions page($requisitionsUrl): 123")
     }
 
     "get teams page by wrapper" in {

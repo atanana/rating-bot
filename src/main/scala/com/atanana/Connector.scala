@@ -30,7 +30,10 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
   private def requisitionUrl = uri"$SITE_URL/synch_town/${config.city}"
 
-  def getRequisitionPage: String = getPage(requisitionUrl)
+  def getRequisitionPage: Either[String, String] = {
+    val url = requisitionUrl
+    getPageSafe(url).left.map(error => s"Cannot get requisitions page($url): $error")
+  }
 
   private val teamsUrl = uri"$SITE_URL/teams.php"
 
