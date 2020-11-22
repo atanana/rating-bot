@@ -6,24 +6,15 @@ import com.atanana.parsers.TeamsPageParser
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
 
-import scala.util.Success
-
 class TeamPositionsInfoProviderTest extends WordSpecLike with MockFactory with Matchers with BeforeAndAfter {
-  val teamPage = "teams page"
-  val cityTeamsPage = "city teams page"
-  val countryTeamsPage = "country teams page"
+  private val teamPage = "teams page"
+  private val cityTeamsPage = "city teams page"
+  private val countryTeamsPage = "country teams page"
 
-  var connector: Connector = _
-  var parser: TeamsPageParser = _
-  var composer: TeamPositionsInfoComposer = _
-  var provider: TeamPositionsInfoProvider = _
-
-  before {
-    connector = stub[Connector]
-    parser = stub[TeamsPageParser]
-    composer = stub[TeamPositionsInfoComposer]
-    provider = new TeamPositionsInfoProvider(connector, parser, composer)
-  }
+  private val connector = stub[Connector]
+  private val parser = stub[TeamsPageParser]
+  private val composer = stub[TeamPositionsInfoComposer]
+  private val provider = new TeamPositionsInfoProvider(connector, parser, composer)
 
   "TeamPositionsInfoProvider" should {
     "provide correct info" in {
