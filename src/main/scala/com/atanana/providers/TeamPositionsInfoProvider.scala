@@ -13,7 +13,7 @@ class TeamPositionsInfoProvider @Inject()(connector: Connector,
   def data: Either[String, TeamPositionsInfo] = {
     val allTeams = parser.getTeams(connector.getTeamsPage.right.get)
     val cityTeams = parser.getTeams(connector.getCityTeamsPage.right.get)
-    val countryTeams = parser.getTeams(connector.getCountryTeamsPage)
+    val countryTeams = parser.getTeams(connector.getCountryTeamsPage.right.get)
 
     composer.positionsInfo(
       filter(allTeams),

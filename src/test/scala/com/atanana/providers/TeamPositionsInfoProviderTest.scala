@@ -62,7 +62,7 @@ class TeamPositionsInfoProviderTest extends WordSpecLike with MockFactory with M
   private def setupDefaultExpectations(): Unit = {
     (connector.getTeamsPage _).when().returns(Right(teamPage))
     (connector.getCityTeamsPage _).when().returns(Right(cityTeamsPage))
-    (connector.getCountryTeamsPage _).when().returns(countryTeamsPage)
+    (connector.getCountryTeamsPage _).when().returns(Right(countryTeamsPage))
   }
 
   private def createTeam(id: Int, isReal: Boolean = true): Team = Team(id, "", "", 0, 0f, isReal)

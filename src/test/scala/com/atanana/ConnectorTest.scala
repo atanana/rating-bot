@@ -77,8 +77,14 @@ class ConnectorTest extends WordSpecLike with MockFactory with BeforeAndAfter wi
     }
 
     "get country teams page by wrapper" in {
-      (wrapper.getPage _).when(uri"$SITE_URL/teams.php?country=%D0%91%D0%B5%D0%BB%D0%B0%D1%80%D1%83%D1%81%D1%8C").returns("country teams page")
-      connector.getCountryTeamsPage shouldEqual "country teams page"
+      (wrapper.getPageSafe _).when(uri"$SITE_URL/teams.php?country=%D0%91%D0%B5%D0%BB%D0%B0%D1%80%D1%83%D1%81%D1%8C").returns(Right("country teams page"))
+      connector.getCountryTeamsPage shouldEqual Right("country teams page")
+    }
+
+    "pass country teams page error from wrapper" in {
+      val teamsUrl = uri"$SITE_URL/teams.php?country=%D0%91%D0%B5%D0%BB%D0%B0%D1%80%D1%83%D1%81%D1%8C"
+      (wrapper.getPageSafe _).when(teamsUrl).returns(Left("123"))
+      connector.getCountryTeamsPage shouldEqual Left(s"Cannot get country teams page($teamsUrl): 123")
     }
 
     "get tournament requisitions page by wrapper" in {

@@ -51,7 +51,10 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
   private def countryTeamsUrl = uri"$SITE_URL/teams.php?country=${config.countryName}"
 
-  def getCountryTeamsPage: String = getPage(countryTeamsUrl)
+  def getCountryTeamsPage: Either[String, String] = {
+    val url = countryTeamsUrl
+    getPageSafe(url).left.map(error => s"Cannot get country teams page($url): $error")
+  }
 
   def getTournamentRequisitionsPage(tournamentId: Int): String = getPage(uri"$SITE_URL/tournament/$tournamentId/requests")
 
