@@ -6,15 +6,10 @@ import org.scalamock.scalatest.MockFactory
 import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
 import sttp.client3.UriContext
 
-class ConnectorTest extends WordSpecLike with MockFactory with BeforeAndAfter with Matchers {
+class ConnectorTest extends WordSpecLike with MockFactory with Matchers {
   val config: Config = Config("token", 123, 321, 456, 10000, "Минск", "Беларусь", List.empty)
-  var wrapper: NetWrapper = _
-  var connector: Connector = _
-
-  before {
-    wrapper = stub[NetWrapper]
-    connector = new Connector(wrapper, config)
-  }
+  var wrapper: NetWrapper = stub[NetWrapper]
+  var connector: Connector = new Connector(wrapper, config)
 
   "Connector" should {
 
