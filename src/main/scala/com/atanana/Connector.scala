@@ -37,7 +37,10 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
   private val teamsUrl = uri"$SITE_URL/teams.php"
 
-  def getTeamsPage: String = getPage(teamsUrl)
+  def getTeamsPage: Either[String, String] = {
+    val url = teamsUrl
+    getPageSafe(url).left.map(error => s"Cannot get teams page($url): $error")
+  }
 
   private def cityTeamsUrl = uri"$SITE_URL/teams.php?town=${config.cityName}"
 
