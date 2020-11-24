@@ -1,0 +1,14 @@
+name: Run tests
+
+on: push
+
+jobs:
+  sbt-test:
+    # Name the Job
+    name: Run SBT tests
+    # Set the type of machine to run on
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SBT Action
+        uses: lokkju/github-action-sbt@v0.2.2
