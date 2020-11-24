@@ -1,6 +1,6 @@
 # rating-bot
 
-[![Build Status](https://travis-ci.org/atanana/rating-bot.svg?branch=master)](https://travis-ci.org/atanana/rating-bot)
+[![Build Status](https://travis-ci.org/atanana/rating-bot.svg?branch=master)](https://travis-ci.org/atanana/rating-bot) ![Tests](https://github.com/atanana/rating-bot/workflows/Tests/badge.svg)
 
 Следит за командой и спамит чат в телеграме мотивирующими сообщениями
 
