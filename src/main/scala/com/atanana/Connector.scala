@@ -2,9 +2,13 @@ package com.atanana
 
 import com.atanana.Connector.SITE_URL
 import com.atanana.json.Config
-import javax.inject.Inject
 import sttp.client3._
+import sttp.client3.httpclient.HttpClientFutureBackend
 import sttp.model.Uri
+
+import javax.inject.Inject
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
@@ -60,6 +64,7 @@ object Connector {
 
 class NetWrapper {
   private val backend = HttpURLConnectionBackend()
+  private val asyncBackend = HttpClientFutureBackend()
 
   def getPage(uri: Uri): Either[String, String] =
     basicRequest
@@ -67,10 +72,23 @@ class NetWrapper {
       .send(backend)
       .body
 
+  def getPageAsync(uri: Uri): Future[Either[String, String]] =
+    basicRequest
+      .get(uri)
+      .send(asyncBackend)
+      .map(_.body)
+
   def post(uri: Uri, params: Map[String, String]): Either[String, String] =
     basicRequest
       .body(params)
       .post(uri)
       .send(backend)
       .body
+
+  def postAsync(uri: Uri, params: Map[String, String]): Future[Either[String, String]] =
+    basicRequest
+      .body(params)
+      .post(uri)
+      .send(asyncBackend)
+      .map(_.body)
 }
