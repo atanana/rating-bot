@@ -21,16 +21,17 @@ class PollingDataProvider @Inject()(
                                      tournamentInfoParser: TournamentInfoParser,
                                      config: Config
                                    ) {
-  def data: ParsedData = {
-    ParsedData(
-      getNewTournaments,
-      getNewRequisitions
-    )
+
+  def data: Either[String, ParsedData] = {
+    for {
+      newTournaments <- getNewTournaments
+      newRequisitions = getNewRequisitions
+    } yield ParsedData(newTournaments, newRequisitions)
   }
 
-  //todo make future
+  //todo refactor
   private def getNewRequisitions: Try[Set[RequisitionData]] = {
-    val requisitionPage = connector.getRequisitionPage
+    val requisitionPage = connector.getRequisitionPage.right.get
     requisitionsParser.getRequisitionsData(requisitionPage)
       .map(requisitions =>
         zipWithTeamsCount(requisitions.toSet)
@@ -47,7 +48,7 @@ class PollingDataProvider @Inject()(
     Await.result(Future.sequence(
       requisitions
         .map(requisition => Future {
-          val requisitionsPage = connector.getTournamentRequisitionsPage(requisition.tournamentId)
+          val requisitionsPage = connector.getTournamentRequisitionsPage(requisition.tournamentId).right.get
           requisitionsPageParser.additionalData(requisition.agent, requisitionsPage)
             .map(data => (requisition, data))
         })
@@ -58,15 +59,13 @@ class PollingDataProvider @Inject()(
     Await.result(Future.sequence(
       requisitions
         .map(requisition => Future {
-          val requisitionsPage = connector.getTournamentInfo(requisition.tournamentId)
+          val requisitionsPage = connector.getTournamentInfo(requisition.tournamentId).right.get
           val questionsCount = tournamentInfoParser.getQuestionsCount(requisitionsPage).getOrElse(0)
           requisition.toRequisitionData(questionsCount)
         })
     ), Duration(10, TimeUnit.MINUTES))
   }
 
-  private def getNewTournaments = {
-    val teamCsv = connector.getTeamPage
-    csvParser.getTournamentsData(teamCsv).toSet
-  }
+  private def getNewTournaments =
+    connector.getTeamPage.map(csvParser.getTournamentsData(_).toSet)
 }

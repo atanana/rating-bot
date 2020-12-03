@@ -1,51 +1,61 @@
 package com.atanana
 
-import java.net.URLEncoder.encode
-import java.nio.charset.StandardCharsets
-
 import com.atanana.Connector.SITE_URL
 import com.atanana.json.Config
-import com.google.common.base.Charsets
-import javax.inject.Inject
-import org.apache.http.client.entity.UrlEncodedFormEntity
-import org.apache.http.client.methods.{CloseableHttpResponse, HttpPost}
-import org.apache.http.impl.client.HttpClientBuilder
-import org.apache.http.message.BasicNameValuePair
-import scalaj.http.{Http, HttpResponse}
+import sttp.client3._
+import sttp.client3.httpclient.HttpClientFutureBackend
+import sttp.model.Uri
 
-import scala.collection.JavaConverters._
-import scala.io.Source
+import javax.inject.Inject
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
-  def get(url: String): HttpResponse[String] = netWrapper.get(url)
 
-  def post(url: String, params: Map[String, String]): String = netWrapper.post(url, params)
+  def post(uri: Uri, params: Map[String, String]): Either[String, String] =
+    netWrapper.post(uri, params).left.map(error => s"Cannot post $params to $uri: $error")
 
-  def getTeamPage: String = getPage(teamUrl)
+  private def getPage(uri: Uri) = netWrapper.getPage(uri)
 
-  private def teamUrl: String = {
-    SITE_URL + s"/teams.php?team_id=${config.team}&download_data=export_tournaments"
+  def getTeamPage: Either[String, String] = {
+    val url = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
+    getPage(url).left.map(error => s"Cannot get team's page($url): $error")
   }
 
-  private def getPage(url: String) = netWrapper.getPage(url)
+  def getTournamentPage(id: Int): Either[String, String] = {
+    val url = uri"$SITE_URL/tournament/$id"
+    getPage(url).left.map(error => s"Cannot get tournament's page($url): $error")
+  }
 
-  def getTournamentPage(id: Int): String = getPage(tournamentUrl(id))
+  def getRequisitionPage: Either[String, String] = {
+    val url = uri"$SITE_URL/synch_town/${config.city}"
+    getPage(url).left.map(error => s"Cannot get requisitions page($url): $error")
+  }
 
-  private def tournamentUrl(id: Int): String = SITE_URL + "/tournament/" + id
+  def getTeamsPage: Either[String, String] = {
+    val url = uri"$SITE_URL/teams.php"
+    getPage(url).left.map(error => s"Cannot get teams page($url): $error")
+  }
 
-  def getRequisitionPage: String = getPage(requisitionUrl)
+  def getCityTeamsPage: Either[String, String] = {
+    val url = uri"$SITE_URL/teams.php?town=${config.cityName}"
+    getPage(url).left.map(error => s"Cannot get city teams page($url): $error")
+  }
 
-  private def requisitionUrl: String = SITE_URL + "/synch_town/" + config.city
+  def getCountryTeamsPage: Either[String, String] = {
+    val url = uri"$SITE_URL/teams.php?country=${config.countryName}"
+    getPage(url).left.map(error => s"Cannot get country teams page($url): $error")
+  }
 
-  def getTeamsPage: String = getPage(SITE_URL + "/teams.php")
+  def getTournamentRequisitionsPage(tournamentId: Int): Either[String, String] = {
+    val url = uri"$SITE_URL/tournament/$tournamentId/requests"
+    getPage(url).left.map(error => s"Cannot get tournament requisitions page($url): $error")
+  }
 
-  def getCityTeamsPage: String = getPage(SITE_URL + s"/teams.php?town=${encode(config.cityName, "UTF-8")}")
-
-  def getCountryTeamsPage: String = getPage(SITE_URL + s"/teams.php?country=${encode(config.countryName, "UTF-8")}")
-
-  def getTournamentRequisitionsPage(tournamentId: Int): String = getPage(SITE_URL + s"/tournament/$tournamentId/requests")
-
-  def getTournamentInfo(tournamentId: Int): String = getPage(SITE_URL + s"/api/tournaments/$tournamentId.json")
+  def getTournamentInfo(tournamentId: Int): Either[String, String] = {
+    val url = uri"$SITE_URL/api/tournaments/$tournamentId.json"
+    getPage(url).left.map(error => s"Cannot get tournament info page($url): $error")
+  }
 }
 
 object Connector {
@@ -54,17 +64,32 @@ object Connector {
 }
 
 class NetWrapper {
-  private val client = HttpClientBuilder.create().build()
+  private val backend = HttpURLConnectionBackend()
+  private val asyncBackend = HttpClientFutureBackend()
 
-  def getPage(url: String): String = new String(Http(url).asBytes.body, StandardCharsets.UTF_8)
+  def getPage(uri: Uri): Either[String, String] =
+    basicRequest
+      .get(uri)
+      .send(backend)
+      .body
 
-  def get(url: String): HttpResponse[String] = Http(url).asString
+  def getPageAsync(uri: Uri): Future[Either[String, String]] =
+    basicRequest
+      .get(uri)
+      .send(asyncBackend)
+      .map(_.body)
 
-  def post(url: String, params: Map[String, String]): String = {
-    val request = new HttpPost(url)
-    val valuePairs = params.toList.map({ case (key, value) => new BasicNameValuePair(key, value) }).asJava
-    request.setEntity(new UrlEncodedFormEntity(valuePairs, Charsets.UTF_8))
-    val response: CloseableHttpResponse = client.execute(request)
-    Source.fromInputStream(response.getEntity.getContent).mkString
-  }
+  def post(uri: Uri, params: Map[String, String]): Either[String, String] =
+    basicRequest
+      .body(params)
+      .post(uri)
+      .send(backend)
+      .body
+
+  def postAsync(uri: Uri, params: Map[String, String]): Future[Either[String, String]] =
+    basicRequest
+      .body(params)
+      .post(uri)
+      .send(asyncBackend)
+      .map(_.body)
 }

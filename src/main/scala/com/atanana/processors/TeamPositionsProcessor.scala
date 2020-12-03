@@ -1,10 +1,10 @@
 package com.atanana.processors
 
-import javax.inject.Inject
 import com.atanana.MessageComposer
 import com.atanana.posters.Poster
 import com.atanana.providers.TeamPositionsInfoProvider
-import com.typesafe.scalalogging.Logger
+
+import javax.inject.Inject
 
 class TeamPositionsProcessor @Inject()(
                                         infoProvider: TeamPositionsInfoProvider,
@@ -12,19 +12,9 @@ class TeamPositionsProcessor @Inject()(
                                         poster: Poster
                                       ) extends Processor {
 
-  import TeamPositionsProcessor.logger
-
-  override def process(): Unit = {
-    val result = infoProvider.data
+  override def process(): Either[String, Unit] = {
+    infoProvider.data
       .map(messageComposer.composeTeamPositionsMessage)
-      .map(poster.post)
-    result match {
-      case Left(errorMessage) => logger.error(errorMessage)
-      case Right(_) => // do nothing
-    }
+      .flatMap(poster.post)
   }
-}
-
-object TeamPositionsProcessor {
-  private val logger = Logger(classOf[TeamPositionsProcessor])
 }

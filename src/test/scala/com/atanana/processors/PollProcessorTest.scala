@@ -1,36 +1,23 @@
 package com.atanana.processors
 
-import java.time.LocalDateTime
-
 import com.atanana.CheckResultHandler
 import com.atanana.checkers.MainChecker
 import com.atanana.data._
 import com.atanana.json.JsonStore
-import com.atanana.posters.Poster
 import com.atanana.providers.PollingDataProvider
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
+import java.time.LocalDateTime
 import scala.util.{Failure, Success}
 
-class PollProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter with Matchers {
-  var processor: PollProcessor = _
-
-  var provider: PollingDataProvider = _
-  var store: JsonStore = _
-  var checker: MainChecker = _
-  var poster: Poster = _
-  var checkResultsHandler: CheckResultHandler = _
-
-  before {
-    provider = stub[PollingDataProvider]
-    store = mock[JsonStore]
-    checker = stub[MainChecker]
-    poster = mock[Poster]
-    checkResultsHandler = mock[CheckResultHandler]
-
-    processor = new PollProcessor(provider, store, checker, checkResultsHandler)
-  }
+class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
+  private val provider = stub[PollingDataProvider]
+  private val store = mock[JsonStore]
+  private val checker = stub[MainChecker]
+  private val checkResultsHandler = mock[CheckResultHandler]
+  private val processor = new PollProcessor(provider, store, checker, checkResultsHandler)
 
   "Processor" should {
     "posts about changes" in {
@@ -40,9 +27,9 @@ class PollProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfte
       (store.write _).expects(*)
       val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty), RequisitionsCheckResult(Set.empty, Set.empty))
       (checker.check _).when(storedData, parsedData).returns(checkResult)
-      (checkResultsHandler.processCheckResult _).expects(checkResult)
+      (checkResultsHandler.processCheckResult _).expects(checkResult) returns Right(Unit)
 
-      processor.process()
+      processor.process() shouldEqual Right()
     }
 
     "save new data" in {
@@ -51,9 +38,9 @@ class PollProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfte
       (store.read _).expects().returns(storedData)
       (store.write _).expects(parsedData.toData)
       (checker.check _).when(storedData, parsedData)
-      (checkResultsHandler.processCheckResult _).expects(*)
+      (checkResultsHandler.processCheckResult _).expects(*) returns Right(Unit)
 
-      processor.process()
+      processor.process() shouldEqual Right()
     }
 
     "not save data when no changes" in {
@@ -61,9 +48,9 @@ class PollProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfte
       val storedData = parsedData.toData
       (store.read _).expects().returns(storedData)
       (checker.check _).when(storedData, parsedData)
-      (checkResultsHandler.processCheckResult _).expects(*)
+      (checkResultsHandler.processCheckResult _).expects(*) returns Right(Unit)
 
-      processor.process()
+      processor.process() shouldEqual Right()
     }
 
     "not save data when requisitions failed" in {
@@ -72,9 +59,25 @@ class PollProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfte
       parsedData = parsedData.copy(requisitions = Failure(new RuntimeException))
       (store.read _).expects().returns(storedData)
       (checker.check _).when(storedData, parsedData)
-      (checkResultsHandler.processCheckResult _).expects(*)
+      (checkResultsHandler.processCheckResult _).expects(*) returns Right(Unit)
 
-      processor.process()
+      processor.process() shouldEqual Right()
+    }
+
+    "no posts and saves when no data" in {
+      (provider.data _).when().returns(Left("error"))
+      processor.process() shouldEqual Left("error")
+    }
+
+    "not save data when posting failed" in {
+      val parsedData = setUpDefaults()
+      val storedData = Data(Set.empty, Set.empty)
+      (store.read _).expects().returns(storedData)
+      val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty), RequisitionsCheckResult(Set.empty, Set.empty))
+      (checker.check _).when(storedData, parsedData).returns(checkResult)
+      (checkResultsHandler.processCheckResult _).expects(checkResult) returns Left("post error")
+
+      processor.process() shouldEqual Left("post error")
     }
   }
 
@@ -83,7 +86,7 @@ class PollProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfte
       Set(TournamentData(1, "tournament 1", "link 1", 1f, 1, 1)),
       Success(Set(RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now())))
     )
-    (provider.data _).when().returns(parsedData)
+    (provider.data _).when().returns(Right(parsedData))
     parsedData
   }
 }

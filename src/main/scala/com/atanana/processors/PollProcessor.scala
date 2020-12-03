@@ -5,17 +5,22 @@ import com.atanana.checkers.MainChecker
 import com.atanana.data.{Data, ParsedData}
 import com.atanana.json.JsonStore
 import com.atanana.providers.PollingDataProvider
+
 import javax.inject.Inject
 
-class PollProcessor @Inject()(pollingDataProvider: PollingDataProvider, store: JsonStore, checker: MainChecker,
-                              checkResultHandler: CheckResultHandler) extends Processor {
-  override def process(): Unit = {
-    val parsedData = pollingDataProvider.data
-    val storedData = store.read
+class PollProcessor @Inject()(
+                               pollingDataProvider: PollingDataProvider,
+                               store: JsonStore,
+                               checker: MainChecker,
+                               checkResultHandler: CheckResultHandler
+                             ) extends Processor {
 
-    val checkResult = checker.check(storedData, parsedData)
-    checkResultHandler.processCheckResult(checkResult)
-
+  override def process(): Either[String, Unit] = for {
+    parsedData <- pollingDataProvider.data
+    storedData = store.read
+    checkResult = checker.check(storedData, parsedData)
+    _ <- checkResultHandler.processCheckResult(checkResult)
+  } yield {
     if (hasChanges(storedData, parsedData)) {
       store.write(parsedData.toData)
     }

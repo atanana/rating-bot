@@ -4,26 +4,18 @@ import com.atanana.Connector
 import com.atanana.data.{TargetTeam, Team, TeamPositionsInfo}
 import com.atanana.parsers.TeamsPageParser
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
-import scala.util.Success
+class TeamPositionsInfoProviderTest extends AnyWordSpecLike with MockFactory with Matchers {
+  private val teamPage = "teams page"
+  private val cityTeamsPage = "city teams page"
+  private val countryTeamsPage = "country teams page"
 
-class TeamPositionsInfoProviderTest extends WordSpecLike with MockFactory with Matchers with BeforeAndAfter {
-  val teamPage = "teams page"
-  val cityTeamsPage = "city teams page"
-  val countryTeamsPage = "country teams page"
-
-  var connector: Connector = _
-  var parser: TeamsPageParser = _
-  var composer: TeamPositionsInfoComposer = _
-  var provider: TeamPositionsInfoProvider = _
-
-  before {
-    connector = stub[Connector]
-    parser = stub[TeamsPageParser]
-    composer = stub[TeamPositionsInfoComposer]
-    provider = new TeamPositionsInfoProvider(connector, parser, composer)
-  }
+  private val connector = stub[Connector]
+  private val parser = stub[TeamsPageParser]
+  private val composer = stub[TeamPositionsInfoComposer]
+  private val provider = new TeamPositionsInfoProvider(connector, parser, composer)
 
   "TeamPositionsInfoProvider" should {
     "provide correct info" in {
@@ -60,9 +52,9 @@ class TeamPositionsInfoProviderTest extends WordSpecLike with MockFactory with M
   }
 
   private def setupDefaultExpectations(): Unit = {
-    (connector.getTeamsPage _).when().returns(teamPage)
-    (connector.getCityTeamsPage _).when().returns(cityTeamsPage)
-    (connector.getCountryTeamsPage _).when().returns(countryTeamsPage)
+    (connector.getTeamsPage _).when().returns(Right(teamPage))
+    (connector.getCityTeamsPage _).when().returns(Right(cityTeamsPage))
+    (connector.getCountryTeamsPage _).when().returns(Right(countryTeamsPage))
   }
 
   private def createTeam(id: Int, isReal: Boolean = true): Team = Team(id, "", "", 0, 0f, isReal)

@@ -4,6 +4,7 @@ import com.atanana.json.Config
 import com.atanana.posters.RealPoster
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{FunSuite, Matchers}
+import sttp.client3.UriContext
 
 import scala.collection.immutable.Map
 
@@ -19,7 +20,7 @@ class RealPosterTest extends FunSuite with MockFactory with Matchers {
       "disable_web_page_preview" -> "true",
       "parse_mode" -> "Markdown"
     )
-    (connector.post _).expects("https://api.telegram.org/bottoken/sendMessage", params)
+    (connector.post _).expects(uri"https://api.telegram.org/bottoken/sendMessage", params) returns Left("error")
 
     poster.post(message)
   }

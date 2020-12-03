@@ -1,14 +1,13 @@
 package com.atanana
 
-import java.net.{ConnectException, InetSocketAddress, SocketTimeoutException}
-import java.nio.channels.ServerSocketChannel
-
 import com.atanana.json.{Config, JsonConfig}
 import com.atanana.processors.CommandProcessor
 import com.google.inject.{Guice, Injector}
 import com.typesafe.scalalogging.Logger
 import net.codingwell.scalaguice.InjectorExtensions._
 
+import java.net.{ConnectException, InetSocketAddress, SocketTimeoutException}
+import java.nio.channels.ServerSocketChannel
 import scala.util.{Failure, Success}
 
 object Main extends App {
@@ -32,7 +31,8 @@ object Main extends App {
 
     while (true) {
       try {
-        commandProvider.getCommand.get.foreach(processor.processCommand)
+        val commandOption = commandProvider.getCommand.get
+        commandOption.map(processor.processCommand(_).left.map(logger.error(_)))
       } catch {
         case e: SocketTimeoutException => logger.info("Timeout!", e)
         case e: ConnectException => logger.info("Connect error!", e)
