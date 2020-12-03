@@ -7,6 +7,7 @@ import com.atanana.json.JsonStore
 import com.atanana.processors.PollProcessor.logger
 import com.atanana.providers.PollingDataProvider
 import com.typesafe.scalalogging.Logger
+
 import javax.inject.Inject
 
 class PollProcessor @Inject()(
@@ -16,11 +17,11 @@ class PollProcessor @Inject()(
                                checkResultHandler: CheckResultHandler
                              ) extends Processor {
 
-  override def process(): Unit = {
+  override def process(): Either[String, Unit] = {
     val parsedData = pollingDataProvider.data.fold(
       error => {
         logger.error(error)
-        return
+        return Right()
       },
       identity
     )
@@ -32,6 +33,7 @@ class PollProcessor @Inject()(
     if (isPostSuccessful && hasChanges(storedData, parsedData)) {
       store.write(parsedData.toData)
     }
+    Right()
   }
 
   private def hasChanges(storedData: Data, parsedData: ParsedData) =

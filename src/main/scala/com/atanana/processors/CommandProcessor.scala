@@ -18,5 +18,5 @@ class CommandProcessor @Inject()(pollProcessor: PollProcessor,
 }
 
 trait Processor {
-  def process()
+  def process(): Either[String, Unit]
 }
