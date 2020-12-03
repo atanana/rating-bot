@@ -15,16 +15,14 @@ class PollProcessor @Inject()(
                                checkResultHandler: CheckResultHandler
                              ) extends Processor {
 
-  override def process(): Either[String, Unit] = {
-    for {
-      parsedData <- pollingDataProvider.data
-      storedData = store.read
-      checkResult = checker.check(storedData, parsedData)
-      _ <- checkResultHandler.processCheckResult(checkResult)
-    } yield {
-      if (hasChanges(storedData, parsedData)) {
-        store.write(parsedData.toData)
-      }
+  override def process(): Either[String, Unit] = for {
+    parsedData <- pollingDataProvider.data
+    storedData = store.read
+    checkResult = checker.check(storedData, parsedData)
+    _ <- checkResultHandler.processCheckResult(checkResult)
+  } yield {
+    if (hasChanges(storedData, parsedData)) {
+      store.write(parsedData.toData)
     }
   }
 
