@@ -5,11 +5,12 @@ import com.atanana.data.{Data, Requisition}
 import com.atanana.json.JsonStore
 import com.atanana.posters.Poster
 import org.scalamock.scalatest.MockFactory
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
 import java.time.LocalDateTime
 
-class ReminderProcessorTest extends AnyWordSpecLike with MockFactory {
+class ReminderProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
   private val store = stub[JsonStore]
   private val messageComposer = stub[MessageComposer]
   private val poster = mock[Poster]
@@ -22,7 +23,7 @@ class ReminderProcessorTest extends AnyWordSpecLike with MockFactory {
       (messageComposer.composeRequisitionReminder _).when(requisition).returns("reminder")
       (poster.post _).expects("reminder") returns Right()
 
-      processor.process()
+      processor.process() shouldEqual Right()
     }
 
     "not remind about not tomorrow's requisitions" in {
@@ -34,7 +35,16 @@ class ReminderProcessorTest extends AnyWordSpecLike with MockFactory {
         Requisition("tournament 1", "agent 1", LocalDateTime.now().minusMonths(1))
       )))
 
-      processor.process()
+      processor.process() shouldEqual Right()
+    }
+
+    "pass error from poster" in {
+      val requisition = Requisition("tournament 1", "agent 1", LocalDateTime.now().plusDays(1))
+      (store.read _).when().returns(Data(Set.empty, Set(requisition)))
+      (messageComposer.composeRequisitionReminder _).when(requisition).returns("reminder")
+      (poster.post _).expects("reminder") returns Left("123")
+
+      processor.process() shouldEqual Left("123")
     }
   }
 }
