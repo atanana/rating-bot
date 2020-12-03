@@ -3,8 +3,9 @@ package com.atanana.posters
 import com.atanana.Connector
 import com.atanana.json.Config
 import com.typesafe.scalalogging.Logger
-import javax.inject.Inject
 import sttp.client3.UriContext
+
+import javax.inject.Inject
 
 class RealPoster @Inject()(connector: Connector, config: Config) extends Poster {
 
@@ -12,12 +13,9 @@ class RealPoster @Inject()(connector: Connector, config: Config) extends Poster 
 
   private val url = uri"https://api.telegram.org/bot${config.token}/sendMessage"
 
-  override def post(message: String): Unit = {
-    connector.post(url, params(message)).fold(
-      error => logger.error(error),
-      response => logger.debug(response)
-    )
-  }
+  override def post(message: String): Either[String, Unit] =
+    connector.post(url, params(message))
+      .map(response => logger.debug(response))
 
   private def params(message: String): Map[String, String] = Map(
     "chat_id" -> config.chat.toString,
