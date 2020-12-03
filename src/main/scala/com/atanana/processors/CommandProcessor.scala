@@ -11,7 +11,7 @@ class CommandProcessor @Inject()(pollProcessor: PollProcessor,
     "teamPositions" -> teamPositionsProcessor
   )
 
-  def processCommand(command: String): Unit = {
+  def processCommand(command: String): Either[String, Unit] = {
     val processor = processors.getOrElse(command, throw new RuntimeException(s"Unknown command $command!"))
     processor.process()
   }
