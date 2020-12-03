@@ -13,5 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+          java-package: jre
+
       - name: SBT Action
         uses: lokkju/github-action-sbt@v0.2.2
