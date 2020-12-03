@@ -12,7 +12,8 @@ import scala.concurrent.Future
 
 class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
-  def post(uri: Uri, params: Map[String, String]): Either[String, String] = netWrapper.post(uri, params)
+  def post(uri: Uri, params: Map[String, String]): Either[String, String] =
+    netWrapper.post(uri, params).left.map(error => s"Cannot post $params to $uri: $error")
 
   private def getPage(uri: Uri) = netWrapper.getPage(uri)
 

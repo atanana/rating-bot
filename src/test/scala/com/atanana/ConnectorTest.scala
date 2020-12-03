@@ -109,5 +109,12 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (wrapper.getPage _).when(url).returns(Left("123"))
       connector.getTournamentInfo(tournamentId) shouldEqual Left(s"Cannot get tournament info page($url): 123")
     }
+
+    "pass post error from wrapper" in {
+      val uri = uri"http://test.com"
+      val params = Map.empty[String, String]
+      (wrapper.post _).when(uri, params).returns(Left("123"))
+      connector.post(uri, params) shouldEqual Left(s"Cannot post Map() to $uri: 123")
+    }
   }
 }
