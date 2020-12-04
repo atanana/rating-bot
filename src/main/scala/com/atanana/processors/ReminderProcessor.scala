@@ -15,6 +15,6 @@ class ReminderProcessor @Inject()(store: JsonStore, messageComposer: MessageComp
     val messages = data.requisitions
       .filter(requisition => requisition.dateTime.toLocalDate == tomorrow)
       .map(messageComposer.composeRequisitionReminder)
-    eitherSet(messages.map(poster.post)).map(_ => Unit)
+    eitherSet(messages.map(poster.post)).map(_ => ())
   }
 }

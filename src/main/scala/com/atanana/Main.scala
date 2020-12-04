@@ -10,8 +10,8 @@ import java.net.{ConnectException, InetSocketAddress, SocketTimeoutException}
 import java.nio.channels.ServerSocketChannel
 import scala.util.{Failure, Success}
 
-object Main extends App {
-  override def main(args: Array[String]): Unit = {
+object Main {
+  def main(args: Array[String]): Unit = {
     val rootInjector = Guice.createInjector(new RatingModule)
     val jsonConfig = rootInjector.instance[JsonConfig]
     val isDebug = args.contains("-debug")

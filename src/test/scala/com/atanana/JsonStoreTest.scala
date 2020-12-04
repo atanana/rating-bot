@@ -1,22 +1,17 @@
 package com.atanana
 
-import java.time.LocalDateTime
-
 import com.atanana.data.{Data, Requisition, Tournament}
 import com.atanana.json.JsonStore
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
+import java.time.LocalDateTime
 import scala.util.{Failure, Success}
 
-class JsonStoreTest extends WordSpecLike with BeforeAndAfter with MockFactory with Matchers {
-  var fsHandler: FsHandler = _
-  var jsonStore: JsonStore = _
-
-  before {
-    fsHandler = mock[FsHandler]
-    jsonStore = new JsonStore(fsHandler)
-  }
+class JsonStoreTest extends AnyWordSpecLike with MockFactory with Matchers {
+  private val fsHandler = mock[FsHandler]
+  private val jsonStore = new JsonStore(fsHandler)
 
   "JsonStore" should {
     "write correct data" in {
@@ -28,6 +23,17 @@ class JsonStoreTest extends WordSpecLike with BeforeAndAfter with MockFactory wi
       val data = Data(tournaments, requisitions)
       val json =
         """{
+          |  "requisitions": [{
+          |    "agent": "test agent 1",
+          |    "dateTime": "2017-04-09T19:57:00",
+          |    "questionsCount": 36,
+          |    "tournament": "test tournament 1"
+          |  }, {
+          |    "agent": "test agent 2",
+          |    "dateTime": "2017-05-06T12:22:00",
+          |    "questionsCount": 45,
+          |    "tournament": "test tournament 2"
+          |  }],
           |  "tournaments": [{
           |    "id": 1,
           |    "score": 3
@@ -37,17 +43,6 @@ class JsonStoreTest extends WordSpecLike with BeforeAndAfter with MockFactory wi
           |  }, {
           |    "id": 3,
           |    "score": 1
-          |  }],
-          |  "requisitions": [{
-          |    "tournament": "test tournament 1",
-          |    "agent": "test agent 1",
-          |    "dateTime": "2017-04-09T19:57:00",
-          |    "questionsCount": 36
-          |  }, {
-          |    "tournament": "test tournament 2",
-          |    "agent": "test agent 2",
-          |    "dateTime": "2017-05-06T12:22:00",
-          |    "questionsCount": 45
           |  }]
           |}""".stripMargin
       (fsHandler.writeFile _).expects(json, JsonStore.FILE_NAME)

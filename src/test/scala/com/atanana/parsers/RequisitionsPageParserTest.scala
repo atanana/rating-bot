@@ -1,18 +1,20 @@
 package com.atanana.parsers
 
-import org.scalatest.{Matchers, WordSpecLike}
-import resource._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
 import scala.io.Source
-import scala.util.Success
+import scala.util.{Success, Using}
 
-class RequisitionsPageParserTest extends WordSpecLike with Matchers {
+class RequisitionsPageParserTest extends AnyWordSpecLike with Matchers {
+
   "RequisitionsPageParser" should {
+
     "parse valid teams count" in {
-      for (source <- managed(Source.fromFile("src/test/scala/com/atanana/parsers/requisitionsPage.html"))) {
-        val html = source.getLines().mkString
-        RequisitionsPageParser().additionalData("Кондратеня Андрей Александрович", html) shouldEqual Success(RequisitionAdditionalData("Минск", 1))
+      val html = Using.resource(Source.fromFile("src/test/scala/com/atanana/parsers/requisitionsPage.html")) {
+        _.getLines().mkString
       }
+      RequisitionsPageParser().additionalData("Кондратеня Андрей Александрович", html) shouldEqual Success(RequisitionAdditionalData("Минск", 1))
     }
   }
 }

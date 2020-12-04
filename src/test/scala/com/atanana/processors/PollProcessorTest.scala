@@ -27,7 +27,7 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (store.write _).expects(*)
       val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty), RequisitionsCheckResult(Set.empty, Set.empty))
       (checker.check _).when(storedData, parsedData).returns(checkResult)
-      (checkResultsHandler.processCheckResult _).expects(checkResult) returns Right(Unit)
+      (checkResultsHandler.processCheckResult _).expects(checkResult) returns Right()
 
       processor.process() shouldEqual Right()
     }
@@ -38,7 +38,7 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (store.read _).expects().returns(storedData)
       (store.write _).expects(parsedData.toData)
       (checker.check _).when(storedData, parsedData)
-      (checkResultsHandler.processCheckResult _).expects(*) returns Right(Unit)
+      (checkResultsHandler.processCheckResult _).expects(*) returns Right()
 
       processor.process() shouldEqual Right()
     }
@@ -48,7 +48,7 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
       val storedData = parsedData.toData
       (store.read _).expects().returns(storedData)
       (checker.check _).when(storedData, parsedData)
-      (checkResultsHandler.processCheckResult _).expects(*) returns Right(Unit)
+      (checkResultsHandler.processCheckResult _).expects(*) returns Right()
 
       processor.process() shouldEqual Right()
     }
@@ -59,7 +59,7 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
       parsedData = parsedData.copy(requisitions = Failure(new RuntimeException))
       (store.read _).expects().returns(storedData)
       (checker.check _).when(storedData, parsedData)
-      (checkResultsHandler.processCheckResult _).expects(*) returns Right(Unit)
+      (checkResultsHandler.processCheckResult _).expects(*) returns Right()
 
       processor.process() shouldEqual Right()
     }
