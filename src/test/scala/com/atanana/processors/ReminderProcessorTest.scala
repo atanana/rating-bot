@@ -1,6 +1,7 @@
 package com.atanana.processors
 
 import com.atanana.MessageComposer
+import com.atanana.TestUtils.getResult
 import com.atanana.data.{Data, Requisition}
 import com.atanana.json.JsonStore
 import com.atanana.posters.Poster
@@ -23,7 +24,7 @@ class ReminderProcessorTest extends AnyWordSpecLike with MockFactory with Matche
       (messageComposer.composeRequisitionReminder _).when(requisition).returns("reminder")
       (poster.post _).expects("reminder") returns Right()
 
-      processor.process() shouldEqual Right()
+      getResult(processor) shouldEqual Right()
     }
 
     "not remind about not tomorrow's requisitions" in {
@@ -35,7 +36,7 @@ class ReminderProcessorTest extends AnyWordSpecLike with MockFactory with Matche
         Requisition("tournament 1", "agent 1", LocalDateTime.now().minusMonths(1))
       )))
 
-      processor.process() shouldEqual Right()
+      getResult(processor) shouldEqual Right()
     }
 
     "pass error from poster" in {
@@ -44,7 +45,7 @@ class ReminderProcessorTest extends AnyWordSpecLike with MockFactory with Matche
       (messageComposer.composeRequisitionReminder _).when(requisition).returns("reminder")
       (poster.post _).expects("reminder") returns Left("123")
 
-      processor.process() shouldEqual Left("123")
+      getResult(processor) shouldEqual Left("123")
     }
   }
 }

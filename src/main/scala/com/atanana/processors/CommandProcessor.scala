@@ -1,6 +1,7 @@
 package com.atanana.processors
 
 import javax.inject.Inject
+import scala.concurrent.Future
 
 class CommandProcessor @Inject()(pollProcessor: PollProcessor,
                                  reminderProcessor: ReminderProcessor,
@@ -11,12 +12,12 @@ class CommandProcessor @Inject()(pollProcessor: PollProcessor,
     "teamPositions" -> teamPositionsProcessor
   )
 
-  def processCommand(command: String): Either[String, Unit] = {
+  def processCommand(command: String): Future[Either[String, Unit]] = {
     val processor = processors.getOrElse(command, throw new RuntimeException(s"Unknown command $command!"))
     processor.process()
   }
 }
 
 trait Processor {
-  def process(): Either[String, Unit]
+  def process(): Future[Either[String, Unit]]
 }

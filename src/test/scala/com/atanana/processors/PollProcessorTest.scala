@@ -1,6 +1,7 @@
 package com.atanana.processors
 
 import com.atanana.CheckResultHandler
+import com.atanana.TestUtils.getResult
 import com.atanana.checkers.MainChecker
 import com.atanana.data._
 import com.atanana.json.JsonStore
@@ -29,7 +30,7 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (checker.check _).when(storedData, parsedData).returns(checkResult)
       (checkResultsHandler.processCheckResult _).expects(checkResult) returns Right()
 
-      processor.process() shouldEqual Right()
+      getResult(processor) shouldEqual Right()
     }
 
     "save new data" in {
@@ -40,7 +41,7 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (checker.check _).when(storedData, parsedData)
       (checkResultsHandler.processCheckResult _).expects(*) returns Right()
 
-      processor.process() shouldEqual Right()
+      getResult(processor) shouldEqual Right()
     }
 
     "not save data when no changes" in {
@@ -50,7 +51,7 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (checker.check _).when(storedData, parsedData)
       (checkResultsHandler.processCheckResult _).expects(*) returns Right()
 
-      processor.process() shouldEqual Right()
+      getResult(processor) shouldEqual Right()
     }
 
     "not save data when requisitions failed" in {
@@ -61,12 +62,12 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (checker.check _).when(storedData, parsedData)
       (checkResultsHandler.processCheckResult _).expects(*) returns Right()
 
-      processor.process() shouldEqual Right()
+      getResult(processor) shouldEqual Right()
     }
 
     "no posts and saves when no data" in {
       (provider.data _).when().returns(Left("error"))
-      processor.process() shouldEqual Left("error")
+      getResult(processor) shouldEqual Left("error")
     }
 
     "not save data when posting failed" in {
@@ -77,7 +78,7 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (checker.check _).when(storedData, parsedData).returns(checkResult)
       (checkResultsHandler.processCheckResult _).expects(checkResult) returns Left("post error")
 
-      processor.process() shouldEqual Left("post error")
+      getResult(processor) shouldEqual Left("post error")
     }
   }
 

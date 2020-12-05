@@ -1,6 +1,7 @@
 package com.atanana.processors
 
 import com.atanana.MessageComposer
+import com.atanana.TestUtils.getResult
 import com.atanana.data.{TargetTeam, TeamPositionsInfo}
 import com.atanana.posters.Poster
 import com.atanana.providers.TeamPositionsInfoProvider
@@ -23,14 +24,14 @@ class TeamPositionsProcessorTest extends AnyWordSpecLike with MockFactory with M
       (messageComposer.composeTeamPositionsMessage _).when(info).returns("test message")
       (poster.post _).expects("test message") returns Right()
 
-      processor.process() shouldEqual Right()
+      getResult(processor) shouldEqual Right()
     }
 
     "pass error from provider" in {
       val targetTeam = TargetTeam("test team", "test city", 100)
       (provider.data _).when().returns(Left("123"))
 
-      processor.process() shouldEqual Left("123")
+      getResult(processor) shouldEqual Left("123")
     }
 
     "pass error from poster" in {
@@ -40,7 +41,7 @@ class TeamPositionsProcessorTest extends AnyWordSpecLike with MockFactory with M
       (messageComposer.composeTeamPositionsMessage _).when(info).returns("test message")
       (poster.post _).expects("test message") returns Left("123")
 
-      processor.process() shouldEqual Left("123")
+      getResult(processor) shouldEqual Left("123")
     }
   }
 }
