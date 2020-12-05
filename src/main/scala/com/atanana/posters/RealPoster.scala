@@ -6,6 +6,8 @@ import com.typesafe.scalalogging.Logger
 import sttp.client3.UriContext
 
 import javax.inject.Inject
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class RealPoster @Inject()(connector: Connector, config: Config) extends Poster {
 
@@ -23,6 +25,10 @@ class RealPoster @Inject()(connector: Connector, config: Config) extends Poster 
     "disable_web_page_preview" -> "true",
     "parse_mode" -> "Markdown"
   )
+
+  override def postAsync(message: String): Future[Either[String, Unit]] =
+    connector.postAsync(url, params(message))
+      .map(response => response.map(logger.debug(_)))
 }
 
 object RealPoster {

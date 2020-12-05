@@ -3,12 +3,15 @@ package com.atanana
 import com.atanana.json.Config
 import com.atanana.posters.RealPoster
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{FunSuite, Matchers}
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 import sttp.client3.UriContext
 
 import scala.collection.immutable.Map
+import scala.concurrent.Future
 
-class RealPosterTest extends FunSuite with MockFactory with Matchers {
+class RealPosterTest extends AnyFunSuite with MockFactory with Matchers {
+
   test("testPost") {
     val connector: Connector = mock[Connector]
     val poster: RealPoster = RealPoster(connector, Config("token", 123, 321, 456, 10000, "test city", "test country", List.empty))
@@ -20,8 +23,8 @@ class RealPosterTest extends FunSuite with MockFactory with Matchers {
       "disable_web_page_preview" -> "true",
       "parse_mode" -> "Markdown"
     )
-    (connector.post _).expects(uri"https://api.telegram.org/bottoken/sendMessage", params) returns Left("error")
+    (connector.postAsync _).expects(uri"https://api.telegram.org/bottoken/sendMessage", params) returns Future.successful(Left("error"))
 
-    poster.post(message)
+    poster.postAsync(message)
   }
 }
