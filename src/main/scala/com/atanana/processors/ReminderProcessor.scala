@@ -7,6 +7,7 @@ import com.atanana.utils.CollectionsUtils.eitherSet
 
 import java.time.LocalDate
 import javax.inject.Inject
+import scala.util.chaining.scalaUtilChainingOps
 
 class ReminderProcessor @Inject()(store: JsonStore, messageComposer: MessageComposer, poster: Poster) extends Processor {
   override def process(): Either[String, Unit] = {
@@ -15,6 +16,6 @@ class ReminderProcessor @Inject()(store: JsonStore, messageComposer: MessageComp
     val messages = data.requisitions
       .filter(requisition => requisition.dateTime.toLocalDate == tomorrow)
       .map(messageComposer.composeRequisitionReminder)
-    eitherSet(messages.map(poster.post)).map(_ => ())
+    messages.map(poster.post).pipe(eitherSet).map(_ => ())
   }
 }

@@ -4,7 +4,9 @@ import com.atanana.data.{CheckResult, RequisitionData}
 import com.atanana.posters.Poster
 import com.atanana.providers.TournamentInfoProvider
 import com.atanana.utils.CollectionsUtils.eitherSet
+
 import javax.inject.Inject
+import scala.util.chaining.scalaUtilChainingOps
 
 class CheckResultHandler @Inject()(
                                     poster: Poster,
@@ -19,7 +21,7 @@ class CheckResultHandler @Inject()(
     val tournaments = checkResult.tournamentsCheckResult
     val requisitions = checkResult.requisitionsCheckResult
     for {
-      newRequisitionsMessages <- eitherSet(requisitions.newRequisitions.map(getNewRequisitionMessage))
+      newRequisitionsMessages <- requisitions.newRequisitions.map(getNewRequisitionMessage).pipe(eitherSet)
       newTournamentsMessages = tournaments.newTournaments.map(messageComposer.composeNewResult)
       changedTournamentsMessages = tournaments.changedTournaments.map(messageComposer.composeChangedResult)
       cancelledRequisitionsMessages = requisitions.cancelledRequisitions.map(messageComposer.composeCancelledRequisition)
