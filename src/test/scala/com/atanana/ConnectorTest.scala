@@ -1,11 +1,15 @@
 package com.atanana
 
 import com.atanana.Connector.SITE_URL
+import com.atanana.TestUtils.await
 import com.atanana.json.Config
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import sttp.client3.UriContext
+
+import scala.concurrent.Future
+import scala.util.chaining.scalaUtilChainingOps
 
 class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
 
@@ -115,6 +119,13 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
       val params = Map.empty[String, String]
       (wrapper.post _).when(uri, params).returns(Left("123"))
       connector.post(uri, params) shouldEqual Left(s"Cannot post Map() to $uri: 123")
+    }
+
+    "pass post error from wrapper async" in {
+      val uri = uri"http://test.com"
+      val params = Map.empty[String, String]
+      (wrapper.postAsync _).when(uri, params).returns(Future.successful(Left("123")))
+      connector.postAsync(uri, params).pipe(await) shouldEqual Left(s"Cannot post Map() to $uri: 123")
     }
   }
 }
