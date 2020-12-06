@@ -7,6 +7,7 @@ import com.atanana.json.JsonStore
 import com.atanana.providers.PollingDataProvider
 
 import javax.inject.Inject
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class PollProcessor @Inject()(
@@ -17,8 +18,10 @@ class PollProcessor @Inject()(
                              ) extends Processor {
 
   override def process(): Future[Either[String, Unit]] = {
-    val result = for {
-      parsedData <- pollingDataProvider.data
+    for {
+      parsedDataEither <- pollingDataProvider.data
+    } yield for {
+      parsedData <- parsedDataEither
       storedData = store.read
       checkResult = checker.check(storedData, parsedData)
       _ <- checkResultHandler.processCheckResult(checkResult)
@@ -27,7 +30,6 @@ class PollProcessor @Inject()(
         store.write(parsedData.toData)
       }
     }
-    Future.successful(result)
   }
 
   private def hasChanges(storedData: Data, parsedData: ParsedData) =

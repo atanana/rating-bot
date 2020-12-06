@@ -1,6 +1,7 @@
 package com.atanana.providers
 
 import com.atanana.Connector
+import com.atanana.TestUtils.await
 import com.atanana.data.{ParsedData, PartialRequisitionData, TournamentData}
 import com.atanana.json.Config
 import com.atanana.parsers._
@@ -10,6 +11,7 @@ import org.scalatest.wordspec.AnyWordSpecLike
 
 import java.time.LocalDateTime
 import scala.concurrent.Future
+import scala.util.chaining.scalaUtilChainingOps
 import scala.util.{Failure, Success, Try}
 
 class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matchers {
@@ -35,12 +37,17 @@ class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matc
       setRequisitionData(Success(List(requisitionData)))
       (requisitionsPageParser.additionalData _).when(requisitionData.agent, tournamentRequisitionsPage).returns(Success(RequisitionAdditionalData("test", 5)))
 
-      provider.data shouldEqual Right(ParsedData(Set(tournamentData), Success(Set(requisitionData.toRequisitionData(36)))))
+      data shouldEqual Right(ParsedData(Set(tournamentData), Success(Set(requisitionData.toRequisitionData(36)))))
     }
 
     "pass team page error" in {
       (connector.getTeamPage _).when().returns(Future.successful(Left("team page error")))
-      provider.data shouldEqual Left("team page error")
+      data shouldEqual Left("team page error")
+    }
+
+    "pass team page error async" in {
+      (connector.getTeamPage _).when().returns(Future.failed(new RuntimeException("123")))
+      the[RuntimeException] thrownBy data should have message "123"
     }
 
     "should filter small requisitions" in {
@@ -55,7 +62,7 @@ class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matc
       setRequisitionData(Success(List(requisitionData1, requisitionData2, requisitionData3)))
       (requisitionsPageParser.additionalData _).when(*, *).onCall((_: String, page: String) => Success(RequisitionAdditionalData("test", page.toInt)))
 
-      provider.data shouldEqual Right(ParsedData(Set.empty, Success(Set(requisitionData2.toRequisitionData(36), requisitionData3.toRequisitionData(45)))))
+      data shouldEqual Right(ParsedData(Set.empty, Success(Set(requisitionData2.toRequisitionData(36), requisitionData3.toRequisitionData(45)))))
     }
 
     "should filter requisitions from ignored venues" in {
@@ -71,7 +78,7 @@ class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matc
       setRequisitionData(Success(List(requisitionData1, requisitionData2, requisitionData3)))
       (requisitionsPageParser.additionalData _).when(*, *).onCall((agent: String, page: String) => Success(RequisitionAdditionalData(agent, page.toInt)))
 
-      provider.data shouldEqual Right(ParsedData(Set.empty, Success(Set(requisitionData3.toRequisitionData(45)))))
+      data shouldEqual Right(ParsedData(Set.empty, Success(Set(requisitionData3.toRequisitionData(45)))))
     }
 
     "should filter failed requisitions" in {
@@ -88,7 +95,7 @@ class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matc
           if (page.toInt % 2 == 0) Success(RequisitionAdditionalData("test", 2)) else Failure(new RuntimeException)
       )
 
-      provider.data shouldEqual Right(ParsedData(Set.empty, Success(Set(requisitionData2.toRequisitionData(36)))))
+      data shouldEqual Right(ParsedData(Set.empty, Success(Set(requisitionData2.toRequisitionData(36)))))
     }
 
     "should pass failed requisitions" in {
@@ -97,7 +104,7 @@ class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matc
       val requisitionData = Failure(new RuntimeException)
       setRequisitionData(requisitionData)
 
-      provider.data shouldEqual Right(ParsedData(Set(tournamentData), requisitionData))
+      data shouldEqual Right(ParsedData(Set(tournamentData), requisitionData))
     }
   }
 
@@ -118,4 +125,6 @@ class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matc
     (connector.getRequisitionPage _).when().returns(Right(requisitionsPage))
     (requisitionsParser.getRequisitionsData _).when(requisitionsPage).returns(data)
   }
+
+  private def data = provider.data.pipe(await)
 }

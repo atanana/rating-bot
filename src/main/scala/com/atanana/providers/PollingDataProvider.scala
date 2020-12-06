@@ -21,12 +21,13 @@ class PollingDataProvider @Inject()(
                                      config: Config
                                    ) {
 
-  def data: Either[String, ParsedData] = {
+  def data: Future[Either[String, ParsedData]] =
     for {
-      newTournaments <- getNewTournaments
+      newTournamentsEither <- getNewTournaments
+    } yield for {
+      newTournaments <- newTournamentsEither
       newRequisitions = getNewRequisitions
     } yield ParsedData(newTournaments, newRequisitions)
-  }
 
   //todo refactor
   private def getNewRequisitions: Try[Set[RequisitionData]] = {
@@ -65,8 +66,11 @@ class PollingDataProvider @Inject()(
     ), Duration(10, TimeUnit.MINUTES))
   }
 
-  private def getNewTournaments = {
-    val page = Await.result(connector.getTeamPage, Duration(10, TimeUnit.MINUTES))
-    page.map(csvParser.getTournamentsData(_).toSet)
-  }
+  private def getNewTournaments =
+    for {
+      pageEither <- connector.getTeamPage
+    } yield for {
+      page <- pageEither
+      tournamentsData = csvParser.getTournamentsData(page)
+    } yield tournamentsData.toSet
 }
