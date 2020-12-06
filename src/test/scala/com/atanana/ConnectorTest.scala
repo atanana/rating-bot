@@ -53,14 +53,22 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
     }
 
     "get requisitions page by wrapper" in {
-      (wrapper.getPage _).when(uri"$SITE_URL/synch_town/${config.city}").returns(Right("requisitions page"))
-      connector.getRequisitionPage shouldEqual Right("requisitions page")
+      (wrapper.getPageAsync _).when(uri"$SITE_URL/synch_town/${config.city}").returns(Future.successful(Right("requisitions page")))
+      connector.getRequisitionPage.pipe(await) shouldEqual Right("requisitions page")
     }
 
     "pass requisitions page error from wrapper" in {
       val requisitionsUrl = uri"$SITE_URL/synch_town/${config.city}"
-      (wrapper.getPage _).when(requisitionsUrl).returns(Left("123"))
-      connector.getRequisitionPage shouldEqual Left(s"Cannot get requisitions page($requisitionsUrl): 123")
+      (wrapper.getPageAsync _).when(requisitionsUrl).returns(Future.successful(Left("123")))
+      connector.getRequisitionPage.pipe(await) shouldEqual Left(s"Cannot get requisitions page($requisitionsUrl): 123")
+    }
+
+    "pass requisitions page error from wrapper async" in {
+      val requisitionsUrl = uri"$SITE_URL/synch_town/${config.city}"
+      (wrapper.getPageAsync _).when(requisitionsUrl).returns(Future.failed(new RuntimeException("123")))
+      the[RuntimeException] thrownBy {
+        connector.getRequisitionPage.pipe(await)
+      } should have message "123"
     }
 
     "get teams page by wrapper" in {

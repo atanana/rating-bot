@@ -31,7 +31,7 @@ class PollingDataProvider @Inject()(
 
   //todo refactor
   private def getNewRequisitions: Try[Set[RequisitionData]] = {
-    val requisitionPage = connector.getRequisitionPage.right.get
+    val requisitionPage = Await.result(connector.getRequisitionPage, Duration(1, TimeUnit.MINUTES)).right.get
     requisitionsParser.getRequisitionsData(requisitionPage)
       .map(requisitions =>
         zipWithTeamsCount(requisitions.toSet)
