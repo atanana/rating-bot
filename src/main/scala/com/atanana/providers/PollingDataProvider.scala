@@ -1,13 +1,12 @@
 package com.atanana.providers
 
-import java.util.concurrent.TimeUnit
-
-import javax.inject.Inject
 import com.atanana.Connector
 import com.atanana.data.{ParsedData, PartialRequisitionData, RequisitionData}
 import com.atanana.json.Config
-import com.atanana.parsers.{CsvParser, RequisitionAdditionalData, RequisitionsPageParser, RequisitionsParser, TournamentInfoParser}
+import com.atanana.parsers._
 
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -66,6 +65,8 @@ class PollingDataProvider @Inject()(
     ), Duration(10, TimeUnit.MINUTES))
   }
 
-  private def getNewTournaments =
-    connector.getTeamPage.map(csvParser.getTournamentsData(_).toSet)
+  private def getNewTournaments = {
+    val page = Await.result(connector.getTeamPage, Duration(10, TimeUnit.MINUTES))
+    page.map(csvParser.getTournamentsData(_).toSet)
+  }
 }

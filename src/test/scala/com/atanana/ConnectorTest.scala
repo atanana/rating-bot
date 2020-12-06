@@ -21,14 +21,22 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
 
     "get team page by wrapper" in {
       val teamUrl = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
-      (wrapper.getPage _).when(teamUrl).returns(Right("team page"))
-      connector.getTeamPage shouldEqual Right("team page")
+      (wrapper.getPageAsync _).when(teamUrl).returns(Future.successful(Right("team page")))
+      connector.getTeamPage.pipe(await) shouldEqual Right("team page")
     }
 
     "pass team page error from wrapper" in {
       val teamUrl = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
-      (wrapper.getPage _).when(teamUrl).returns(Left("123"))
-      connector.getTeamPage shouldEqual Left(s"Cannot get team's page($teamUrl): 123")
+      (wrapper.getPageAsync _).when(teamUrl).returns(Future.successful(Left("123")))
+      connector.getTeamPage.pipe(await) shouldEqual Left(s"Cannot get team's page($teamUrl): 123")
+    }
+
+    "pass team page error from wrapper async" in {
+      val teamUrl = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
+      (wrapper.getPageAsync _).when(teamUrl).returns(Future.failed(new RuntimeException("123")))
+      the[RuntimeException] thrownBy {
+        connector.getTeamPage.pipe(await)
+      } should have message "123"
     }
 
     "get tournament page by wrapper" in {

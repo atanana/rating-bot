@@ -20,10 +20,14 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
   private def getPage(uri: Uri) = netWrapper.getPage(uri)
 
-  def getTeamPage: Either[String, String] = {
+  def getTeamPage: Future[Either[String, String]] = {
     val url = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
-    getPage(url).left.map(error => s"Cannot get team's page($url): $error")
+    for {
+      response <- getPageAsync(url)
+    } yield response.left.map(error => s"Cannot get team's page($url): $error")
   }
+
+  private def getPageAsync(uri: Uri) = netWrapper.getPageAsync(uri)
 
   def getTournamentPage(id: Int): Either[String, String] = {
     val url = uri"$SITE_URL/tournament/$id"

@@ -1,33 +1,25 @@
 package com.atanana.providers
 
-import java.time.LocalDateTime
-
 import com.atanana.Connector
 import com.atanana.data.{ParsedData, PartialRequisitionData, TournamentData}
 import com.atanana.json.Config
-import com.atanana.parsers.{CsvParser, RequisitionAdditionalData, RequisitionsPageParser, RequisitionsParser, TournamentInfoParser}
+import com.atanana.parsers._
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
+import java.time.LocalDateTime
+import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
 
-class PollingDataProviderTest extends WordSpecLike with MockFactory with Matchers with BeforeAndAfter {
-  var connector: Connector = _
-  var csvParser: CsvParser = _
-  var requisitionsParser: RequisitionsParser = _
-  var requisitionsPageParser: RequisitionsPageParser = _
-  var provider: PollingDataProvider = _
-  var tournamentInfoParser: TournamentInfoParser = _
-  val config: Config = Config("token", 1, 1, 1, 1, "test", "test", List("test venue 1", "test venue 2"))
-
-  before {
-    connector = stub[Connector]
-    csvParser = stub[CsvParser]
-    requisitionsParser = stub[RequisitionsParser]
-    requisitionsPageParser = stub[RequisitionsPageParser]
-    tournamentInfoParser = stub[TournamentInfoParser]
-    provider = new PollingDataProvider(connector, csvParser, requisitionsParser, requisitionsPageParser, tournamentInfoParser, config)
-  }
+class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matchers {
+  private val connector = stub[Connector]
+  private val csvParser = stub[CsvParser]
+  private val requisitionsParser = stub[RequisitionsParser]
+  private val requisitionsPageParser = stub[RequisitionsPageParser]
+  private val tournamentInfoParser = stub[TournamentInfoParser]
+  private val config: Config = Config("token", 1, 1, 1, 1, "test", "test", List("test venue 1", "test venue 2"))
+  private val provider = new PollingDataProvider(connector, csvParser, requisitionsParser, requisitionsPageParser, tournamentInfoParser, config)
 
   "PollingDataProvider" should {
 
@@ -47,7 +39,7 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
     }
 
     "pass team page error" in {
-      (connector.getTeamPage _).when().returns(Left("team page error"))
+      (connector.getTeamPage _).when().returns(Future.successful(Left("team page error")))
       provider.data shouldEqual Left("team page error")
     }
 
@@ -117,7 +109,7 @@ class PollingDataProviderTest extends WordSpecLike with MockFactory with Matcher
 
   private def setTournamentsData(data: List[TournamentData]): Unit = {
     val teamPage = "team page"
-    (connector.getTeamPage _).when().returns(Right(teamPage))
+    (connector.getTeamPage _).when().returns(Future.successful(Right(teamPage)))
     (csvParser.getTournamentsData _).when(teamPage).returns(data)
   }
 
