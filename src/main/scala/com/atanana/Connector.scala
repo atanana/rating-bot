@@ -56,9 +56,11 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
     getPage(url).left.map(error => s"Cannot get country teams page($url): $error")
   }
 
-  def getTournamentRequisitionsPage(tournamentId: Int): Either[String, String] = {
+  def getTournamentRequisitionsPage(tournamentId: Int): Future[Either[String, String]] = {
     val url = uri"$SITE_URL/tournament/$tournamentId/requests"
-    getPage(url).left.map(error => s"Cannot get tournament requisitions page($url): $error")
+    for {
+      response <- getPageAsync(url)
+    } yield response.left.map(error => s"Cannot get tournament requisitions page($url): $error")
   }
 
   def getTournamentInfo(tournamentId: Int): Either[String, String] = {

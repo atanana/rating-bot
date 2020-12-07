@@ -30,7 +30,7 @@ class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matc
       val tournamentRequisitionsPage = "tournament requisitions page"
       val tournamentData = mock[TournamentData]
       setTournamentsData(List(tournamentData))
-      (connector.getTournamentRequisitionsPage _).when(tournamentId).returns(Right(tournamentRequisitionsPage))
+      (connector.getTournamentRequisitionsPage _).when(tournamentId).returns(Future.successful(Right(tournamentRequisitionsPage)))
       setQuestionsCount(tournamentId, Success(36))
 
       val requisitionData = PartialRequisitionData("test tournament", tournamentId, "test agent", LocalDateTime.now())
@@ -51,7 +51,7 @@ class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matc
     }
 
     "should filter small requisitions" in {
-      (connector.getTournamentRequisitionsPage _).when(*).onCall((i: Int) => Right(i.toString))
+      (connector.getTournamentRequisitionsPage _).when(*).onCall((i: Int) => Future.successful(Right(i.toString)))
       setTournamentsData(List.empty)
       setQuestionsCount(2, Success(36))
       setQuestionsCount(3, Success(45))
@@ -66,7 +66,7 @@ class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matc
     }
 
     "should filter requisitions from ignored venues" in {
-      (connector.getTournamentRequisitionsPage _).when(*).onCall((i: Int) => Right(i.toString))
+      (connector.getTournamentRequisitionsPage _).when(*).onCall((i: Int) => Future.successful(Right(i.toString)))
       setTournamentsData(List.empty)
       setQuestionsCount(1, Success(36))
       setQuestionsCount(2, Success(36))
@@ -82,7 +82,7 @@ class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matc
     }
 
     "should filter failed requisitions" in {
-      (connector.getTournamentRequisitionsPage _).when(*).onCall((i: Int) => Right(i.toString))
+      (connector.getTournamentRequisitionsPage _).when(*).onCall((i: Int) => Future.successful(Right(i.toString)))
       setTournamentsData(List.empty)
       setQuestionsCount(2, Success(36))
 

@@ -48,7 +48,7 @@ class PollingDataProvider @Inject()(
     Await.result(Future.sequence(
       requisitions
         .map(requisition => Future {
-          val requisitionsPage = connector.getTournamentRequisitionsPage(requisition.tournamentId).right.get
+          val requisitionsPage = Await.result(connector.getTournamentRequisitionsPage(requisition.tournamentId), Duration(10, TimeUnit.MINUTES)).right.get
           requisitionsPageParser.additionalData(requisition.agent, requisitionsPage)
             .map(data => (requisition, data))
         })
