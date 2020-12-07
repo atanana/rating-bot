@@ -59,7 +59,7 @@ class PollingDataProvider @Inject()(
     Await.result(Future.sequence(
       requisitions
         .map(requisition => Future {
-          val requisitionsPage = connector.getTournamentInfo(requisition.tournamentId).right.get
+          val requisitionsPage = Await.result(connector.getTournamentInfo(requisition.tournamentId), Duration(10, TimeUnit.MINUTES)).right.get
           val questionsCount = tournamentInfoParser.getQuestionsCount(requisitionsPage).getOrElse(0)
           requisition.toRequisitionData(questionsCount)
         })

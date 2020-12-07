@@ -128,15 +128,24 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
 
     "get tournament info page by wrapper" in {
       val tournamentId = 111
-      (wrapper.getPage _).when(uri"$SITE_URL/api/tournaments/$tournamentId.json").returns(Right("tournament info page"))
-      connector.getTournamentInfo(tournamentId) shouldEqual Right("tournament info page")
+      (wrapper.getPageAsync _).when(uri"$SITE_URL/api/tournaments/$tournamentId.json").returns(Future.successful(Right("tournament info page")))
+      connector.getTournamentInfo(tournamentId).pipe(await) shouldEqual Right("tournament info page")
     }
 
     "pass tournament info page error from wrapper" in {
       val tournamentId = 111
       val url = uri"$SITE_URL/api/tournaments/$tournamentId.json"
-      (wrapper.getPage _).when(url).returns(Left("123"))
-      connector.getTournamentInfo(tournamentId) shouldEqual Left(s"Cannot get tournament info page($url): 123")
+      (wrapper.getPageAsync _).when(url).returns(Future.successful(Left("123")))
+      connector.getTournamentInfo(tournamentId).pipe(await) shouldEqual Left(s"Cannot get tournament info page($url): 123")
+    }
+
+    "pass tournament info page error from wrapper async" in {
+      val tournamentId = 111
+      val url = uri"$SITE_URL/api/tournaments/$tournamentId.json"
+      (wrapper.getPageAsync _).when(url).returns(Future.failed(new RuntimeException("123")))
+      the[RuntimeException] thrownBy {
+        connector.getTournamentInfo(tournamentId).pipe(await)
+      } should have message "123"
     }
 
     "pass post error from wrapper" in {

@@ -110,7 +110,7 @@ class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matc
 
   private def setQuestionsCount(tournamentId: Int, questionsCount: Try[Int]): Unit = {
     val page = s"tournament info $tournamentId"
-    (connector.getTournamentInfo _).when(tournamentId).returns(Right(page))
+    (connector.getTournamentInfo _).when(tournamentId).returns(Future.successful(Right(page)))
     (tournamentInfoParser.getQuestionsCount _).when(page).returns(questionsCount)
   }
 
