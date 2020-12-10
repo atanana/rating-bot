@@ -8,9 +8,8 @@ import net.codingwell.scalaguice.InjectorExtensions._
 
 import java.net.{ConnectException, InetSocketAddress, SocketTimeoutException}
 import java.nio.channels.ServerSocketChannel
-import java.util.concurrent.TimeUnit
 import scala.concurrent.Await
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration._
 import scala.util.{Failure, Success}
 
 object Main {
@@ -34,10 +33,11 @@ object Main {
 
     while (true) {
       try {
-        val commandOption = commandProvider.getCommand.get
-        commandOption.map(processor.processCommand)
-          .map(Await.result(_, Duration(10, TimeUnit.MINUTES)))
-          .map(_.left.map(logger.error(_)))
+        for {
+          command <- commandProvider.getCommand.get
+          future = processor.processCommand(command).value
+          result = Await.result(future, 10.minutes)
+        } yield result.left.map(logger.error("Error!", _))
       } catch {
         case e: SocketTimeoutException => logger.info("Timeout!", e)
         case e: ConnectException => logger.info("Connect error!", e)

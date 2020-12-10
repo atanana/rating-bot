@@ -1,5 +1,7 @@
 package com.atanana.processors
 
+import cats.data.EitherT
+
 import javax.inject.Inject
 import scala.concurrent.Future
 
@@ -12,12 +14,12 @@ class CommandProcessor @Inject()(pollProcessor: PollProcessor,
     "teamPositions" -> teamPositionsProcessor
   )
 
-  def processCommand(command: String): Future[Either[String, Unit]] = {
+  def processCommand(command: String): EitherT[Future, Throwable, Unit] = {
     val processor = processors.getOrElse(command, throw new RuntimeException(s"Unknown command $command!"))
     processor.process()
   }
 }
 
 trait Processor {
-  def process(): Future[Either[String, Unit]]
+  def process(): EitherT[Future, Throwable, Unit]
 }

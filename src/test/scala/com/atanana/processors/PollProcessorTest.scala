@@ -1,7 +1,7 @@
 package com.atanana.processors
 
 import com.atanana.CheckResultHandler
-import com.atanana.TestUtils.getResult
+import com.atanana.TestUtils.{getResult, getResultErrorMessage}
 import com.atanana.checkers.MainChecker
 import com.atanana.data._
 import com.atanana.json.JsonStore
@@ -68,7 +68,7 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
 
     "no posts and saves when no data" in {
       (provider.data _).when().returns(Future.successful(Left("error")))
-      getResult(processor) shouldEqual Left("error")
+      getResultErrorMessage(processor) shouldEqual "error"
     }
 
     "no posts and saves when no data async" in {
@@ -84,7 +84,7 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (checker.check _).when(storedData, parsedData).returns(checkResult)
       (checkResultsHandler.processCheckResult _).expects(checkResult) returns Left("post error")
 
-      getResult(processor) shouldEqual Left("post error")
+      getResultErrorMessage(processor) shouldEqual "post error"
     }
   }
 

@@ -1,7 +1,7 @@
 package com.atanana.processors
 
 import com.atanana.MessageComposer
-import com.atanana.TestUtils.getResult
+import com.atanana.TestUtils.{getResult, getResultErrorMessage}
 import com.atanana.data.{Data, Requisition}
 import com.atanana.json.JsonStore
 import com.atanana.posters.Poster
@@ -45,7 +45,7 @@ class ReminderProcessorTest extends AnyWordSpecLike with MockFactory with Matche
       (messageComposer.composeRequisitionReminder _).when(requisition).returns("reminder")
       (poster.post _).expects("reminder") returns Left("123")
 
-      getResult(processor) shouldEqual Left("123")
+      getResultErrorMessage(processor) shouldEqual "123"
     }
   }
 }

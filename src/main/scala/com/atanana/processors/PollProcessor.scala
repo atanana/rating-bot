@@ -1,5 +1,6 @@
 package com.atanana.processors
 
+import cats.data.EitherT
 import com.atanana.CheckResultHandler
 import com.atanana.checkers.MainChecker
 import com.atanana.data.{Data, ParsedData}
@@ -17,8 +18,8 @@ class PollProcessor @Inject()(
                                checkResultHandler: CheckResultHandler
                              ) extends Processor {
 
-  override def process(): Future[Either[String, Unit]] = {
-    for {
+  override def process(): EitherT[Future, Throwable, Unit] = {
+    val result = for {
       parsedDataEither <- pollingDataProvider.data
     } yield for {
       parsedData <- parsedDataEither
@@ -30,6 +31,7 @@ class PollProcessor @Inject()(
         store.write(parsedData.toData)
       }
     }
+    EitherT(result).leftMap(new RuntimeException(_))
   }
 
   private def hasChanges(storedData: Data, parsedData: ParsedData) =
