@@ -1,7 +1,7 @@
 package com.atanana
 
 import com.atanana.Connector.SITE_URL
-import com.atanana.TestUtils.await
+import com.atanana.TestUtils.{await, awaitEither, awaitError}
 import com.atanana.json.Config
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
@@ -22,21 +22,23 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
     "get team page by wrapper" in {
       val teamUrl = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
       (wrapper.getPageAsync _).when(teamUrl).returns(Future.successful(Right("team page")))
-      connector.getTeamPage.pipe(await) shouldEqual Right("team page")
+      connector.getTeamPage.pipe(awaitEither) shouldEqual Right("team page")
     }
 
     "pass team page error from wrapper" in {
       val teamUrl = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
       (wrapper.getPageAsync _).when(teamUrl).returns(Future.successful(Left("123")))
-      connector.getTeamPage.pipe(await) shouldEqual Left(s"Cannot get team's page($teamUrl): 123")
+      val exception = connector.getTeamPage.pipe(awaitError)
+      exception shouldBe a[ConnectorException]
+      exception should have message "123"
     }
 
-    "pass team page error from wrapper async" in {
+    "wrap page error from wrapper" in {
       val teamUrl = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
       (wrapper.getPageAsync _).when(teamUrl).returns(Future.failed(new RuntimeException("123")))
-      the[RuntimeException] thrownBy {
-        connector.getTeamPage.pipe(await)
-      } should have message "123"
+      val exception = connector.getTeamPage.pipe(awaitError)
+      exception shouldBe a[ConnectorException]
+      exception.getCause should have message "123"
     }
 
     "get tournament page by wrapper" in {
@@ -54,21 +56,15 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
 
     "get requisitions page by wrapper" in {
       (wrapper.getPageAsync _).when(uri"$SITE_URL/synch_town/${config.city}").returns(Future.successful(Right("requisitions page")))
-      connector.getRequisitionPage.pipe(await) shouldEqual Right("requisitions page")
+      connector.getRequisitionPage.pipe(awaitEither) shouldEqual Right("requisitions page")
     }
 
     "pass requisitions page error from wrapper" in {
       val requisitionsUrl = uri"$SITE_URL/synch_town/${config.city}"
       (wrapper.getPageAsync _).when(requisitionsUrl).returns(Future.successful(Left("123")))
-      connector.getRequisitionPage.pipe(await) shouldEqual Left(s"Cannot get requisitions page($requisitionsUrl): 123")
-    }
-
-    "pass requisitions page error from wrapper async" in {
-      val requisitionsUrl = uri"$SITE_URL/synch_town/${config.city}"
-      (wrapper.getPageAsync _).when(requisitionsUrl).returns(Future.failed(new RuntimeException("123")))
-      the[RuntimeException] thrownBy {
-        connector.getRequisitionPage.pipe(await)
-      } should have message "123"
+      val exception = connector.getRequisitionPage.pipe(awaitError)
+      exception shouldBe a[ConnectorException]
+      exception should have message "123"
     }
 
     "get teams page by wrapper" in {
@@ -107,45 +103,31 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
     "get tournament requisitions page by wrapper" in {
       val tournamentId = 111
       (wrapper.getPageAsync _).when(uri"$SITE_URL/tournament/$tournamentId/requests").returns(Future.successful(Right("tournament requests page")))
-      connector.getTournamentRequisitionsPage(tournamentId).pipe(await) shouldEqual Right("tournament requests page")
+      connector.getTournamentRequisitionsPage(tournamentId).pipe(awaitEither) shouldEqual Right("tournament requests page")
     }
 
     "pass tournament requisitions page error from wrapper" in {
       val tournamentId = 111
       val url = uri"$SITE_URL/tournament/$tournamentId/requests"
       (wrapper.getPageAsync _).when(url).returns(Future.successful(Left("123")))
-      connector.getTournamentRequisitionsPage(tournamentId).pipe(await) shouldEqual Left(s"Cannot get tournament requisitions page($url): 123")
-    }
-
-    "pass tournament requisitions page error from wrapper async" in {
-      val tournamentId = 111
-      val url = uri"$SITE_URL/tournament/$tournamentId/requests"
-      (wrapper.getPageAsync _).when(url).returns(Future.failed(new RuntimeException("123")))
-      the[RuntimeException] thrownBy {
-        connector.getTournamentRequisitionsPage(tournamentId).pipe(await)
-      } should have message "123"
+      val exception = connector.getTournamentRequisitionsPage(tournamentId).pipe(awaitError)
+      exception shouldBe a[ConnectorException]
+      exception should have message "123"
     }
 
     "get tournament info page by wrapper" in {
       val tournamentId = 111
       (wrapper.getPageAsync _).when(uri"$SITE_URL/api/tournaments/$tournamentId.json").returns(Future.successful(Right("tournament info page")))
-      connector.getTournamentInfo(tournamentId).pipe(await) shouldEqual Right("tournament info page")
+      connector.getTournamentInfo(tournamentId).pipe(awaitEither) shouldEqual Right("tournament info page")
     }
 
     "pass tournament info page error from wrapper" in {
       val tournamentId = 111
       val url = uri"$SITE_URL/api/tournaments/$tournamentId.json"
       (wrapper.getPageAsync _).when(url).returns(Future.successful(Left("123")))
-      connector.getTournamentInfo(tournamentId).pipe(await) shouldEqual Left(s"Cannot get tournament info page($url): 123")
-    }
-
-    "pass tournament info page error from wrapper async" in {
-      val tournamentId = 111
-      val url = uri"$SITE_URL/api/tournaments/$tournamentId.json"
-      (wrapper.getPageAsync _).when(url).returns(Future.failed(new RuntimeException("123")))
-      the[RuntimeException] thrownBy {
-        connector.getTournamentInfo(tournamentId).pipe(await)
-      } should have message "123"
+      val exception = connector.getTournamentInfo(tournamentId).pipe(awaitError)
+      exception shouldBe a[ConnectorException]
+      exception should have message "123"
     }
 
     "pass post error from wrapper" in {

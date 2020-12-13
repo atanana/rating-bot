@@ -1,5 +1,6 @@
 package com.atanana
 
+import cats.data.EitherT
 import com.atanana.Connector.SITE_URL
 import com.atanana.json.Config
 import sttp.client3._
@@ -20,25 +21,24 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
   private def getPage(uri: Uri) = netWrapper.getPage(uri)
 
-  def getTeamPage: Future[Either[String, String]] = {
+  def getTeamPage: EitherT[Future, Throwable, String] = {
     val url = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
-    for {
-      response <- getPageAsync(url)
-    } yield response.left.map(error => s"Cannot get team's page($url): $error")
+    getPageAsync(url)
   }
 
-  private def getPageAsync(uri: Uri) = netWrapper.getPageAsync(uri)
+  def getRequisitionPage: EitherT[Future, Throwable, String] = {
+    val url = uri"$SITE_URL/synch_town/${config.city}"
+    getPageAsync(url)
+  }
 
   def getTournamentPage(id: Int): Either[String, String] = {
     val url = uri"$SITE_URL/tournament/$id"
     getPage(url).left.map(error => s"Cannot get tournament's page($url): $error")
   }
 
-  def getRequisitionPage: Future[Either[String, String]] = {
-    val url = uri"$SITE_URL/synch_town/${config.city}"
-    for {
-      response <- getPageAsync(url)
-    } yield response.left.map(error => s"Cannot get requisitions page($url): $error")
+  def getTournamentRequisitionsPage(tournamentId: Int): EitherT[Future, Throwable, String] = {
+    val url = uri"$SITE_URL/tournament/$tournamentId/requests"
+    getPageAsync(url)
   }
 
   def getTeamsPage: Either[String, String] = {
@@ -56,25 +56,29 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
     getPage(url).left.map(error => s"Cannot get country teams page($url): $error")
   }
 
-  def getTournamentRequisitionsPage(tournamentId: Int): Future[Either[String, String]] = {
-    val url = uri"$SITE_URL/tournament/$tournamentId/requests"
-    for {
-      response <- getPageAsync(url)
-    } yield response.left.map(error => s"Cannot get tournament requisitions page($url): $error")
+  def getTournamentInfo(tournamentId: Int): EitherT[Future, Throwable, String] = {
+    val url = uri"$SITE_URL/api/tournaments/$tournamentId.json"
+    getPageAsync(url)
   }
 
-  def getTournamentInfo(tournamentId: Int): Future[Either[String, String]] = {
-    val url = uri"$SITE_URL/api/tournaments/$tournamentId.json"
-    for {
-      response <- getPageAsync(url)
-    } yield response.left.map(error => s"Cannot get tournament info page($url): $error")
-  }
+  private def getPageAsync(uri: Uri): EitherT[Future, Throwable, String] =
+    EitherT(
+      netWrapper.getPageAsync(uri)
+        .map(_.left.map(error => new ConnectorException(uri, error)))
+        .recover(exception => Left(new ConnectorException(uri, cause = exception)))
+    )
 }
 
 object Connector {
   val SITE_URL = "https://rating.chgk.info"
   val TOURNAMENT_URL_TEMPLATE: String = SITE_URL + "/tournament/"
 }
+
+class ConnectorException(
+                          val uri: Uri,
+                          message: String = null,
+                          cause: Throwable = null
+                        ) extends RuntimeException(message, cause)
 
 class NetWrapper {
   private val backend = HttpURLConnectionBackend()

@@ -1,16 +1,15 @@
 package com.atanana.providers
 
+import cats.data.EitherT
+import cats.implicits._
 import com.atanana.Connector
-import com.atanana.data.{ParsedData, PartialRequisitionData, RequisitionData}
+import com.atanana.data.{ParsedData, PartialRequisitionData, RequisitionData, TournamentData}
 import com.atanana.json.Config
 import com.atanana.parsers._
 
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, Future}
-import scala.util.Try
+import scala.concurrent.Future
 
 class PollingDataProvider @Inject()(
                                      connector: Connector,
@@ -21,56 +20,50 @@ class PollingDataProvider @Inject()(
                                      config: Config
                                    ) {
 
-  def data: Future[Either[String, ParsedData]] =
+  def data: EitherT[Future, Throwable, ParsedData] =
     for {
-      newTournamentsEither <- getNewTournaments
-    } yield for {
-      newTournaments <- newTournamentsEither
-      newRequisitions = getNewRequisitions
+      newTournaments <- getNewTournaments
+      newRequisitions <- getNewRequisitions
     } yield ParsedData(newTournaments, newRequisitions)
 
-  //todo refactor
-  private def getNewRequisitions: Try[Set[RequisitionData]] = {
-    val requisitionPage = Await.result(connector.getRequisitionPage, Duration(1, TimeUnit.MINUTES)).right.get
-    requisitionsParser.getRequisitionsData(requisitionPage)
-      .map(requisitions =>
-        zipWithTeamsCount(requisitions.toSet)
-          .filter({ case (_, additionalData) => checkRequisition(additionalData) })
-          .map({ case (requisition, _) => requisition })
-      )
-      .map(addQuestionCount)
-  }
-
-  private def checkRequisition(additionalData: RequisitionAdditionalData) =
-    additionalData.teamsCount > 1 && !config.ignoredVenues.contains(additionalData.venue)
-
-  private def zipWithTeamsCount(requisitions: Set[PartialRequisitionData]) =
-    Await.result(Future.sequence(
-      requisitions
-        .map(requisition => Future {
-          val requisitionsPage = Await.result(connector.getTournamentRequisitionsPage(requisition.tournamentId), Duration(10, TimeUnit.MINUTES)).right.get
-          requisitionsPageParser.additionalData(requisition.agent, requisitionsPage)
-            .map(data => (requisition, data))
-        })
-    ), Duration(10, TimeUnit.MINUTES))
-      .flatMap(_.toOption.toList)
-
-  private def addQuestionCount(requisitions: Set[PartialRequisitionData]): Set[RequisitionData] = {
-    Await.result(Future.sequence(
-      requisitions
-        .map(requisition => Future {
-          val requisitionsPage = Await.result(connector.getTournamentInfo(requisition.tournamentId), Duration(10, TimeUnit.MINUTES)).right.get
-          val questionsCount = tournamentInfoParser.getQuestionsCount(requisitionsPage).getOrElse(0)
-          requisition.toRequisitionData(questionsCount)
-        })
-    ), Duration(10, TimeUnit.MINUTES))
-  }
-
-  private def getNewTournaments =
+  private def getNewRequisitions: EitherT[Future, Throwable, Set[RequisitionData]] =
     for {
-      pageEither <- connector.getTeamPage
+      requisitionsPage <- connector.getRequisitionPage
+      requisitions <- EitherT.fromEither[Future](requisitionsParser.getRequisitionsData(requisitionsPage).toEither)
+      filteredRequisitions <- filterRequisitions(requisitions.toSet)
+      results <- addQuestionsCount(filteredRequisitions)
+    } yield results
+
+  private def filterRequisitions(requisitions: Set[PartialRequisitionData]): EitherT[Future, Throwable, Set[PartialRequisitionData]] = {
+    for {
+      results <- requisitions.toList.traverse(requisition =>
+        checkRequisitionAsync(requisition).map((_, requisition))
+      ).map(_.toSet)
     } yield for {
-      page <- pageEither
-      tournamentsData = csvParser.getTournamentsData(page)
-    } yield tournamentsData.toSet
+      (checkResult, requisition) <- results
+      if checkResult
+    } yield requisition
+  }
+
+  private def checkRequisitionAsync(requisition: PartialRequisitionData): EitherT[Future, Throwable, Boolean] =
+    for {
+      requisitionsPage <- connector.getTournamentRequisitionsPage(requisition.tournamentId)
+      data <- EitherT.fromEither[Future](requisitionsPageParser.additionalData(requisition.agent, requisitionsPage).toEither)
+    } yield data.teamsCount > 1 && !config.ignoredVenues.contains(data.venue)
+
+  private def addQuestionsCount(requisitions: Set[PartialRequisitionData]): EitherT[Future, Throwable, Set[RequisitionData]] =
+    requisitions.toList.traverse(requisition =>
+      getQuestionCount(requisition.tournamentId).map(requisition.toRequisitionData)
+    ).map(_.toSet)
+
+  private def getQuestionCount(tournamentId: Int): EitherT[Future, Throwable, Int] =
+    for {
+      tournamentInfo <- connector.getTournamentInfo(tournamentId)
+      questionsCount <- EitherT.fromEither[Future](tournamentInfoParser.getQuestionsCount(tournamentInfo).toEither)
+    } yield questionsCount
+
+  private def getNewTournaments: EitherT[Future, Throwable, Set[TournamentData]] =
+    for {
+      page <- connector.getTeamPage
+    } yield csvParser.getTournamentsData(page).toSet
 }

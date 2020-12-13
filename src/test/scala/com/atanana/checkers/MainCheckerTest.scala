@@ -1,13 +1,11 @@
 package com.atanana.checkers
 
-import java.time.LocalDateTime
-
 import com.atanana.data._
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
-import scala.util.{Failure, Success}
+import java.time.LocalDateTime
 
 class MainCheckerTest extends AnyWordSpecLike with MockFactory with Matchers {
 
@@ -30,15 +28,7 @@ class MainCheckerTest extends AnyWordSpecLike with MockFactory with Matchers {
       (tournamentsChecker.check _).when(data.tournaments, newTournaments).returns(tournamentsCheckResult)
       (requisitionsChecker.check _).when(data.requisitions, newRequisitions).returns(requisitionsCheckResult)
 
-      checker.check(data, ParsedData(newTournaments, Success(newRequisitions))) shouldEqual CheckResult(tournamentsCheckResult, requisitionsCheckResult)
-    }
-
-    "return empty requisition result when no success requisitions" in {
-      val data = Data(Set.empty, Set.empty)
-      val tournamentsCheckResult = TournamentsCheckResult(Set.empty, Set.empty)
-      (tournamentsChecker.check _).when(*, *).returns(tournamentsCheckResult)
-
-      checker.check(data, ParsedData(Set.empty, Failure(new RuntimeException))) shouldEqual CheckResult(tournamentsCheckResult, RequisitionsCheckResult.EMPTY)
+      checker.check(data, ParsedData(newTournaments, newRequisitions)) shouldEqual CheckResult(tournamentsCheckResult, requisitionsCheckResult)
     }
 
     "return no new tournaments on first run" in {
@@ -50,7 +40,7 @@ class MainCheckerTest extends AnyWordSpecLike with MockFactory with Matchers {
       )
       (requisitionsChecker.check _).when(*, *).returns(mock[RequisitionsCheckResult])
 
-      checker.check(data, ParsedData(newTournaments, Success(Set.empty))).tournamentsCheckResult shouldEqual TournamentsCheckResult(Set.empty, Set(ChangedTournament(tournament, 4)))
+      checker.check(data, ParsedData(newTournaments, Set.empty)).tournamentsCheckResult shouldEqual TournamentsCheckResult(Set.empty, Set(ChangedTournament(tournament, 4)))
     }
   }
 }
