@@ -1,24 +1,18 @@
 package com.atanana
 
+import org.scalamock.scalatest.MockFactory
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
+
 import java.nio.ByteBuffer
 import java.nio.channels.spi.SelectorProvider
 import java.nio.channels.{ServerSocketChannel, SocketChannel}
-
-import org.scalamock.scalatest.MockFactory
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
-
 import scala.util.Success
 
-class CommandProviderTest extends WordSpecLike with MockFactory with BeforeAndAfter with Matchers {
-  var socket: ServerSocketChannel = _
-  var socketChannel: SocketChannel = _
-  var provider: CommandProvider = _
-
-  before {
-    socket = stub[TestSocket]
-    socketChannel = stub[TestSocketChannel]
-    provider = new CommandProvider(socket)
-  }
+class CommandProviderTest extends AnyWordSpecLike with MockFactory with Matchers {
+  private val socket = stub[TestSocket]
+  private val socketChannel = stub[TestSocketChannel]
+  private val provider = new CommandProvider(socket)
 
   "CommandProvider" should {
     "provide no command when socket is null" in {
