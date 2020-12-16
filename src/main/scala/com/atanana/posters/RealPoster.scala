@@ -16,10 +16,6 @@ class RealPoster @Inject()(connector: Connector, config: Config) extends Poster 
 
   private val url = uri"https://api.telegram.org/bot${config.token}/sendMessage"
 
-  override def post(message: String): Either[String, Unit] =
-    connector.post(url, params(message))
-      .map(response => logger.debug(response))
-
   private def params(message: String): Map[String, String] = Map(
     "chat_id" -> config.chat.toString,
     "text" -> message,
