@@ -1,5 +1,6 @@
 package com.atanana.processors
 
+import cats.data.EitherT
 import com.atanana.MessageComposer
 import com.atanana.TestUtils.{getResult, getResultErrorMessage}
 import com.atanana.data.{Data, Requisition}
@@ -10,6 +11,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
 import java.time.LocalDateTime
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class ReminderProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
   private val store = stub[JsonStore]
@@ -22,7 +24,7 @@ class ReminderProcessorTest extends AnyWordSpecLike with MockFactory with Matche
       val requisition = Requisition("tournament 1", "agent 1", LocalDateTime.now().plusDays(1))
       (store.read _).when().returns(Data(Set.empty, Set(requisition)))
       (messageComposer.composeRequisitionReminder _).when(requisition).returns("reminder")
-      (poster.post _).expects("reminder") returns Right()
+      (poster.postAsync _).expects("reminder") returns EitherT.rightT(())
 
       getResult(processor) shouldEqual Right()
     }
@@ -43,7 +45,7 @@ class ReminderProcessorTest extends AnyWordSpecLike with MockFactory with Matche
       val requisition = Requisition("tournament 1", "agent 1", LocalDateTime.now().plusDays(1))
       (store.read _).when().returns(Data(Set.empty, Set(requisition)))
       (messageComposer.composeRequisitionReminder _).when(requisition).returns("reminder")
-      (poster.post _).expects("reminder") returns Left("123")
+      (poster.postAsync _).expects("reminder") returns EitherT.leftT(new RuntimeException("123"))
 
       getResultErrorMessage(processor) shouldEqual "123"
     }

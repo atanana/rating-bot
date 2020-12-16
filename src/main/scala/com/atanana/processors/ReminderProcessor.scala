@@ -1,10 +1,10 @@
 package com.atanana.processors
 
 import cats.data.EitherT
+import cats.implicits.toTraverseOps
 import com.atanana.MessageComposer
 import com.atanana.json.JsonStore
 import com.atanana.posters.Poster
-import com.atanana.utils.CollectionsUtils.EitherSet
 
 import java.time.LocalDate
 import javax.inject.Inject
@@ -19,7 +19,6 @@ class ReminderProcessor @Inject()(store: JsonStore, messageComposer: MessageComp
     val messages = data.requisitions
       .filter(requisition => requisition.dateTime.toLocalDate == tomorrow)
       .map(messageComposer.composeRequisitionReminder)
-    val result = messages.map(poster.post).unwrap().map(_ => ())
-    EitherT(Future.successful(result)).leftMap(new RuntimeException(_))
+    messages.map(poster.postAsync).toList.sequence.map(_ => ())
   }
 }
