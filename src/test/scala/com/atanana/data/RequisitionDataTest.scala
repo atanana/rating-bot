@@ -1,10 +1,11 @@
 package com.atanana.data
 
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
+
 import java.time.LocalDateTime
 
-import org.scalatest.{Matchers, WordSpecLike}
-
-class RequisitionDataTest extends WordSpecLike with Matchers {
+class RequisitionDataTest extends AnyWordSpecLike with Matchers {
   "RequisitionData" should {
     "correct convert itself" in {
       val time = LocalDateTime.now()

@@ -1,10 +1,11 @@
 package com.atanana.parsers
 
-import org.scalatest.{Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
 import scala.util.Success
 
-class TournamentInfoParserTest extends WordSpecLike with Matchers {
+class TournamentInfoParserTest extends AnyWordSpecLike with Matchers {
   val parser = new TournamentInfoParser()
 
   "TournamentInfoParser" should {

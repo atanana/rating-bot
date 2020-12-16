@@ -1,11 +1,12 @@
 package com.atanana
 
+import com.atanana.data._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
+
 import java.time.LocalDateTime
 
-import com.atanana.data._
-import org.scalatest.{Matchers, WordSpecLike}
-
-class MessageComposerTest extends WordSpecLike with Matchers {
+class MessageComposerTest extends AnyWordSpecLike with Matchers {
   "MessageComposer" should {
     "valid message new result 1" in {
       MessageComposer().composeNewResult(TournamentData(123, "test name", "test link", 123, -33, 0)) shouldEqual

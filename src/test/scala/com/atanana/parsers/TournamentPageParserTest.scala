@@ -1,12 +1,13 @@
 package com.atanana.parsers
 
 import com.atanana.data.Editor
-import org.scalatest.{Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
 import scala.io.Source
 
 //noinspection SourceNotClosed
-class TournamentPageParserTest extends WordSpecLike with Matchers {
+class TournamentPageParserTest extends AnyWordSpecLike with Matchers {
   "TournamentPageParser" should {
     "provide correct editors data" in {
       val html = Source.fromFile("src/test/scala/com/atanana/parsers/editorsTest.html", "cp1251").getLines().mkString

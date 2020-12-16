@@ -1,9 +1,10 @@
 package com.atanana.checkers
 
 import com.atanana.data.{ChangedTournament, Tournament, TournamentData}
-import org.scalatest.{Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
-class TournamentsCheckerTest extends WordSpecLike with Matchers {
+class TournamentsCheckerTest extends AnyWordSpecLike with Matchers {
   "TournamentsChecker" should {
     "provide valid new tournaments data" in {
       TournamentsChecker().check(Set(

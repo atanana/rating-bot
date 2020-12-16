@@ -1,11 +1,12 @@
 package com.atanana.checkers
 
+import com.atanana.data.{Requisition, RequisitionData}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
+
 import java.time.{LocalDateTime, ZoneId}
 
-import com.atanana.data.{Requisition, RequisitionData}
-import org.scalatest.{Matchers, WordSpecLike}
-
-class RequisitionsCheckerTest extends WordSpecLike with Matchers {
+class RequisitionsCheckerTest extends AnyWordSpecLike with Matchers {
   private val now = LocalDateTime.now(ZoneId.of("Europe/Moscow"))
 
   "RequisitionsCheckerTest" should {

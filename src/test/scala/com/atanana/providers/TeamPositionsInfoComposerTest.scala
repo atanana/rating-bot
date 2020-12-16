@@ -1,11 +1,10 @@
 package com.atanana.providers
 
 import com.atanana.data.{TargetTeam, Team, TeamPositionsInfo}
-import org.scalatest.{Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
-import scala.util.{Failure, Success}
-
-class TeamPositionsInfoComposerTest extends WordSpecLike with Matchers {
+class TeamPositionsInfoComposerTest extends AnyWordSpecLike with Matchers {
   val teamId = 123
   val provider = new TeamPositionsInfoComposer(teamId)
 

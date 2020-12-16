@@ -1,20 +1,14 @@
 package com.atanana.processors
 
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
-class CommandProcessorTest extends WordSpecLike with MockFactory with BeforeAndAfter with Matchers {
-  var pollProcessor: PollProcessor = _
-  var reminderProcessor: ReminderProcessor = _
-  var teamPositionsProcessor: TeamPositionsProcessor = _
-  var commandProcessor: CommandProcessor = _
-
-  before {
-    pollProcessor = mock[PollProcessor]
-    reminderProcessor = mock[ReminderProcessor]
-    teamPositionsProcessor = mock[TeamPositionsProcessor]
-    commandProcessor = new CommandProcessor(pollProcessor, reminderProcessor, teamPositionsProcessor)
-  }
+class CommandProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
+  private val pollProcessor = mock[PollProcessor]
+  private val reminderProcessor = mock[ReminderProcessor]
+  private val teamPositionsProcessor = mock[TeamPositionsProcessor]
+  private val commandProcessor = new CommandProcessor(pollProcessor, reminderProcessor, teamPositionsProcessor)
 
   "CommandProcessor" should {
     "dispatch command to poll processor" in {

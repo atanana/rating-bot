@@ -1,21 +1,16 @@
 package com.atanana.json
 
-import java.io.FileNotFoundException
-
 import com.atanana.FsHandler
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
+import java.io.FileNotFoundException
 import scala.util.{Failure, Success}
 
-class JsonConfigTest extends WordSpecLike with BeforeAndAfter with MockFactory with Matchers {
-  var fsHandler: FsHandler = _
-  var jsonConfig: JsonConfig = _
-
-  before {
-    fsHandler = stub[FsHandler]
-    jsonConfig = JsonConfig(fsHandler)
-  }
+class JsonConfigTest extends AnyWordSpecLike with MockFactory with Matchers {
+  private val fsHandler = stub[FsHandler]
+  private val jsonConfig = JsonConfig(fsHandler)
 
   "JsonConfig" should {
     "read config" in {
