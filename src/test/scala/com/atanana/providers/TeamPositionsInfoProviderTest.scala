@@ -1,11 +1,17 @@
 package com.atanana.providers
 
+import cats.data.EitherT
 import com.atanana.Connector
+import com.atanana.TestUtils.awaitEither
 import com.atanana.data.{TargetTeam, Team, TeamPositionsInfo}
 import com.atanana.parsers.TeamsPageParser
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+import scala.util.chaining.scalaUtilChainingOps
 
 class TeamPositionsInfoProviderTest extends AnyWordSpecLike with MockFactory with Matchers {
   private val teamPage = "teams page"
@@ -48,11 +54,11 @@ class TeamPositionsInfoProviderTest extends AnyWordSpecLike with MockFactory wit
       Right(TeamPositionsInfo(targetTeam, targetTeam, targetTeam, 123, 200, 3000, 20, 30))
     )
 
-    provider.data shouldEqual Right(TeamPositionsInfo(targetTeam, targetTeam, targetTeam, 123, 200, 3000, 20, 30))
+    provider.data.pipe(awaitEither) shouldEqual Right(TeamPositionsInfo(targetTeam, targetTeam, targetTeam, 123, 200, 3000, 20, 30))
   }
 
   private def setupDefaultExpectations(): Unit = {
-    (connector.getTeamsPage _).when().returns(Right(teamPage))
+    (connector.getTeamsPage _).when().returns(EitherT.rightT[Future, Throwable](teamPage))
     (connector.getCityTeamsPage _).when().returns(Right(cityTeamsPage))
     (connector.getCountryTeamsPage _).when().returns(Right(countryTeamsPage))
   }

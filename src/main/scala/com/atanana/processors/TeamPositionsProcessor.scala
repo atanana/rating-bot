@@ -16,9 +16,8 @@ class TeamPositionsProcessor @Inject()(
                                       ) extends Processor {
 
   override def process(): EitherT[Future, Throwable, Unit] = {
-    val result = infoProvider.data
+    infoProvider.data
       .map(messageComposer.composeTeamPositionsMessage)
-      .flatMap(poster.post)
-    EitherT(Future.successful(result)).leftMap(new RuntimeException(_))
+      .flatMap(message => EitherT.fromEither(poster.post(message).left.map(new RuntimeException(_))))
   }
 }

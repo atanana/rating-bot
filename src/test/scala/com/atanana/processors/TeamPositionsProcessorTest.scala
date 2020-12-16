@@ -1,5 +1,6 @@
 package com.atanana.processors
 
+import cats.data.EitherT
 import com.atanana.MessageComposer
 import com.atanana.TestUtils.{getResult, getResultErrorMessage}
 import com.atanana.data.{TargetTeam, TeamPositionsInfo}
@@ -8,6 +9,9 @@ import com.atanana.providers.TeamPositionsInfoProvider
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class TeamPositionsProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
   private val provider = stub[TeamPositionsInfoProvider]
@@ -20,7 +24,7 @@ class TeamPositionsProcessorTest extends AnyWordSpecLike with MockFactory with M
     "post correct message" in {
       val targetTeam = TargetTeam("test team", "test city", 100)
       val info = TeamPositionsInfo(targetTeam, targetTeam, targetTeam, 123, 200, 3000, 20, 30)
-      (provider.data _).when().returns(Right(info))
+      (provider.data _).when().returns(EitherT.rightT[Future, Throwable](info))
       (messageComposer.composeTeamPositionsMessage _).when(info).returns("test message")
       (poster.post _).expects("test message") returns Right()
 
@@ -29,7 +33,7 @@ class TeamPositionsProcessorTest extends AnyWordSpecLike with MockFactory with M
 
     "pass error from provider" in {
       val targetTeam = TargetTeam("test team", "test city", 100)
-      (provider.data _).when().returns(Left("123"))
+      (provider.data _).when().returns(EitherT.leftT[Future, TeamPositionsInfo](new RuntimeException("123")))
 
       getResultErrorMessage(processor) shouldEqual "123"
     }
@@ -37,7 +41,7 @@ class TeamPositionsProcessorTest extends AnyWordSpecLike with MockFactory with M
     "pass error from poster" in {
       val targetTeam = TargetTeam("test team", "test city", 100)
       val info = TeamPositionsInfo(targetTeam, targetTeam, targetTeam, 123, 200, 3000, 20, 30)
-      (provider.data _).when().returns(Right(info))
+      (provider.data _).when().returns(EitherT.rightT[Future, Throwable](info))
       (messageComposer.composeTeamPositionsMessage _).when(info).returns("test message")
       (poster.post _).expects("test message") returns Left("123")
 

@@ -1,9 +1,13 @@
 package com.atanana.providers
 
+import cats.data.EitherT
 import com.atanana.Connector
 import com.atanana.data.{Team, TeamPositionsInfo}
 import com.atanana.parsers.TeamsPageParser
+
 import javax.inject.Inject
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class TeamPositionsInfoProvider @Inject()(
                                            connector: Connector,
@@ -11,16 +15,16 @@ class TeamPositionsInfoProvider @Inject()(
                                            composer: TeamPositionsInfoComposer
                                          ) {
 
-  def data: Either[String, TeamPositionsInfo] = for {
+  def data: EitherT[Future, Throwable, TeamPositionsInfo] = for {
     allTeams <- connector.getTeamsPage.map(parser.getTeams)
-    cityTeams <- connector.getCityTeamsPage.map(parser.getTeams)
-    countryTeams <- connector.getCountryTeamsPage.map(parser.getTeams)
+    cityTeams <- EitherT.fromEither[Future](connector.getCityTeamsPage.map(parser.getTeams).left.map(new RuntimeException(_)))
+    countryTeams <- EitherT.fromEither[Future](connector.getCountryTeamsPage.map(parser.getTeams).left.map(new RuntimeException(_)))
 
-    positionsInfo <- composer.positionsInfo(
+    positionsInfo <- EitherT.fromEither[Future](composer.positionsInfo(
       teams = filter(allTeams),
       cityTeams = filter(cityTeams),
       countryTeams = filter(countryTeams)
-    )
+    ).left.map[Throwable](new RuntimeException(_)))
   } yield positionsInfo
 
   private def filter(teams: List[Team]): List[Team] = teams.filter(_.isReal)

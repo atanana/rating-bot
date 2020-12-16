@@ -41,9 +41,9 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
     getPageAsync(url)
   }
 
-  def getTeamsPage: Either[String, String] = {
+  def getTeamsPage: EitherT[Future, Throwable, String] = {
     val url = uri"$SITE_URL/teams.php"
-    getPage(url).left.map(error => s"Cannot get teams page($url): $error")
+    getPageAsync(url)
   }
 
   def getCityTeamsPage: Either[String, String] = {
