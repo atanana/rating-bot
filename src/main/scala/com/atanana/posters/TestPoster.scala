@@ -1,4 +1,8 @@
 package com.atanana.posters
+
+import cats.data.EitherT
+
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class TestPoster extends Poster {
@@ -8,5 +12,5 @@ class TestPoster extends Poster {
     Right()
   }
 
-  override def postAsync(message: String): Future[Either[String, Unit]] = Future.successful(post(message))
+  override def postAsync(message: String): EitherT[Future, Throwable, Unit] = EitherT.fromEither[Future](post(message).left.map(new RuntimeException(_)))
 }

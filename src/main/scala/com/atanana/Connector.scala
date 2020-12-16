@@ -16,10 +16,12 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
   def post(uri: Uri, params: Map[String, String]): Either[String, String] =
     netWrapper.post(uri, params).left.map(error => s"Cannot post $params to $uri: $error")
 
-  def postAsync(uri: Uri, params: Map[String, String]): Future[Either[String, String]] =
-    netWrapper.postAsync(uri, params).map(_.left.map(error => s"Cannot post $params to $uri: $error"))
-
-  private def getPage(uri: Uri) = netWrapper.getPage(uri)
+  def postAsync(uri: Uri, params: Map[String, String]): EitherT[Future, Throwable, String] =
+    EitherT(
+      netWrapper.postAsync(uri, params)
+        .map(_.left.map(error => new ConnectorException(uri, s"$error with params $params")))
+        .recover(exception => Left(new ConnectorException(uri, cause = exception)))
+    )
 
   def getTeamPage: EitherT[Future, Throwable, String] = {
     val url = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"

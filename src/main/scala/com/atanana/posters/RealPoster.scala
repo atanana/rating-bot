@@ -1,5 +1,6 @@
 package com.atanana.posters
 
+import cats.data.EitherT
 import com.atanana.Connector
 import com.atanana.json.Config
 import com.typesafe.scalalogging.Logger
@@ -26,9 +27,9 @@ class RealPoster @Inject()(connector: Connector, config: Config) extends Poster 
     "parse_mode" -> "Markdown"
   )
 
-  override def postAsync(message: String): Future[Either[String, Unit]] =
+  override def postAsync(message: String): EitherT[Future, Throwable, Unit] =
     connector.postAsync(url, params(message))
-      .map(response => response.map(logger.debug(_)))
+      .map(logger.debug(_))
 }
 
 object RealPoster {

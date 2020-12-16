@@ -1,7 +1,7 @@
 package com.atanana
 
 import com.atanana.Connector.SITE_URL
-import com.atanana.TestUtils.{await, awaitEither, awaitError}
+import com.atanana.TestUtils.{awaitEither, awaitError}
 import com.atanana.json.Config
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
@@ -141,15 +141,19 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
     "pass post error from wrapper" in {
       val uri = uri"http://test.com"
       val params = Map.empty[String, String]
-      (wrapper.post _).when(uri, params).returns(Left("123"))
-      connector.post(uri, params) shouldEqual Left(s"Cannot post Map() to $uri: 123")
+      (wrapper.postAsync _).when(uri, params).returns(Future.successful(Left("123")))
+      val exception = connector.postAsync(uri, params).pipe(awaitError)
+      exception shouldBe a[ConnectorException]
+      exception should have message "123 with params Map()"
     }
 
     "pass post error from wrapper async" in {
       val uri = uri"http://test.com"
       val params = Map.empty[String, String]
-      (wrapper.postAsync _).when(uri, params).returns(Future.successful(Left("123")))
-      connector.postAsync(uri, params).pipe(await) shouldEqual Left(s"Cannot post Map() to $uri: 123")
+      (wrapper.postAsync _).when(uri, params).returns(Future.failed(new RuntimeException("123")))
+      val exception = connector.postAsync(uri, params).pipe(awaitError)
+      exception shouldBe a[ConnectorException]
+      exception.getCause should have message "123"
     }
   }
 }
