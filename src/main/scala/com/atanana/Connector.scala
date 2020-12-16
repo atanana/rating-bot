@@ -46,14 +46,14 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
     getPageAsync(url)
   }
 
-  def getCityTeamsPage: Either[String, String] = {
+  def getCityTeamsPage: EitherT[Future, Throwable, String] = {
     val url = uri"$SITE_URL/teams.php?town=${config.cityName}"
-    getPage(url).left.map(error => s"Cannot get city teams page($url): $error")
+    getPageAsync(url)
   }
 
-  def getCountryTeamsPage: Either[String, String] = {
+  def getCountryTeamsPage: EitherT[Future, Throwable, String] = {
     val url = uri"$SITE_URL/teams.php?country=${config.countryName}"
-    getPage(url).left.map(error => s"Cannot get country teams page($url): $error")
+    getPageAsync(url)
   }
 
   def getTournamentInfo(tournamentId: Int): EitherT[Future, Throwable, String] = {

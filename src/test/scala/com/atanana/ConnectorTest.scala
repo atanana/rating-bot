@@ -83,25 +83,29 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
     }
 
     "get city teams page by wrapper" in {
-      (wrapper.getPage _).when(uri"$SITE_URL/teams.php?town=%D0%9C%D0%B8%D0%BD%D1%81%D0%BA").returns(Right("city teams page"))
-      connector.getCityTeamsPage shouldEqual Right("city teams page")
+      (wrapper.getPageAsync _).when(uri"$SITE_URL/teams.php?town=%D0%9C%D0%B8%D0%BD%D1%81%D0%BA").returns(Future.successful(Right("city teams page")))
+      connector.getCityTeamsPage.pipe(awaitEither) shouldEqual Right("city teams page")
     }
 
     "pass city teams page error from wrapper" in {
       val teamsUrl = uri"$SITE_URL/teams.php?town=%D0%9C%D0%B8%D0%BD%D1%81%D0%BA"
-      (wrapper.getPage _).when(teamsUrl).returns(Left("123"))
-      connector.getCityTeamsPage shouldEqual Left(s"Cannot get city teams page($teamsUrl): 123")
+      (wrapper.getPageAsync _).when(teamsUrl).returns(Future.successful(Left("123")))
+      val exception = connector.getCityTeamsPage.pipe(awaitError)
+      exception shouldBe a[ConnectorException]
+      exception should have message "123"
     }
 
     "get country teams page by wrapper" in {
-      (wrapper.getPage _).when(uri"$SITE_URL/teams.php?country=%D0%91%D0%B5%D0%BB%D0%B0%D1%80%D1%83%D1%81%D1%8C").returns(Right("country teams page"))
-      connector.getCountryTeamsPage shouldEqual Right("country teams page")
+      (wrapper.getPageAsync _).when(uri"$SITE_URL/teams.php?country=%D0%91%D0%B5%D0%BB%D0%B0%D1%80%D1%83%D1%81%D1%8C").returns(Future.successful(Right("country teams page")))
+      connector.getCountryTeamsPage.pipe(awaitEither) shouldEqual Right("country teams page")
     }
 
     "pass country teams page error from wrapper" in {
       val teamsUrl = uri"$SITE_URL/teams.php?country=%D0%91%D0%B5%D0%BB%D0%B0%D1%80%D1%83%D1%81%D1%8C"
-      (wrapper.getPage _).when(teamsUrl).returns(Left("123"))
-      connector.getCountryTeamsPage shouldEqual Left(s"Cannot get country teams page($teamsUrl): 123")
+      (wrapper.getPageAsync _).when(teamsUrl).returns(Future.successful(Left("123")))
+      val exception = connector.getCountryTeamsPage.pipe(awaitError)
+      exception shouldBe a[ConnectorException]
+      exception should have message "123"
     }
 
     "get tournament requisitions page by wrapper" in {
