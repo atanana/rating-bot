@@ -31,9 +31,9 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
     getPageAsync(url)
   }
 
-  def getTournamentPage(id: Int): Either[String, String] = {
+  def getTournamentPage(id: Int): EitherT[Future, Throwable, String] = {
     val url = uri"$SITE_URL/tournament/$id"
-    getPage(url).left.map(error => s"Cannot get tournament's page($url): $error")
+    getPageAsync(url)
   }
 
   def getTournamentRequisitionsPage(tournamentId: Int): EitherT[Future, Throwable, String] = {

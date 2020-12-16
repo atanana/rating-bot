@@ -43,15 +43,17 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
 
     "get tournament page by wrapper" in {
       val tournamentId = 111
-      (wrapper.getPage _).when(uri"$SITE_URL/tournament/$tournamentId").returns(Right("tournament page"))
-      connector.getTournamentPage(tournamentId) shouldEqual Right("tournament page")
+      (wrapper.getPageAsync _).when(uri"$SITE_URL/tournament/$tournamentId").returns(Future.successful(Right("tournament page")))
+      connector.getTournamentPage(tournamentId).pipe(awaitEither) shouldEqual Right("tournament page")
     }
 
     "pass tournament page error from wrapper" in {
       val tournamentId = 111
       val tournamentUrl = uri"$SITE_URL/tournament/$tournamentId"
-      (wrapper.getPage _).when(tournamentUrl).returns(Left("123"))
-      connector.getTournamentPage(tournamentId) shouldEqual Left(s"Cannot get tournament's page($tournamentUrl): 123")
+      (wrapper.getPageAsync _).when(tournamentUrl).returns(Future.failed(new RuntimeException("123")))
+      val exception = connector.getTournamentPage(tournamentId).pipe(awaitError)
+      exception shouldBe a[ConnectorException]
+      exception.getCause should have message "123"
     }
 
     "get requisitions page by wrapper" in {

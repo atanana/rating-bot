@@ -1,22 +1,23 @@
 package com.atanana
 
+import cats.data.EitherT
+import com.atanana.TestUtils.{awaitEither, awaitError}
 import com.atanana.data.Editor
 import com.atanana.parsers.TournamentPageParser
 import com.atanana.providers.TournamentInfoProvider
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{BeforeAndAfter, Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
-class TournamentInfoProviderTest extends WordSpecLike with MockFactory with Matchers with BeforeAndAfter {
-  var connector: Connector = _
-  var parser: TournamentPageParser = _
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+import scala.util.chaining.scalaUtilChainingOps
 
-  var provider: TournamentInfoProvider = _
+class TournamentInfoProviderTest extends AnyWordSpecLike with MockFactory with Matchers {
+  private val connector = stub[Connector]
+  private val parser = stub[TournamentPageParser]
 
-  before {
-    connector = stub[Connector]
-    parser = stub[TournamentPageParser]
-    provider = new TournamentInfoProvider(connector, parser)
-  }
+  private val provider = new TournamentInfoProvider(connector, parser)
 
   "TournamentInfoProvider" should {
 
@@ -24,16 +25,16 @@ class TournamentInfoProviderTest extends WordSpecLike with MockFactory with Matc
       val tournamentId = 123
       val page = "tournament page"
       val editor = mock[Editor]
-      (connector.getTournamentPage _).when(tournamentId).returns(Right(page))
+      (connector.getTournamentPage _).when(tournamentId).returns(EitherT.rightT[Future, Throwable](page))
       (parser.getEditors _).when(page).returns(List(editor))
 
-      provider.getEditors(tournamentId) shouldEqual Right(List(editor))
+      provider.getEditors(tournamentId).pipe(awaitEither) shouldEqual Right(List(editor))
     }
 
     "pass error from connector" in {
       val tournamentId = 123
-      (connector.getTournamentPage _).when(tournamentId).returns(Left("tournament page error"))
-      provider.getEditors(tournamentId) shouldEqual Left("tournament page error")
+      (connector.getTournamentPage _).when(tournamentId).returns(EitherT.leftT(new RuntimeException("tournament page error")))
+      provider.getEditors(tournamentId).pipe(awaitError) should have message "tournament page error"
     }
   }
 }

@@ -30,7 +30,7 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (store.write _).expects(*)
       val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty), RequisitionsCheckResult(Set.empty, Set.empty))
       (checker.check _).when(storedData, parsedData).returns(checkResult)
-      (checkResultsHandler.processCheckResult _).expects(checkResult) returns Right()
+      (checkResultsHandler.processCheckResult _).expects(checkResult) returns EitherT.rightT(())
 
       getResult(processor) shouldEqual Right()
     }
@@ -41,7 +41,7 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (store.read _).expects().returns(storedData)
       (store.write _).expects(parsedData.toData)
       (checker.check _).when(storedData, parsedData)
-      (checkResultsHandler.processCheckResult _).expects(*) returns Right()
+      (checkResultsHandler.processCheckResult _).expects(*) returns EitherT.rightT(())
 
       getResult(processor) shouldEqual Right()
     }
@@ -51,7 +51,7 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
       val storedData = parsedData.toData
       (store.read _).expects().returns(storedData)
       (checker.check _).when(storedData, parsedData)
-      (checkResultsHandler.processCheckResult _).expects(*) returns Right()
+      (checkResultsHandler.processCheckResult _).expects(*) returns EitherT.rightT(())
 
       getResult(processor) shouldEqual Right()
     }
@@ -67,7 +67,7 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (store.read _).expects().returns(storedData)
       val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty), RequisitionsCheckResult(Set.empty, Set.empty))
       (checker.check _).when(storedData, parsedData).returns(checkResult)
-      (checkResultsHandler.processCheckResult _).expects(checkResult) returns Left("post error")
+      (checkResultsHandler.processCheckResult _).expects(checkResult) returns EitherT.leftT(new RuntimeException("post error"))
 
       getResultErrorMessage(processor) shouldEqual "post error"
     }

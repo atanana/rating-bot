@@ -18,21 +18,17 @@ class PollProcessor @Inject()(
                                checkResultHandler: CheckResultHandler
                              ) extends Processor {
 
-  override def process(): EitherT[Future, Throwable, Unit] = {
-    val result = for {
-      parsedDataEither <- pollingDataProvider.data.value
-    } yield for {
-      parsedData <- parsedDataEither
+  override def process(): EitherT[Future, Throwable, Unit] =
+    for {
+      parsedData <- pollingDataProvider.data
       storedData = store.read
       checkResult = checker.check(storedData, parsedData)
-      _ <- checkResultHandler.processCheckResult(checkResult).left.map(new RuntimeException(_)) //todo
+      _ <- checkResultHandler.processCheckResult(checkResult)
     } yield {
       if (hasChanges(storedData, parsedData)) {
         store.write(parsedData)
       }
     }
-    EitherT(result)
-  }
 
   private def hasChanges(storedData: Data, parsedData: Data) =
     storedData.tournaments != parsedData.tournaments || storedData.requisitions != parsedData.requisitions

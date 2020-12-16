@@ -1,11 +1,14 @@
 package com.atanana
 
+import cats.data.EitherT
+import cats.implicits._
 import com.atanana.data.{CheckResult, RequisitionData}
 import com.atanana.posters.Poster
 import com.atanana.providers.TournamentInfoProvider
-import com.atanana.utils.CollectionsUtils.EitherSet
 
 import javax.inject.Inject
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class CheckResultHandler @Inject()(
                                     poster: Poster,
@@ -13,21 +16,21 @@ class CheckResultHandler @Inject()(
                                     tournamentInfoProvider: TournamentInfoProvider
                                   ) {
 
-  def processCheckResult(checkResult: CheckResult): Either[String, Unit] =
+  def processCheckResult(checkResult: CheckResult): EitherT[Future, Throwable, Unit] =
     composeMessages(checkResult).map(_.foreach(poster.post))
 
-  private def composeMessages(checkResult: CheckResult): Either[String, List[String]] = {
+  private def composeMessages(checkResult: CheckResult): EitherT[Future, Throwable, List[String]] = {
     val tournaments = checkResult.tournamentsCheckResult
     val requisitions = checkResult.requisitionsCheckResult
     for {
-      newRequisitionsMessages <- requisitions.newRequisitions.map(getNewRequisitionMessage).unwrap()
+      newRequisitionsMessages <- requisitions.newRequisitions.map(getNewRequisitionMessage).toList.sequence
       newTournamentsMessages = tournaments.newTournaments.map(messageComposer.composeNewResult)
       changedTournamentsMessages = tournaments.changedTournaments.map(messageComposer.composeChangedResult)
       cancelledRequisitionsMessages = requisitions.cancelledRequisitions.map(messageComposer.composeCancelledRequisition)
     } yield List(newTournamentsMessages, changedTournamentsMessages, newRequisitionsMessages, cancelledRequisitionsMessages).flatten
   }
 
-  private def getNewRequisitionMessage(newRequisition: RequisitionData) =
-    tournamentInfoProvider.getEditors(newRequisition.tournamentId)
-      .map(messageComposer.composeNewRequisition(newRequisition, _))
+  private def getNewRequisitionMessage(newRequisition: RequisitionData) = for {
+    editors <- tournamentInfoProvider.getEditors(newRequisition.tournamentId)
+  } yield messageComposer.composeNewRequisition(newRequisition, editors)
 }
