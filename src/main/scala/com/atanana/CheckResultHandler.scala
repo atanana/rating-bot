@@ -17,7 +17,10 @@ class CheckResultHandler @Inject()(
                                   ) {
 
   def processCheckResult(checkResult: CheckResult): EitherT[Future, Throwable, Unit] =
-    composeMessages(checkResult).map(_.foreach(poster.post))
+    for {
+      messages <- composeMessages(checkResult)
+      _ <- messages.map(poster.postAsync).sequence
+    } yield ()
 
   private def composeMessages(checkResult: CheckResult): EitherT[Future, Throwable, List[String]] = {
     val tournaments = checkResult.tournamentsCheckResult

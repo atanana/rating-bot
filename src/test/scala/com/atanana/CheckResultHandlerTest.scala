@@ -11,7 +11,6 @@ import org.scalatest.wordspec.AnyWordSpecLike
 
 import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 import scala.util.chaining.scalaUtilChainingOps
 
 class CheckResultHandlerTest extends AnyWordSpecLike with Matchers with MockFactory {
@@ -28,17 +27,17 @@ class CheckResultHandlerTest extends AnyWordSpecLike with Matchers with MockFact
       val requisitionData = RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now())
 
       val editor = Editor("test editor")
-      (tournamentInfoProvider.getEditors _).when(1).returns(EitherT.rightT[Future, Throwable](List(editor)))
+      (tournamentInfoProvider.getEditors _).when(1) returns EitherT.rightT(List(editor))
 
       (messageComposer.composeNewResult _).when(tournamentData).returns("new result")
       (messageComposer.composeChangedResult _).when(changedTournament).returns("changed result")
       (messageComposer.composeNewRequisition _).when(requisitionData.toRequisition, List(editor)).returns("new requisition")
       (messageComposer.composeCancelledRequisition _).when(requisitionData.toRequisition).returns("cancelled requisition")
 
-      (poster.post _).expects("new result")
-      (poster.post _).expects("changed result")
-      (poster.post _).expects("new requisition")
-      (poster.post _).expects("cancelled requisition")
+      (poster.postAsync _).expects("new result") returns EitherT.rightT(())
+      (poster.postAsync _).expects("changed result") returns EitherT.rightT(())
+      (poster.postAsync _).expects("new requisition") returns EitherT.rightT(())
+      (poster.postAsync _).expects("cancelled requisition") returns EitherT.rightT(())
 
       val checkResult = CheckResult(
         TournamentsCheckResult(Set(tournamentData), Set(changedTournament)),
@@ -50,7 +49,7 @@ class CheckResultHandlerTest extends AnyWordSpecLike with Matchers with MockFact
     "return an error when cannot get editors" in {
       val requisitionData = RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now())
 
-      (tournamentInfoProvider.getEditors _).when(1).returns(EitherT.leftT(new RuntimeException("editors error")))
+      (tournamentInfoProvider.getEditors _).when(1) returns EitherT.leftT(new RuntimeException("editors error"))
 
       new CheckResultHandler(poster, messageComposer, tournamentInfoProvider).processCheckResult(CheckResult(
         TournamentsCheckResult(Set(tournamentData), Set(changedTournament)),
