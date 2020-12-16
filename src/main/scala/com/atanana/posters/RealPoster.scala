@@ -23,6 +23,7 @@ class RealPoster @Inject()(connector: Connector, config: Config) extends Poster 
     "parse_mode" -> "Markdown"
   )
 
+  //noinspection ConvertibleToMethodValue
   override def postAsync(message: String): EitherT[Future, Throwable, Unit] =
     connector.postAsync(url, params(message))
       .map(logger.debug(_))
