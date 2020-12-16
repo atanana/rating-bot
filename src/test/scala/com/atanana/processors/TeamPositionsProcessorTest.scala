@@ -32,7 +32,6 @@ class TeamPositionsProcessorTest extends AnyWordSpecLike with MockFactory with M
     }
 
     "pass error from provider" in {
-      val targetTeam = TargetTeam("test team", "test city", 100)
       (provider.data _).when().returns(EitherT.leftT[Future, TeamPositionsInfo](new RuntimeException("123")))
 
       getResultErrorMessage(processor) shouldEqual "123"
