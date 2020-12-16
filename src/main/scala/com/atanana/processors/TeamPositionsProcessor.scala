@@ -18,6 +18,6 @@ class TeamPositionsProcessor @Inject()(
   override def process(): EitherT[Future, Throwable, Unit] = {
     infoProvider.data
       .map(messageComposer.composeTeamPositionsMessage)
-      .flatMap(message => EitherT.fromEither(poster.post(message).left.map(new RuntimeException(_))))
+      .flatMap(poster.postAsync)
   }
 }
