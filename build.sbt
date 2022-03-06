@@ -12,9 +12,9 @@ libraryDependencies += "io.spray" %% "spray-json" % "1.3.6"
 libraryDependencies += "net.ruippeixotog" %% "scala-scraper" % "2.2.1"
 libraryDependencies += "net.codingwell" %% "scala-guice" % "5.0.2"
 libraryDependencies += "com.github.tototoshi" %% "scala-csv" % "1.3.10"
-libraryDependencies += "com.softwaremill.sttp.client3" %% "core" % "3.0.0-RC11"
-libraryDependencies += "com.softwaremill.sttp.client3" %% "httpclient-backend" % "3.0.0-RC11"
-libraryDependencies += "org.typelevel" %% "cats-core" % "2.3.0"
+libraryDependencies += "com.softwaremill.sttp.client3" %% "core" % "3.4.1"
+libraryDependencies += "com.softwaremill.sttp.client3" %% "httpclient-backend" % "3.4.2"
+libraryDependencies += "org.typelevel" %% "cats-core" % "2.7.0"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.9" % Test
 libraryDependencies += "org.scalamock" %% "scalamock" % "5.2.0" % Test
