@@ -13,7 +13,7 @@ libraryDependencies += "net.ruippeixotog" %% "scala-scraper" % "2.2.1"
 libraryDependencies += "net.codingwell" %% "scala-guice" % "5.0.2"
 libraryDependencies += "com.github.tototoshi" %% "scala-csv" % "1.3.10"
 libraryDependencies += "com.softwaremill.sttp.client3" %% "core" % "3.5.1"
-libraryDependencies += "com.softwaremill.sttp.client3" %% "async-http-client-backend-future" % "3.5.1"
+libraryDependencies += "com.softwaremill.sttp.client3" %% "okhttp-backend" % "3.5.1"
 libraryDependencies += "org.typelevel" %% "cats-core" % "2.7.0"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.11" % Test
