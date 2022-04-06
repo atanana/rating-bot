@@ -4,7 +4,7 @@ import cats.data.EitherT
 import com.atanana.Connector.SITE_URL
 import com.atanana.json.Config
 import sttp.client3._
-import sttp.client3.httpclient.HttpClientFutureBackend
+import sttp.client3.asynchttpclient.future.AsyncHttpClientFutureBackend
 import sttp.model.Uri
 
 import javax.inject.Inject
@@ -80,7 +80,7 @@ class ConnectorException(
                         ) extends RuntimeException(message, cause)
 
 class NetWrapper {
-  private val asyncBackend = HttpClientFutureBackend()
+  private val asyncBackend = AsyncHttpClientFutureBackend()
 
   def getPageAsync(uri: Uri): Future[Either[String, String]] =
     basicRequest
