@@ -13,9 +13,6 @@ import scala.concurrent.Future
 
 class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
-  def post(uri: Uri, params: Map[String, String]): Either[String, String] =
-    netWrapper.post(uri, params).left.map(error => s"Cannot post $params to $uri: $error")
-
   def postAsync(uri: Uri, params: Map[String, String]): EitherT[Future, Throwable, String] =
     EitherT(
       netWrapper.postAsync(uri, params)
@@ -83,27 +80,13 @@ class ConnectorException(
                         ) extends RuntimeException(message, cause)
 
 class NetWrapper {
-  private val backend = HttpURLConnectionBackend()
   private val asyncBackend = HttpClientFutureBackend()
-
-  def getPage(uri: Uri): Either[String, String] =
-    basicRequest
-      .get(uri)
-      .send(backend)
-      .body
 
   def getPageAsync(uri: Uri): Future[Either[String, String]] =
     basicRequest
       .get(uri)
       .send(asyncBackend)
       .map(_.body)
-
-  def post(uri: Uri, params: Map[String, String]): Either[String, String] =
-    basicRequest
-      .body(params)
-      .post(uri)
-      .send(backend)
-      .body
 
   def postAsync(uri: Uri, params: Map[String, String]): Future[Either[String, String]] =
     basicRequest
