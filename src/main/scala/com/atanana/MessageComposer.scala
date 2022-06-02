@@ -87,11 +87,11 @@ class MessageComposer {
 
   private def targetCountryTeamMessage(teamOption: Option[TargetTeam]): String =
     teamOption.map(team => s"*${team.ratingDifference}* осталось до следующей команды по стране — *${printTeam(team)}*")
-      .getOrElse("мы первая команда команда в стране! Нужно постараться не обосраться на следующей неделе")
+      .getOrElse("мы первая команда в стране! Нужно постараться не обосраться на следующей неделе")
 
   private def targetAllTeamMessage(teamOption: Option[TargetTeam]): String =
     teamOption.map(team => s"За эту неделю было бы неплохо обойти хотя бы команду ${printTeam(team)}, до которой осталось ${team.ratingDifference} очков")
-      .getOrElse("мы первая команда команда в стране! Охуеть просто! Нужно постараться не обосраться на следующей неделе")
+      .getOrElse("мы первая команда в стране! Охуеть просто! Нужно постараться не обосраться на следующей неделе")
 
   private def printTeam(team: TargetTeam): String = s"${team.name} (${team.city})"
 
