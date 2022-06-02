@@ -1,5 +1,6 @@
 package com.atanana.providers
 
+import cats.implicits.toFoldableOps
 import com.atanana.data.{TargetTeam, Team, TeamPositionsInfo}
 
 class TeamPositionsInfoComposer(teamId: Int) {
@@ -13,8 +14,8 @@ class TeamPositionsInfoComposer(teamId: Int) {
       cityPosition <- getPosition(cityTeams, "city")
       countryPosition <- getPosition(countryTeams, "country")
     } yield TeamPositionsInfo(
-      TargetTeam(targetTeam, team),
-      TargetTeam(targetCountryTeam, team),
+      targetTeam.map(TargetTeam(_, team)),
+      targetCountryTeam.map(TargetTeam(_, team)),
       TargetTeam(overcomingCountryTeam, team),
       lastTeam.rating - team.rating,
       team.position,
@@ -27,8 +28,8 @@ class TeamPositionsInfoComposer(teamId: Int) {
   private def getLastTop100Team(teams: List[Team]) =
     teams.find(_.position > 99.9).toRight("No last team!")
 
-  private def findTargetTeam(teams: List[Team], listName: String) =
-    findTeamIndex(teams, listName).map(_ - 1).map(teams(_))
+  private def findTargetTeam(teams: List[Team], listName: String): Either[String, Option[Team]] =
+    findTeamIndex(teams, listName).map(index => teams.get(index - 1))
 
   private def findOvercomingTeam(teams: List[Team]): Either[String, Team] =
     findTeamIndex(teams, "country").map(_ + 1).map(teams(_))

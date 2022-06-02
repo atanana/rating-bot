@@ -1,8 +1,8 @@
 package com.atanana.data
 
 case class TeamPositionsInfo(
-                              targetAllRatingTeam: TargetTeam,
-                              targetCountryRatingTeam: TargetTeam,
+                              targetAllRatingTeam: Option[TargetTeam],
+                              targetCountryRatingTeam: Option[TargetTeam],
                               overtakingCountryRatingTeam: TargetTeam,
                               top100ratingDifference: Int,
                               currentPosition: Float,

@@ -1,12 +1,11 @@
 package com.atanana
 
-import java.time.format.DateTimeFormatter
-import java.time.{DayOfWeek, LocalDate}
-import java.util.Locale
-
 import com.atanana.MessageComposer.{alarms, timePattern}
 import com.atanana.data._
 
+import java.time.format.DateTimeFormatter
+import java.time.{DayOfWeek, LocalDate}
+import java.util.Locale
 import scala.language.implicitConversions
 import scala.util.Random
 
@@ -79,12 +78,20 @@ class MessageComposer {
        |🏆 место по стране — *${info.countryPosition}*
        |🏆 место в общем рейтинге — *${info.currentPosition}*
        |🏆 до топ-100 осталось — *${info.top100ratingDifference}*
-       |🏆 *${info.targetCountryRatingTeam.ratingDifference}* осталось до следующей команды по стране — *${printTeam(info.targetCountryRatingTeam)}*
+       |🏆 ${targetCountryTeamMessage(info.targetCountryRatingTeam)}
        |🏆 *${-info.overtakingCountryRatingTeam.ratingDifference}* осталось команде *${printTeam(info.overtakingCountryRatingTeam)}* чтобы догнать нас по стране
        |
-       |За эту неделю было бы неплохо обойти хотя бы команду ${printTeam(info.targetAllRatingTeam)}, до которой осталось ${info.targetAllRatingTeam.ratingDifference} очков
+       |${targetAllTeamMessage(info.targetAllRatingTeam)}
     """.stripMargin
   }
+
+  private def targetCountryTeamMessage(teamOption: Option[TargetTeam]): String =
+    teamOption.map(team => s"*${team.ratingDifference}* осталось до следующей команды по стране — *${printTeam(team)}*")
+      .getOrElse("Мы первая команда команда в стране! Нужно постараться не обосраться на следующей неделе")
+
+  private def targetAllTeamMessage(teamOption: Option[TargetTeam]): String =
+    teamOption.map(team => s"За эту неделю было бы неплохо обойти хотя бы команду ${printTeam(team)}, до которой осталось ${team.ratingDifference} очков")
+      .getOrElse("Мы первая команда команда в стране! Охуеть просто! Нужно постараться не обосраться на следующей неделе")
 
   private def printTeam(team: TargetTeam): String = s"${team.name} (${team.city})"
 
@@ -97,7 +104,7 @@ class MessageComposer {
 }
 
 object MessageComposer {
-  val alarms = List("Ахтунг", "Алярм", "Бида-бида", "Усё пропало")
+  val alarms: Seq[String] = List("Ахтунг", "Алярм", "Бида-бида", "Усё пропало")
 
   val timePattern: DateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy HH:mm:ss", new Locale("ru"))
 
