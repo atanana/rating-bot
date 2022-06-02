@@ -1,6 +1,6 @@
 name := "rating-bot"
 
-assemblyJarName in assembly := "rating-bot.jar"
+assembly / assemblyJarName := "rating-bot.jar"
 
 version := "2.3.3"
 
