@@ -51,10 +51,10 @@ class TeamPositionsInfoProviderTest extends AnyWordSpecLike with MockFactory wit
   private def checkTeams(team: Team, cityTeam: Team, countryTeam: Team) = {
     val targetTeam = TargetTeam("test team", "test city", 100)
     (composer.positionsInfo _).when(List(team), List(cityTeam), List(countryTeam)).returns(
-      Right(TeamPositionsInfo(targetTeam, targetTeam, targetTeam, 123, 200, 3000, 20, 30))
+      Right(TeamPositionsInfo(Some(targetTeam), Some(targetTeam), targetTeam, 123, 200, 3000, 20, 30))
     )
 
-    provider.data.pipe(awaitEither) shouldEqual Right(TeamPositionsInfo(targetTeam, targetTeam, targetTeam, 123, 200, 3000, 20, 30))
+    provider.data.pipe(awaitEither) shouldEqual Right(TeamPositionsInfo(Some(targetTeam), Some(targetTeam), targetTeam, 123, 200, 3000, 20, 30))
   }
 
   private def setupDefaultExpectations(): Unit = {

@@ -56,7 +56,7 @@ class MessageComposerTest extends AnyWordSpecLike with Matchers {
     val targetTeam = TargetTeam("target team", "target city", 20)
     val targetCountryTeam = TargetTeam("country team", "country city", 10)
     val overtakingTeam = TargetTeam("overtaking team", "overtaking city", -10)
-    val info = TeamPositionsInfo(targetTeam, targetCountryTeam, overtakingTeam, 123, 200, 100, 20.5f, 30)
+    val info = TeamPositionsInfo(Some(targetTeam), Some(targetCountryTeam), overtakingTeam, 123, 200, 100, 20.5f, 30)
     MessageComposer().composeTeamPositionsMessage(info) shouldEqual
       s"""
          |Небольшая сводка по новому релизу:
@@ -70,6 +70,25 @@ class MessageComposerTest extends AnyWordSpecLike with Matchers {
          |🏆 *10* осталось команде *overtaking team (overtaking city)* чтобы догнать нас по стране
          |
          |За эту неделю было бы неплохо обойти хотя бы команду target team (target city), до которой осталось 20 очков
+    """.stripMargin
+  }
+
+  "valid team positions reminder when team is on the first place" in {
+    val overtakingTeam = TargetTeam("overtaking team", "overtaking city", -10)
+    val info = TeamPositionsInfo(None, None, overtakingTeam, 123, 200, 100, 20.5f, 30)
+    MessageComposer().composeTeamPositionsMessage(info) shouldEqual
+      s"""
+         |Небольшая сводка по новому релизу:
+         |
+         |🏆 текущий рейтинг — *100*
+         |🏆 место по городу — *20.5*
+         |🏆 место по стране — *30.0*
+         |🏆 место в общем рейтинге — *200.0*
+         |🏆 до топ-100 осталось — *123*
+         |🏆 Мы первая команда команда в стране! Нужно постараться не обосраться на следующей неделе
+         |🏆 *10* осталось команде *overtaking team (overtaking city)* чтобы догнать нас по стране
+         |
+         |Мы первая команда команда в стране! Охуеть просто! Нужно постараться не обосраться на следующей неделе
     """.stripMargin
   }
 }

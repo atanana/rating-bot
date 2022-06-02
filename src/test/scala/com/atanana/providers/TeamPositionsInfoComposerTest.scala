@@ -27,14 +27,41 @@ class TeamPositionsInfoComposerTest extends AnyWordSpecLike with Matchers {
         .updated(28, Team(1, targetCountryRatingTeamName, targetCountryRatingTeamCity, 50, 30f))
         .updated(30, Team(1, overcomingRatingTeamName, overcomingRatingTeamCity, 47, 30f))
       provider.positionsInfo(teams, cityTeams, countryTeams) shouldEqual Right(TeamPositionsInfo(
-        TargetTeam(targetAllRatingTeamName, targetAllRatingTeamCity, 2),
-        TargetTeam(targetCountryRatingTeamName, targetCountryRatingTeamCity, 1),
+        Some(TargetTeam(targetAllRatingTeamName, targetAllRatingTeamCity, 2)),
+        Some(TargetTeam(targetCountryRatingTeamName, targetCountryRatingTeamCity, 1)),
         TargetTeam(overcomingRatingTeamName, overcomingRatingTeamCity, -2),
         51,
         200f,
         49,
         20,
         30
+      ))
+    }
+
+    "provide correct positions info when team on the first place" in {
+      val targetAllRatingTeamName = "test all team"
+      val targetAllRatingTeamCity = "test all city"
+      val targetCountryRatingTeamName = "test country team"
+      val targetCountryRatingTeamCity = "test country city"
+      val overcomingRatingTeamName = "test overcoming team"
+      val overcomingRatingTeamCity = "test overcoming city"
+      val teams = List.fill(500)(Team(1, "test team", "test city", 1, 1f))
+        .updated(99, Team(321, "last team", "last city", 100, 100f))
+        .updated(0, Team(teamId, "team", "city", 49, 1f))
+      val cityTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1f))
+        .updated(0, Team(teamId, "team", "city", 49, 1f))
+      val countryTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1f))
+        .updated(0, Team(teamId, "team", "city", 49, 1f))
+        .updated(1, Team(1, overcomingRatingTeamName, overcomingRatingTeamCity, 47, 2f))
+      provider.positionsInfo(teams, cityTeams, countryTeams) shouldEqual Right(TeamPositionsInfo(
+        None,
+        None,
+        TargetTeam(overcomingRatingTeamName, overcomingRatingTeamCity, -2),
+        51,
+        1f,
+        49,
+        1,
+        1
       ))
     }
 
