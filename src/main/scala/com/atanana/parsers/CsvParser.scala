@@ -2,23 +2,21 @@ package com.atanana.parsers
 
 import com.atanana.Connector
 import com.atanana.data.TournamentData
+import com.atanana.providers.TournamentPollingFilter
 import com.github.tototoshi.csv.CSVReader
 
+import javax.inject.Inject
 import scala.io.Source
 import scala.util.Try
 
-class CsvParser {
+class CsvParser @Inject()(filter: TournamentPollingFilter) {
   def getTournamentsData(csv: String): List[TournamentData] = {
     CSVReader.open(Source.fromString(csv)).all()
       .map(tryParseTournamentRow)
       .flatMap(_.toOption.toList)
-      .filter(Function.tupled(isInteresting))
+      .filter(Function.tupled(filter.isInteresting))
       .map(_._2)
   }
-
-  // todo move out
-  private def isInteresting(tournamentType: String, data: TournamentData) =
-    tournamentType != "Общий зачёт" && data.place != 9999 && data.bonus != 0
 
   private def tryParseTournamentRow(row: List[String]) = {
     Try {
@@ -34,8 +32,4 @@ class CsvParser {
       (tournamentType, tournamentData)
     }
   }
-}
-
-object CsvParser {
-  def apply(): CsvParser = new CsvParser()
 }
