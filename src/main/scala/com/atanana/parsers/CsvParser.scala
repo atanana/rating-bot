@@ -16,6 +16,7 @@ class CsvParser {
       .map(_._2)
   }
 
+  // todo move out
   private def isInteresting(tournamentType: String, data: TournamentData) =
     tournamentType != "Общий зачёт" && data.place != 9999 && data.bonus != 0
 
