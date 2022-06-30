@@ -16,7 +16,8 @@ class CsvParser {
       .map(_._2)
   }
 
-  private def isInteresting(tournamentType: String, data: TournamentData) = tournamentType != "Общий зачёт" && data.place != 9999
+  private def isInteresting(tournamentType: String, data: TournamentData) =
+    tournamentType != "Общий зачёт" && data.place != 9999 && data.bonus != 0
 
   private def tryParseTournamentRow(row: List[String]) = {
     Try {
