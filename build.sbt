@@ -2,7 +2,7 @@ name := "rating-bot"
 
 assembly / assemblyJarName := "rating-bot.jar"
 
-version := "2.3.5"
+version := "2.3.6"
 
 scalaVersion := "2.13.8"
 
