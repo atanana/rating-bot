@@ -46,6 +46,22 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
       getResult(processor) shouldEqual Right()
     }
 
+    "add missing tournaments" in {
+      val parsedData = setUpDefaults()
+      val tournament = TournamentData(2, "tournament 2", "link 2", 1f, 1, 1)
+      val storedData = Data(Set(tournament), Set.empty)
+      (store.read _).expects().returns(storedData)
+
+      var data = parsedData.toData
+      data = data.copy(tournaments = data.tournaments + tournament)
+      (store.write _).expects(data)
+
+      (checker.check _).when(storedData, parsedData)
+      (checkResultsHandler.processCheckResult _).expects(*) returns EitherT.rightT(())
+
+      getResult(processor) shouldEqual Right()
+    }
+
     "not save data when no changes" in {
       val parsedData = setUpDefaults()
       val storedData = parsedData.toData
