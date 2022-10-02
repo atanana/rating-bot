@@ -41,7 +41,6 @@ object Main {
       } catch {
         case e: SocketTimeoutException => logger.info("Timeout!", e)
         case e: ConnectException => logger.info("Connect error!", e)
-        case e: ConnectorException => logger.info(s"Error by url ${e.uri}", e)
         case e: Throwable => logger.debug("Error occurred!", e)
       }
     }

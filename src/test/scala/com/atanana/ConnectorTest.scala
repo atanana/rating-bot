@@ -33,7 +33,7 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (wrapper.getPageAsync _).when(teamUrl).returns(Future.successful(Left("123")))
       val exception = connector.getTeamPage.pipe(awaitError)
       exception shouldBe a[ConnectorException]
-      exception should have message "123"
+      exception should have message s"Error uri: $teamUrl\n123"
     }
 
     "wrap page error from wrapper" in {
@@ -69,7 +69,7 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (wrapper.getPageAsync _).when(requisitionsUrl).returns(Future.successful(Left("123")))
       val exception = connector.getRequisitionPage.pipe(awaitError)
       exception shouldBe a[ConnectorException]
-      exception should have message "123"
+      exception should have message s"Error uri: $requisitionsUrl\n123"
     }
 
     "get teams page by wrapper" in {
@@ -82,7 +82,7 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (wrapper.getPageAsync _).when(teamsUrl).returns(Future.successful(Left("123")))
       val exception = connector.getTeamsPage.pipe(awaitError)
       exception shouldBe a[ConnectorException]
-      exception should have message "123"
+      exception should have message s"Error uri: $teamsUrl\n123"
     }
 
     "get city teams page by wrapper" in {
@@ -95,7 +95,7 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (wrapper.getPageAsync _).when(teamsUrl).returns(Future.successful(Left("123")))
       val exception = connector.getCityTeamsPage.pipe(awaitError)
       exception shouldBe a[ConnectorException]
-      exception should have message "123"
+      exception should have message s"Error uri: $teamsUrl\n123"
     }
 
     "get country teams page by wrapper" in {
@@ -108,7 +108,7 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (wrapper.getPageAsync _).when(teamsUrl).returns(Future.successful(Left("123")))
       val exception = connector.getCountryTeamsPage.pipe(awaitError)
       exception shouldBe a[ConnectorException]
-      exception should have message "123"
+      exception should have message s"Error uri: $teamsUrl\n123"
     }
 
     "get tournament requisitions page by wrapper" in {
@@ -123,7 +123,7 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (wrapper.getPageAsync _).when(url).returns(Future.successful(Left("123")))
       val exception = connector.getTournamentRequisitionsPage(tournamentId).pipe(awaitError)
       exception shouldBe a[ConnectorException]
-      exception should have message "123"
+      exception should have message s"Error uri: $url\n123"
     }
 
     "get tournament info page by wrapper" in {
@@ -138,7 +138,7 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (wrapper.getPageAsync _).when(url).returns(Future.successful(Left("123")))
       val exception = connector.getTournamentInfo(tournamentId).pipe(awaitError)
       exception shouldBe a[ConnectorException]
-      exception should have message "123"
+      exception should have message s"Error uri: $url\n123"
     }
 
     "pass post error from wrapper" in {
@@ -147,7 +147,7 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (wrapper.postAsync _).when(uri, params).returns(Future.successful(Left("123")))
       val exception = connector.postAsync(uri, params).pipe(awaitError)
       exception shouldBe a[ConnectorException]
-      exception should have message "123 with params Map()"
+      exception should have message s"Error uri: $uri\n123 with params Map()"
     }
 
     "pass post error from wrapper async" in {

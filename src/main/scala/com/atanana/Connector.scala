@@ -13,13 +13,6 @@ import scala.concurrent.Future
 
 class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
-  def postAsync(uri: Uri, params: Map[String, String]): EitherT[Future, Throwable, String] =
-    EitherT(
-      netWrapper.postAsync(uri, params)
-        .map(_.left.map(error => new ConnectorException(uri, s"$error with params $params")))
-        .recover(exception => Left(new ConnectorException(uri, cause = exception)))
-    )
-
   def getTeamPage: EitherT[Future, Throwable, String] = {
     val url = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
     getPageAsync(url)
@@ -66,6 +59,13 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
         .map(_.left.map(error => new ConnectorException(uri, error)))
         .recover(exception => Left(new ConnectorException(uri, cause = exception)))
     )
+
+  def postAsync(uri: Uri, params: Map[String, String]): EitherT[Future, Throwable, String] =
+    EitherT(
+      netWrapper.postAsync(uri, params)
+        .map(_.left.map(error => new ConnectorException(uri, s"$error with params $params")))
+        .recover(exception => Left(new ConnectorException(uri, cause = exception)))
+    )
 }
 
 object Connector {
@@ -77,7 +77,9 @@ class ConnectorException(
                           val uri: Uri,
                           message: String = null,
                           cause: Throwable = null
-                        ) extends RuntimeException(message, cause)
+                        ) extends RuntimeException(message, cause) {
+  override def getMessage: String = s"Error uri: $uri\n${super.getMessage}"
+}
 
 class NetWrapper @Inject()(config: Config) {
 
