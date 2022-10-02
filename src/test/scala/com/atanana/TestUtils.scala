@@ -1,6 +1,7 @@
 package com.atanana
 
 import cats.data.EitherT
+import com.atanana.json.Config
 import com.atanana.processors.Processor
 
 import scala.concurrent.duration._
@@ -8,6 +9,8 @@ import scala.concurrent.{Await, Future}
 
 //noinspection ScalaDeprecation
 object TestUtils {
+
+  val fakeConfig: Config = Config("tg token", "api token", "cookie", 123, 321, 456, 10000, "Минск", "Беларусь", List.empty)
 
   def getResult(processor: Processor): Either[Throwable, Unit] = await(processor.process().value)
 

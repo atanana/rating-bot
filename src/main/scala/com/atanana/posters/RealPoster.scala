@@ -14,7 +14,7 @@ class RealPoster @Inject()(connector: Connector, config: Config) extends Poster 
 
   import RealPoster.logger
 
-  private val url = uri"https://api.telegram.org/bot${config.token}/sendMessage"
+  private val url = uri"https://api.telegram.org/bot${config.tgToken}/sendMessage"
 
   private def params(message: String): Map[String, String] = Map(
     "chat_id" -> config.chat.toString,

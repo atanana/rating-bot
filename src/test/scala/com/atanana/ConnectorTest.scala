@@ -1,8 +1,7 @@
 package com.atanana
 
 import com.atanana.Connector.SITE_URL
-import com.atanana.TestUtils.{awaitEither, awaitError}
-import com.atanana.json.Config
+import com.atanana.TestUtils.{awaitEither, awaitError, fakeConfig}
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
@@ -13,7 +12,7 @@ import scala.util.chaining.scalaUtilChainingOps
 
 class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
 
-  private val config = Config("token", "cookie", 123, 321, 456, 10000, "Минск", "Беларусь", List.empty)
+  private val config = fakeConfig
   private val wrapper = stub[TestWrapper]
 
   class TestWrapper extends NetWrapper(config)
