@@ -13,8 +13,11 @@ import scala.util.chaining.scalaUtilChainingOps
 
 class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
 
-  private val config = Config("token", 123, 321, 456, 10000, "Минск", "Беларусь", List.empty)
-  private val wrapper = stub[NetWrapper]
+  private val config = Config("token", "cookie", 123, 321, 456, 10000, "Минск", "Беларусь", List.empty)
+  private val wrapper = stub[TestWrapper]
+
+  class TestWrapper extends NetWrapper(config)
+
   private val connector = new Connector(wrapper, config)
 
   "Connector" should {

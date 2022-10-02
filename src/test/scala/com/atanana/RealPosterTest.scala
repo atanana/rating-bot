@@ -9,7 +9,6 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 import sttp.client3.UriContext
 
-import scala.collection.immutable.Map
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -17,7 +16,7 @@ class RealPosterTest extends AnyFunSuite with MockFactory with Matchers {
 
   test("testPost") {
     val connector: Connector = mock[Connector]
-    val poster: RealPoster = RealPoster(connector, Config("token", 123, 321, 456, 10000, "test city", "test country", List.empty))
+    val poster: RealPoster = RealPoster(connector, Config("token", "cookie", 123, 321, 456, 10000, "test city", "test country", List.empty))
     val message: String = "test message"
 
     val params = Map(

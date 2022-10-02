@@ -1,18 +1,17 @@
 package com.atanana.json
 
-import javax.inject.Inject
-
 import com.atanana.FsHandler
 import spray.json.DefaultJsonProtocol._
 import spray.json._
 
+import javax.inject.Inject
 import scala.util.Try
 
 class JsonConfig @Inject()(fsHandler: FsHandler) {
 
   import JsonConfig.FILE_NAME
 
-  private implicit val configFormat: RootJsonFormat[Config] = jsonFormat8(Config)
+  private implicit val configFormat: RootJsonFormat[Config] = jsonFormat9(Config)
 
   def read: Try[Config] = {
     fsHandler.readFile(FILE_NAME)
@@ -30,6 +29,7 @@ object JsonConfig {
 
 case class Config(
                    token: String,
+                   authCookie: String,
                    chat: Int,
                    team: Int,
                    city: Int,

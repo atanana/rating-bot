@@ -79,12 +79,15 @@ class ConnectorException(
                           cause: Throwable = null
                         ) extends RuntimeException(message, cause)
 
-class NetWrapper {
+class NetWrapper @Inject()(config: Config) {
+
   private val asyncBackend = OkHttpFutureBackend()
+  private val authCookie = ("REMEMBERME", config.authCookie)
 
   def getPageAsync(uri: Uri): Future[Either[String, String]] =
     basicRequest
       .get(uri)
+      .cookie(authCookie)
       .send(asyncBackend)
       .map(_.body)
 
@@ -92,6 +95,7 @@ class NetWrapper {
     basicRequest
       .body(params)
       .post(uri)
+      .cookie(authCookie)
       .send(asyncBackend)
       .map(_.body)
 }
