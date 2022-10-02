@@ -1,6 +1,6 @@
 package com.atanana
 
-import com.atanana.Connector.SITE_URL
+import com.atanana.Connector.{API_URL, SITE_URL}
 import com.atanana.TestUtils.{awaitEither, awaitError, fakeConfig}
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
@@ -127,14 +127,14 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
 
     "get tournament info page by wrapper" in {
       val tournamentId = 111
-      (wrapper.getPageAsync _).when(uri"$SITE_URL/api/tournaments/$tournamentId.json").returns(Future.successful(Right("tournament info page")))
+      (wrapper.getApi _).when(uri"$API_URL/tournaments/$tournamentId").returns(Future.successful(Right("tournament info page")))
       connector.getTournamentInfo(tournamentId).pipe(awaitEither) shouldEqual Right("tournament info page")
     }
 
     "pass tournament info page error from wrapper" in {
       val tournamentId = 111
-      val url = uri"$SITE_URL/api/tournaments/$tournamentId.json"
-      (wrapper.getPageAsync _).when(url).returns(Future.successful(Left("123")))
+      val url = uri"$API_URL/tournaments/$tournamentId"
+      (wrapper.getApi _).when(url).returns(Future.successful(Left("123")))
       val exception = connector.getTournamentInfo(tournamentId).pipe(awaitError)
       exception shouldBe a[ConnectorException]
       exception should have message s"Error uri: $url\n123"

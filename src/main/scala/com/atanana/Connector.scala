@@ -1,11 +1,11 @@
 package com.atanana
 
 import cats.data.EitherT
-import com.atanana.Connector.SITE_URL
+import com.atanana.Connector.{API_URL, SITE_URL}
 import com.atanana.json.Config
 import sttp.client3._
 import sttp.client3.okhttp.OkHttpFutureBackend
-import sttp.model.Uri
+import sttp.model.{Header, Uri}
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -49,13 +49,19 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
   }
 
   def getTournamentInfo(tournamentId: Int): EitherT[Future, Throwable, String] = {
-    val url = uri"$SITE_URL/api/tournaments/$tournamentId.json"
-    getPageAsync(url)
+    val url = uri"$API_URL/tournaments/$tournamentId"
+    getApiAsync(url)
   }
 
+  private def getApiAsync(uri: Uri): EitherT[Future, Throwable, String] =
+    wrapGet(uri, netWrapper.getApi(uri))
+
   private def getPageAsync(uri: Uri): EitherT[Future, Throwable, String] =
+    wrapGet(uri, netWrapper.getPageAsync(uri))
+
+  private def wrapGet(uri: Uri, request: Future[Either[String, String]]): EitherT[Future, Throwable, String] =
     EitherT(
-      netWrapper.getPageAsync(uri)
+      request
         .map(_.left.map(error => new ConnectorException(uri, error)))
         .recover(exception => Left(new ConnectorException(uri, cause = exception)))
     )
@@ -70,6 +76,7 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
 
 object Connector {
   val SITE_URL = "https://rating.chgk.info"
+  val API_URL = "https://api.rating.chgk.net"
   val TOURNAMENT_URL_TEMPLATE: String = SITE_URL + "/tournament/"
 }
 
@@ -85,6 +92,7 @@ class NetWrapper @Inject()(config: Config) {
 
   private val asyncBackend = OkHttpFutureBackend()
   private val authCookie = ("REMEMBERME", config.authCookie)
+  private val apiAuthHeader = Header("Authorization", "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjQ3MTgyODAsImV4cCI6MTY2NDcyMTg4MCwicm9sZXMiOltdLCJ1c2VybmFtZSI6InRhbmFuYS5hbmRyZXlAZ21haWwuY29tIn0.RkhxOTysbw5Hn3rysEU2kRUrnM2DuPkmQkTDzWiQNqA6ehYFFtCLyI6GX-7kwSuHvhiLnYdiv6IREw9QwPxO3wsT4tjNALG05NWpxNLnJQjLt85Y5aaQ1f3vc5QZ7kfCkJiNlPSz-YES_03kCdmym1rTLqM1K2jBPbV7qlRbBRefH8c1aXE7mhx9qZHXVgXbTYcA8-9wGyZ_4VZa8cwLXOhYBmZtQedoBrCP6rk8LEC1VgyJD4hWd2x6oOsajf-tHK3F8zi6UuxG7LLejQ-eAo_EUi8F0UOIRXnUiy4f6JYkHoX8szNUaCoxFlT6qWVg1Yd7WQgD3NN3KVM8f0li0A")
 
   def getPageAsync(uri: Uri): Future[Either[String, String]] =
     basicRequest
@@ -98,6 +106,13 @@ class NetWrapper @Inject()(config: Config) {
       .body(params)
       .post(uri)
       .cookie(authCookie)
+      .send(asyncBackend)
+      .map(_.body)
+
+  def getApi(uri: Uri): Future[Either[String, String]] =
+    basicRequest
+      .get(uri)
+      .header(apiAuthHeader)
       .send(asyncBackend)
       .map(_.body)
 }
