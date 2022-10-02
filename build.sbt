@@ -18,3 +18,11 @@ libraryDependencies += "org.typelevel" %% "cats-core" % "2.8.0"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.12" % Test
 libraryDependencies += "org.scalamock" %% "scalamock" % "5.2.0" % Test
+
+assembly / assemblyMergeStrategy := {
+  case PathList("module-info.class") => MergeStrategy.discard
+  case x if x.endsWith("/module-info.class") => MergeStrategy.discard
+  case x =>
+    val oldStrategy = (assembly / assemblyMergeStrategy).value
+    oldStrategy(x)
+}
