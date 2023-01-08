@@ -53,6 +53,11 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
     getApiAsync(url)
   }
 
+  def getReleases: EitherT[Future, Throwable, String] = {
+    val url = uri"$API_URL/releases?pagination=false"
+    getApiAsync(url)
+  }
+
   private def getApiAsync(uri: Uri): EitherT[Future, Throwable, String] =
     wrapGet(uri, netWrapper.getApi(uri))
 

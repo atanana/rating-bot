@@ -140,6 +140,19 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
       exception should have message s"Error uri: $url\n123"
     }
 
+    "get releases page by wrapper" in {
+      (wrapper.getApi _).when(uri"$API_URL/releases?pagination=false").returns(Future.successful(Right("releases page")))
+      connector.getReleases.pipe(awaitEither) shouldEqual Right("releases page")
+    }
+
+    "pass releases page error from wrapper" in {
+      val url = uri"$API_URL/releases?pagination=false"
+      (wrapper.getApi _).when(url).returns(Future.successful(Left("123")))
+      val exception = connector.getReleases.pipe(awaitError)
+      exception shouldBe a[ConnectorException]
+      exception should have message s"Error uri: $url\n123"
+    }
+
     "pass post error from wrapper" in {
       val uri = uri"http://test.com"
       val params = Map.empty[String, String]
