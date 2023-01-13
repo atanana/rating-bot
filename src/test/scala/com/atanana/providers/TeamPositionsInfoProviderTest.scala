@@ -37,17 +37,6 @@ class TeamPositionsInfoProviderTest extends AnyWordSpecLike with MockFactory wit
 
       checkTeams(team, cityTeam, countryTeam)
     }
-
-    "filter virtual teams" in {
-      setupDefaultExpectations()
-      val realTeam = createTeam(1)
-      val fakeTeam = createTeam(2, isReal = false)
-      (parser.getTeams _).when(teamPage).returns(List(realTeam, fakeTeam))
-      (parser.getTeams _).when(cityTeamsPage).returns(List(fakeTeam, realTeam))
-      (parser.getTeams _).when(countryTeamsPage).returns(List(fakeTeam, realTeam, fakeTeam))
-
-      checkTeams(realTeam, realTeam, realTeam)
-    }
   }
 
   private def checkTeams(team: Team, cityTeam: Team, countryTeam: Team) = {
@@ -66,5 +55,5 @@ class TeamPositionsInfoProviderTest extends AnyWordSpecLike with MockFactory wit
     (releasesProvider.getLastReleaseId _).when().returns(EitherT.rightT[Future, Throwable](lastReleaseId))
   }
 
-  private def createTeam(id: Int, isReal: Boolean = true): Team = Team(id, "", "", 0, 0f, isReal)
+  private def createTeam(id: Int): Team = Team(id, "", "", 0, 0f)
 }

@@ -2,7 +2,7 @@ package com.atanana.providers
 
 import cats.data.EitherT
 import com.atanana.Connector
-import com.atanana.data.{Team, TeamPositionsInfo}
+import com.atanana.data.TeamPositionsInfo
 import com.atanana.parsers.TeamsPageParser
 
 import javax.inject.Inject
@@ -22,12 +22,7 @@ class TeamPositionsInfoProvider @Inject()(
     cityTeams <- connector.getCityTeamsPage(releaseId).map(parser.getTeams)
     countryTeams <- connector.getCountryTeamsPage(releaseId).map(parser.getTeams)
 
-    positionsInfo <- EitherT.fromEither[Future](composer.positionsInfo(
-      teams = filter(allTeams),
-      cityTeams = filter(cityTeams),
-      countryTeams = filter(countryTeams)
-    ).left.map[Throwable](new RuntimeException(_)))
+    positionsInfo <- EitherT.fromEither[Future](composer.positionsInfo(allTeams, cityTeams, countryTeams)
+      .left.map[Throwable](new RuntimeException(_)))
   } yield positionsInfo
-
-  private def filter(teams: List[Team]): List[Team] = teams.filter(_.isReal)
 }

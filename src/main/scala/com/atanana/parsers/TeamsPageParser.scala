@@ -17,8 +17,6 @@ class TeamsPageParser {
       name = teamJson.fields("teamName").asInstanceOf[JsString].value,
       city = teamJson.fields("townName").asInstanceOf[JsString].value,
       rating = teamJson.fields("teamRating").toString().toInt,
-      position = teamJson.fields("teamRatingPosition").toString().toInt,
-      isReal = true
-    )
+      position = teamJson.fields("teamRatingPosition").toString().toInt)
   }
 }
