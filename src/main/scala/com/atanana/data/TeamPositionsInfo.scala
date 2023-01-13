@@ -5,10 +5,10 @@ case class TeamPositionsInfo(
                               targetCountryRatingTeam: Option[TargetTeam],
                               overtakingCountryRatingTeam: TargetTeam,
                               top100ratingDifference: Int,
-                              currentPosition: Float,
+                              currentPosition: Int,
                               currentRating: Int,
-                              cityPosition: Float,
-                              countryPosition: Float
+                              cityPosition: Int,
+                              countryPosition: Int
                             )
 
 case class TargetTeam(name: String, city: String, ratingDifference: Int)

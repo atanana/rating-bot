@@ -16,22 +16,22 @@ class TeamPositionsInfoComposerTest extends AnyWordSpecLike with Matchers {
       val targetCountryRatingTeamCity = "test country city"
       val overcomingRatingTeamName = "test overcoming team"
       val overcomingRatingTeamCity = "test overcoming city"
-      val teams = List.fill(500)(Team(1, "test team", "test city", 1, 1f))
-        .updated(99, Team(321, "last team", "last city", 100, 100f))
-        .updated(200, Team(teamId, "team", "city", 49, 200f))
-        .updated(199, Team(111, targetAllRatingTeamName, targetAllRatingTeamCity, 51, 199f))
-      val cityTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1f))
-        .updated(19, Team(teamId, "team", "city", 49, 20f))
-      val countryTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1f))
-        .updated(29, Team(teamId, "team", "city", 49, 30f))
-        .updated(28, Team(1, targetCountryRatingTeamName, targetCountryRatingTeamCity, 50, 30f))
-        .updated(30, Team(1, overcomingRatingTeamName, overcomingRatingTeamCity, 47, 30f))
+      val teams = List.fill(500)(Team(1, "test team", "test city", 1, 1))
+        .updated(99, Team(321, "last team", "last city", 100, 100))
+        .updated(200, Team(teamId, "team", "city", 49, 200))
+        .updated(199, Team(111, targetAllRatingTeamName, targetAllRatingTeamCity, 51, 199))
+      val cityTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1))
+        .updated(19, Team(teamId, "team", "city", 49, 20))
+      val countryTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1))
+        .updated(29, Team(teamId, "team", "city", 49, 30))
+        .updated(28, Team(1, targetCountryRatingTeamName, targetCountryRatingTeamCity, 50, 30))
+        .updated(30, Team(1, overcomingRatingTeamName, overcomingRatingTeamCity, 47, 30))
       provider.positionsInfo(teams, cityTeams, countryTeams) shouldEqual Right(TeamPositionsInfo(
         Some(TargetTeam(targetAllRatingTeamName, targetAllRatingTeamCity, 2)),
         Some(TargetTeam(targetCountryRatingTeamName, targetCountryRatingTeamCity, 1)),
         TargetTeam(overcomingRatingTeamName, overcomingRatingTeamCity, -2),
         51,
-        200f,
+        200,
         49,
         20,
         30
@@ -41,20 +41,20 @@ class TeamPositionsInfoComposerTest extends AnyWordSpecLike with Matchers {
     "provide correct positions info when team on the first place" in {
       val overcomingRatingTeamName = "test overcoming team"
       val overcomingRatingTeamCity = "test overcoming city"
-      val teams = List.fill(500)(Team(1, "test team", "test city", 1, 1f))
-        .updated(99, Team(321, "last team", "last city", 100, 100f))
-        .updated(0, Team(teamId, "team", "city", 49, 1f))
-      val cityTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1f))
-        .updated(0, Team(teamId, "team", "city", 49, 1f))
-      val countryTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1f))
-        .updated(0, Team(teamId, "team", "city", 49, 1f))
-        .updated(1, Team(1, overcomingRatingTeamName, overcomingRatingTeamCity, 47, 2f))
+      val teams = List.fill(500)(Team(1, "test team", "test city", 1, 1))
+        .updated(99, Team(321, "last team", "last city", 100, 100))
+        .updated(0, Team(teamId, "team", "city", 49, 1))
+      val cityTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1))
+        .updated(0, Team(teamId, "team", "city", 49, 1))
+      val countryTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1))
+        .updated(0, Team(teamId, "team", "city", 49, 1))
+        .updated(1, Team(1, overcomingRatingTeamName, overcomingRatingTeamCity, 47, 2))
       provider.positionsInfo(teams, cityTeams, countryTeams) shouldEqual Right(TeamPositionsInfo(
         None,
         None,
         TargetTeam(overcomingRatingTeamName, overcomingRatingTeamCity, -2),
         51,
-        1f,
+        1,
         49,
         1,
         1
@@ -62,35 +62,35 @@ class TeamPositionsInfoComposerTest extends AnyWordSpecLike with Matchers {
     }
 
     "fails when no team in top 500" in {
-      val teams = List.fill(500)(Team(1, "test team", "test city", 1, 1f))
-        .updated(99, Team(321, "last team", "last city", 100, 100f))
-        .updated(199, Team(111, "target team", "target city", 51, 199f))
-      val cityTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1f))
-        .updated(19, Team(teamId, "team", "city", 49, 20f))
-      val countryTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1f))
-        .updated(29, Team(teamId, "team", "city", 49, 30f))
+      val teams = List.fill(500)(Team(1, "test team", "test city", 1, 1))
+        .updated(99, Team(321, "last team", "last city", 100, 100))
+        .updated(199, Team(111, "target team", "target city", 51, 199))
+      val cityTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1))
+        .updated(19, Team(teamId, "team", "city", 49, 20))
+      val countryTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1))
+        .updated(29, Team(teamId, "team", "city", 49, 30))
       provider.positionsInfo(teams, cityTeams, countryTeams) shouldEqual Left("No target team in top 500!")
     }
 
     "fails when no team in city teams" in {
-      val teams = List.fill(500)(Team(1, "test team", "test city", 1, 1f))
-        .updated(99, Team(321, "last team", "last city", 100, 100f))
-        .updated(200, Team(teamId, "team", "city", 49, 200f))
-        .updated(199, Team(111, "target team", "target city", 51, 199f))
-      val cityTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1f))
-      val countryTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1f))
-        .updated(29, Team(teamId, "team", "city", 49, 30f))
+      val teams = List.fill(500)(Team(1, "test team", "test city", 1, 1))
+        .updated(99, Team(321, "last team", "last city", 100, 100))
+        .updated(200, Team(teamId, "team", "city", 49, 200))
+        .updated(199, Team(111, "target team", "target city", 51, 199))
+      val cityTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1))
+      val countryTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1))
+        .updated(29, Team(teamId, "team", "city", 49, 30))
       provider.positionsInfo(teams, cityTeams, countryTeams) shouldEqual Left("No target team in city teams!")
     }
 
     "fails when no team in country teams" in {
-      val teams = List.fill(500)(Team(1, "test team", "test city", 1, 1f))
-        .updated(99, Team(321, "last team", "last city", 100, 100f))
-        .updated(200, Team(teamId, "team", "city", 49, 200f))
-        .updated(199, Team(111, "target team", "target city", 51, 199f))
-      val cityTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1f))
-        .updated(19, Team(teamId, "team", "city", 49, 20f))
-      val countryTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1f))
+      val teams = List.fill(500)(Team(1, "test team", "test city", 1, 1))
+        .updated(99, Team(321, "last team", "last city", 100, 100))
+        .updated(200, Team(teamId, "team", "city", 49, 200))
+        .updated(199, Team(111, "target team", "target city", 51, 199))
+      val cityTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1))
+        .updated(19, Team(teamId, "team", "city", 49, 20))
+      val countryTeams = List.fill(100)(Team(1, "test team", "test city", 1, 1))
       provider.positionsInfo(teams, cityTeams, countryTeams) shouldEqual Left("No target team in country teams!")
     }
   }

@@ -18,7 +18,7 @@ class TeamsPageParserTest extends AnyWordSpecLike with Matchers {
     }
 
     "parse valid team" in {
-      teams.head shouldEqual Team(45556, "Рабочее название", "Санкт-Петербург", 12088, 1.0f)
+      teams.head shouldEqual Team(45556, "Рабочее название", "Санкт-Петербург", 12088, 1)
     }
   }
 }

@@ -55,5 +55,5 @@ class TeamPositionsInfoProviderTest extends AnyWordSpecLike with MockFactory wit
     (releasesProvider.getLastReleaseId _).when().returns(EitherT.rightT[Future, Throwable](lastReleaseId))
   }
 
-  private def createTeam(id: Int): Team = Team(id, "", "", 0, 0f)
+  private def createTeam(id: Int): Team = Team(id, "", "", 0, 0)
 }

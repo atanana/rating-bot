@@ -56,15 +56,15 @@ class MessageComposerTest extends AnyWordSpecLike with Matchers {
     val targetTeam = TargetTeam("target team", "target city", 20)
     val targetCountryTeam = TargetTeam("country team", "country city", 10)
     val overtakingTeam = TargetTeam("overtaking team", "overtaking city", -10)
-    val info = TeamPositionsInfo(Some(targetTeam), Some(targetCountryTeam), overtakingTeam, 123, 200, 100, 20.5f, 30)
+    val info = TeamPositionsInfo(Some(targetTeam), Some(targetCountryTeam), overtakingTeam, 123, 200, 100, 20, 30)
     MessageComposer().composeTeamPositionsMessage(info) shouldEqual
       s"""
          |Небольшая сводка по новому релизу:
          |
          |🏆 текущий рейтинг — *100*
-         |🏆 место по городу — *20.5*
-         |🏆 место по стране — *30.0*
-         |🏆 место в общем рейтинге — *200.0*
+         |🏆 место по городу — *20*
+         |🏆 место по стране — *30*
+         |🏆 место в общем рейтинге — *200*
          |🏆 до топ-100 осталось — *123*
          |🏆 *10* осталось до следующей команды по стране — *country team (country city)*
          |🏆 *10* осталось команде *overtaking team (overtaking city)* чтобы догнать нас по стране
@@ -75,15 +75,15 @@ class MessageComposerTest extends AnyWordSpecLike with Matchers {
 
   "valid team positions reminder when team is on the first place" in {
     val overtakingTeam = TargetTeam("overtaking team", "overtaking city", -10)
-    val info = TeamPositionsInfo(None, None, overtakingTeam, 123, 200, 100, 20.5f, 30)
+    val info = TeamPositionsInfo(None, None, overtakingTeam, 123, 200, 100, 20, 30)
     MessageComposer().composeTeamPositionsMessage(info) shouldEqual
       s"""
          |Небольшая сводка по новому релизу:
          |
          |🏆 текущий рейтинг — *100*
-         |🏆 место по городу — *20.5*
-         |🏆 место по стране — *30.0*
-         |🏆 место в общем рейтинге — *200.0*
+         |🏆 место по городу — *20*
+         |🏆 место по стране — *30*
+         |🏆 место в общем рейтинге — *200*
          |🏆 до топ-100 осталось — *123*
          |🏆 мы первая команда в стране! Нужно постараться не обосраться на следующей неделе
          |🏆 *10* осталось команде *overtaking team (overtaking city)* чтобы догнать нас по стране
