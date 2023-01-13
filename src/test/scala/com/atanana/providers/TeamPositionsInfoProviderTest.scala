@@ -52,7 +52,7 @@ class TeamPositionsInfoProviderTest extends AnyWordSpecLike with MockFactory wit
     (connector.getTeamsPage _).when(lastReleaseId).returns(EitherT.rightT[Future, Throwable](teamPage))
     (connector.getCityTeamsPage _).when(lastReleaseId).returns(EitherT.rightT[Future, Throwable](cityTeamsPage))
     (connector.getCountryTeamsPage _).when(lastReleaseId).returns(EitherT.rightT[Future, Throwable](countryTeamsPage))
-    (releasesProvider.getLastReleaseId _).when().returns(EitherT.rightT[Future, Throwable](lastReleaseId))
+    (() => releasesProvider.getLastReleaseId).when().returns(EitherT.rightT[Future, Throwable](lastReleaseId))
   }
 
   private def createTeam(id: Int): Team = Team(id, "", "", 0, 0)

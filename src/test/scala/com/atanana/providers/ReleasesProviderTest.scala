@@ -25,13 +25,13 @@ class ReleasesProviderTest extends AnyWordSpecLike with Matchers with MockFactor
   "ReleasesProvider" should {
 
     "provide last release id" in {
-      (connector.getReleases _).when().returns(EitherT.rightT[Future, Throwable]("releases page"))
+      (() => connector.getReleases).when().returns(EitherT.rightT[Future, Throwable]("releases page"))
       (parser.getReleases _).when("releases page").returns(Success(List(
         Release(1, LocalDateTime.of(2022, 12, 31, 1, 0)),
         Release(2, LocalDateTime.of(2022, 12, 31, 2, 0)),
         Release(3, LocalDateTime.of(2023, 1, 2, 0, 0)),
       )))
-      (timeProvider.now _).when().returns(LocalDateTime.of(2023, 1, 1, 0, 0))
+      (() => timeProvider.now).when().returns(LocalDateTime.of(2023, 1, 1, 0, 0))
 
       val releaseId = provider.getLastReleaseId.pipe(awaitEither)
 
@@ -39,7 +39,7 @@ class ReleasesProviderTest extends AnyWordSpecLike with Matchers with MockFactor
     }
 
     "return error if no releases" in {
-      (connector.getReleases _).when().returns(EitherT.rightT[Future, Throwable]("releases page"))
+      (() => connector.getReleases).when().returns(EitherT.rightT[Future, Throwable]("releases page"))
       (parser.getReleases _).when("releases page").returns(Success(List()))
 
       val error = provider.getLastReleaseId.pipe(awaitError)

@@ -24,15 +24,15 @@ class TeamPositionsProcessorTest extends AnyWordSpecLike with MockFactory with M
     "post correct message" in {
       val targetTeam = TargetTeam("test team", "test city", 100)
       val info = TeamPositionsInfo(Some(targetTeam), Some(targetTeam), targetTeam, 123, 200, 3000, 20, 30)
-      (provider.data _).when().returns(EitherT.rightT[Future, Throwable](info))
+      (() => provider.data).when().returns(EitherT.rightT[Future, Throwable](info))
       (messageComposer.composeTeamPositionsMessage _).when(info).returns("test message")
       (poster.postAsync _).expects("test message") returns EitherT.rightT(())
 
-      getResult(processor) shouldEqual Right()
+      getResult(processor).isRight shouldBe true
     }
 
     "pass error from provider" in {
-      (provider.data _).when().returns(EitherT.leftT[Future, TeamPositionsInfo](new RuntimeException("123")))
+      (() => provider.data).when().returns(EitherT.leftT[Future, TeamPositionsInfo](new RuntimeException("123")))
 
       getResultErrorMessage(processor) shouldEqual "123"
     }
@@ -40,7 +40,7 @@ class TeamPositionsProcessorTest extends AnyWordSpecLike with MockFactory with M
     "pass error from poster" in {
       val targetTeam = TargetTeam("test team", "test city", 100)
       val info = TeamPositionsInfo(Some(targetTeam), Some(targetTeam), targetTeam, 123, 200, 3000, 20, 30)
-      (provider.data _).when().returns(EitherT.rightT[Future, Throwable](info))
+      (() => provider.data).when().returns(EitherT.rightT[Future, Throwable](info))
       (messageComposer.composeTeamPositionsMessage _).when(info).returns("test message")
       (poster.postAsync _).expects("test message") returns EitherT.leftT(new RuntimeException("123"))
 

@@ -22,15 +22,15 @@ class ReminderProcessorTest extends AnyWordSpecLike with MockFactory with Matche
   "ReminderProcessor" should {
     "post correct reminders for tomorrow's requisitions" in {
       val requisition = Requisition("tournament 1", "agent 1", LocalDateTime.now().plusDays(1))
-      (store.read _).when().returns(Data(Set.empty, Set(requisition)))
+      (() => store.read).when().returns(Data(Set.empty, Set(requisition)))
       (messageComposer.composeRequisitionReminder _).when(requisition).returns("reminder")
       (poster.postAsync _).expects("reminder") returns EitherT.rightT(())
 
-      getResult(processor) shouldEqual Right()
+      getResult(processor).isRight shouldBe true
     }
 
     "not remind about not tomorrow's requisitions" in {
-      (store.read _).when().returns(Data(Set.empty, Set(
+      (() => store.read).when().returns(Data(Set.empty, Set(
         Requisition("tournament 1", "agent 1", LocalDateTime.now()),
         Requisition("tournament 1", "agent 1", LocalDateTime.now().plusDays(2)),
         Requisition("tournament 1", "agent 1", LocalDateTime.now().plusMonths(1)),
@@ -38,12 +38,12 @@ class ReminderProcessorTest extends AnyWordSpecLike with MockFactory with Matche
         Requisition("tournament 1", "agent 1", LocalDateTime.now().minusMonths(1))
       )))
 
-      getResult(processor) shouldEqual Right()
+      getResult(processor).isRight shouldBe true
     }
 
     "pass error from poster" in {
       val requisition = Requisition("tournament 1", "agent 1", LocalDateTime.now().plusDays(1))
-      (store.read _).when().returns(Data(Set.empty, Set(requisition)))
+      (() => store.read).when().returns(Data(Set.empty, Set(requisition)))
       (messageComposer.composeRequisitionReminder _).when(requisition).returns("reminder")
       (poster.postAsync _).expects("reminder") returns EitherT.leftT(new RuntimeException("123"))
 

@@ -26,31 +26,31 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
     "posts about changes" in {
       val parsedData = setUpDefaults()
       val storedData = Data(Set.empty, Set.empty)
-      (store.read _).expects().returns(storedData)
+      (() => store.read).expects().returns(storedData)
       (store.write _).expects(*)
       val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty), RequisitionsCheckResult(Set.empty, Set.empty))
       (checker.check _).when(storedData, parsedData).returns(checkResult)
       (checkResultsHandler.processCheckResult _).expects(checkResult) returns EitherT.rightT(())
 
-      getResult(processor) shouldEqual Right()
+      getResult(processor).isRight shouldBe true
     }
 
     "save new data" in {
       val parsedData = setUpDefaults()
       val storedData = Data(Set.empty, Set.empty)
-      (store.read _).expects().returns(storedData)
+      (() => store.read).expects().returns(storedData)
       (store.write _).expects(parsedData.toData)
       (checker.check _).when(storedData, parsedData)
       (checkResultsHandler.processCheckResult _).expects(*) returns EitherT.rightT(())
 
-      getResult(processor) shouldEqual Right()
+      getResult(processor).isRight shouldBe true
     }
 
     "add missing tournaments" in {
       val parsedData = setUpDefaults()
       val tournament = TournamentData(2, "tournament 2", "link 2", 1f, 1, 1)
       val storedData = Data(Set(tournament), Set.empty)
-      (store.read _).expects().returns(storedData)
+      (() => store.read).expects().returns(storedData)
 
       var data = parsedData.toData
       data = data.copy(tournaments = data.tournaments + tournament)
@@ -59,28 +59,28 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
       (checker.check _).when(storedData, parsedData)
       (checkResultsHandler.processCheckResult _).expects(*) returns EitherT.rightT(())
 
-      getResult(processor) shouldEqual Right()
+      getResult(processor).isRight shouldBe true
     }
 
     "not save data when no changes" in {
       val parsedData = setUpDefaults()
       val storedData = parsedData.toData
-      (store.read _).expects().returns(storedData)
+      (() => store.read).expects().returns(storedData)
       (checker.check _).when(storedData, parsedData)
       (checkResultsHandler.processCheckResult _).expects(*) returns EitherT.rightT(())
 
-      getResult(processor) shouldEqual Right()
+      getResult(processor).isRight shouldBe true
     }
 
     "no posts and saves when no data" in {
-      (provider.data _).when().returns(EitherT.leftT(new RuntimeException("error")))
+      (() => provider.data).when().returns(EitherT.leftT(new RuntimeException("error")))
       getResultErrorMessage(processor) shouldEqual "error"
     }
 
     "not save data when posting failed" in {
       val parsedData = setUpDefaults()
       val storedData = Data(Set.empty, Set.empty)
-      (store.read _).expects().returns(storedData)
+      (() => store.read).expects().returns(storedData)
       val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty), RequisitionsCheckResult(Set.empty, Set.empty))
       (checker.check _).when(storedData, parsedData).returns(checkResult)
       (checkResultsHandler.processCheckResult _).expects(checkResult) returns EitherT.leftT(new RuntimeException("post error"))
@@ -94,7 +94,7 @@ class PollProcessorTest extends AnyWordSpecLike with MockFactory with Matchers {
       Set(TournamentData(1, "tournament 1", "link 1", 1f, 1, 1)),
       Set(RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now()))
     )
-    (provider.data _).when().returns(EitherT.rightT[Future, Throwable](parsedData))
+    (() => provider.data).when().returns(EitherT.rightT[Future, Throwable](parsedData))
     parsedData
   }
 }

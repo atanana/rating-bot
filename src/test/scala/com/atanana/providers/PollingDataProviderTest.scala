@@ -44,7 +44,7 @@ class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matc
     }
 
     "pass team page error" in {
-      (connector.getTeamPage _).when().returns(EitherT.leftT(new RuntimeException("team page error")))
+      (() => connector.getTeamPage).when().returns(EitherT.leftT(new RuntimeException("team page error")))
       provider.data.pipe(awaitError) should have message "team page error"
     }
 
@@ -97,13 +97,13 @@ class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matc
 
   private def setTournamentsData(data: List[TournamentData]): Unit = {
     val teamPage = "team page"
-    (connector.getTeamPage _).when().returns(EitherT.rightT(teamPage))
+    (() => connector.getTeamPage).when().returns(EitherT.rightT(teamPage))
     (csvParser.getTournamentsData _).when(teamPage).returns(data)
   }
 
   private def setRequisitionData(data: Try[List[PartialRequisitionData]]): Unit = {
     val requisitionsPage = "requisitions page"
-    (connector.getRequisitionPage _).when().returns(EitherT.rightT(requisitionsPage))
+    (() => connector.getRequisitionPage).when().returns(EitherT.rightT(requisitionsPage))
     (requisitionsParser.getRequisitionsData _).when(requisitionsPage).returns(data)
   }
 
