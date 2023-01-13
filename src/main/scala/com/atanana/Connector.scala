@@ -44,7 +44,7 @@ class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
   }
 
   def getCountryTeamsPage: EitherT[Future, Throwable, String] = {
-    val url = uri"$SITE_URL/teams.php?country=${config.countryName}"
+    val url = uri"$SITE_URL/teams.php?country=${config.country}"
     getPageAsync(url)
   }
 

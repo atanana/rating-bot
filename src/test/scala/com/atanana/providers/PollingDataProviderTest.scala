@@ -23,7 +23,7 @@ class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matc
   private val requisitionsParser = stub[RequisitionsParser]
   private val requisitionsPageParser = stub[RequisitionsPageParser]
   private val tournamentInfoParser = stub[TournamentInfoParser]
-  private val config: Config = Config("tg token", "api token", "cookie", 1, 1, 1, 1, "test", List("test venue 1", "test venue 2"))
+  private val config: Config = Config("tg token", "api token", "cookie", 1, 1, 1, 1, 1, List("test venue 1", "test venue 2"))
   private val provider = new PollingDataProvider(connector, csvParser, requisitionsParser, requisitionsPageParser, tournamentInfoParser, config)
 
   "PollingDataProvider" should {

@@ -102,12 +102,12 @@ class ConnectorTest extends AnyWordSpecLike with MockFactory with Matchers {
     }
 
     "get country teams page by wrapper" in {
-      (wrapper.getPageAsync _).when(uri"$SITE_URL/teams.php?country=%D0%91%D0%B5%D0%BB%D0%B0%D1%80%D1%83%D1%81%D1%8C").returns(Future.successful(Right("country teams page")))
+      (wrapper.getPageAsync _).when(uri"$SITE_URL/teams.php?country=1").returns(Future.successful(Right("country teams page")))
       connector.getCountryTeamsPage.pipe(awaitEither) shouldEqual Right("country teams page")
     }
 
     "pass country teams page error from wrapper" in {
-      val teamsUrl = uri"$SITE_URL/teams.php?country=%D0%91%D0%B5%D0%BB%D0%B0%D1%80%D1%83%D1%81%D1%8C"
+      val teamsUrl = uri"$SITE_URL/teams.php?country=1"
       (wrapper.getPageAsync _).when(teamsUrl).returns(Future.successful(Left("123")))
       val exception = connector.getCountryTeamsPage.pipe(awaitError)
       exception shouldBe a[ConnectorException]

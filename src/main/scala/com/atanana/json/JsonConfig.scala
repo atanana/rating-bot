@@ -35,6 +35,6 @@ case class Config(
                    team: Int,
                    city: Int,
                    port: Int,
-                   countryName: String,
+                   country: Int,
                    ignoredVenues: List[String]
                  )
