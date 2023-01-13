@@ -20,7 +20,7 @@ class TeamPositionsInfoProvider @Inject()(
     releaseId <- releasesProvider.getLastReleaseId
     allTeams <- connector.getTeamsPage(releaseId).map(parser.getTeams)
     cityTeams <- connector.getCityTeamsPage(releaseId).map(parser.getTeams)
-    countryTeams <- connector.getCountryTeamsPage.map(parser.getTeams)
+    countryTeams <- connector.getCountryTeamsPage(releaseId).map(parser.getTeams)
 
     positionsInfo <- EitherT.fromEither[Future](composer.positionsInfo(
       teams = filter(allTeams),
