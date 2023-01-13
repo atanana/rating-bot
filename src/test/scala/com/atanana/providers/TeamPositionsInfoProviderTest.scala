@@ -17,11 +17,13 @@ class TeamPositionsInfoProviderTest extends AnyWordSpecLike with MockFactory wit
   private val teamPage = "teams page"
   private val cityTeamsPage = "city teams page"
   private val countryTeamsPage = "country teams page"
+  private val lastReleaseId = 123
 
   private val connector = stub[Connector]
   private val parser = stub[TeamsPageParser]
   private val composer = stub[TeamPositionsInfoComposer]
-  private val provider = new TeamPositionsInfoProvider(connector, parser, composer)
+  private val releasesProvider = stub[ReleasesProvider]
+  private val provider = new TeamPositionsInfoProvider(connector, parser, composer, releasesProvider)
 
   "TeamPositionsInfoProvider" should {
     "provide correct info" in {
@@ -58,9 +60,10 @@ class TeamPositionsInfoProviderTest extends AnyWordSpecLike with MockFactory wit
   }
 
   private def setupDefaultExpectations(): Unit = {
-    (connector.getTeamsPage _).when().returns(EitherT.rightT[Future, Throwable](teamPage))
+    (connector.getTeamsPage _).when(lastReleaseId).returns(EitherT.rightT[Future, Throwable](teamPage))
     (connector.getCityTeamsPage _).when().returns(EitherT.rightT[Future, Throwable](cityTeamsPage))
     (connector.getCountryTeamsPage _).when().returns(EitherT.rightT[Future, Throwable](countryTeamsPage))
+    (releasesProvider.getLastReleaseId _).when().returns(EitherT.rightT[Future, Throwable](lastReleaseId))
   }
 
   private def createTeam(id: Int, isReal: Boolean = true): Team = Team(id, "", "", 0, 0f, isReal)

@@ -12,11 +12,13 @@ import scala.concurrent.Future
 class TeamPositionsInfoProvider @Inject()(
                                            connector: Connector,
                                            parser: TeamsPageParser,
-                                           composer: TeamPositionsInfoComposer
+                                           composer: TeamPositionsInfoComposer,
+                                           releasesProvider: ReleasesProvider
                                          ) {
 
   def data: EitherT[Future, Throwable, TeamPositionsInfo] = for {
-    allTeams <- connector.getTeamsPage.map(parser.getTeams)
+    releaseId <- releasesProvider.getLastReleaseId
+    allTeams <- connector.getTeamsPage(releaseId).map(parser.getTeams)
     cityTeams <- connector.getCityTeamsPage.map(parser.getTeams)
     countryTeams <- connector.getCountryTeamsPage.map(parser.getTeams)
 
