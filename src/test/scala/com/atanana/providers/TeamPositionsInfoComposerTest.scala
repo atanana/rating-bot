@@ -39,10 +39,6 @@ class TeamPositionsInfoComposerTest extends AnyWordSpecLike with Matchers {
     }
 
     "provide correct positions info when team on the first place" in {
-      val targetAllRatingTeamName = "test all team"
-      val targetAllRatingTeamCity = "test all city"
-      val targetCountryRatingTeamName = "test country team"
-      val targetCountryRatingTeamCity = "test country city"
       val overcomingRatingTeamName = "test overcoming team"
       val overcomingRatingTeamCity = "test overcoming city"
       val teams = List.fill(500)(Team(1, "test team", "test city", 1, 1f))
