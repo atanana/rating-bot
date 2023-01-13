@@ -22,13 +22,12 @@ class JsonConfigTest extends AnyWordSpecLike with MockFactory with Matchers {
           |  "chat": 1,
           |  "team": 2,
           |  "city": 3,
-          |  "cityName": "Минск",
           |  "countryName": "Беларусь",
           |  "ignoredVenues": ["test", "test2"],
           |  "port": 11000
           |}""".stripMargin
       ))
-      jsonConfig.read shouldEqual Success(Config("tg token", "api token", "test cookie", 1, 2, 3, 11000, "Минск", "Беларусь", List("test", "test2")))
+      jsonConfig.read shouldEqual Success(Config("tg token", "api token", "test cookie", 1, 2, 3, 11000, "Беларусь", List("test", "test2")))
     }
 
     "not fails on reading config" in {
