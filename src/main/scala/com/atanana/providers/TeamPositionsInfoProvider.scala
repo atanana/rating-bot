@@ -19,7 +19,7 @@ class TeamPositionsInfoProvider @Inject()(
   def data: EitherT[Future, Throwable, TeamPositionsInfo] = for {
     releaseId <- releasesProvider.getLastReleaseId
     allTeams <- connector.getTeamsPage(releaseId).map(parser.getTeams)
-    cityTeams <- connector.getCityTeamsPage.map(parser.getTeams)
+    cityTeams <- connector.getCityTeamsPage(releaseId).map(parser.getTeams)
     countryTeams <- connector.getCountryTeamsPage.map(parser.getTeams)
 
     positionsInfo <- EitherT.fromEither[Future](composer.positionsInfo(

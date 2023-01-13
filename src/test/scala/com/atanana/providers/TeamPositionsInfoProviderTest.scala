@@ -61,7 +61,7 @@ class TeamPositionsInfoProviderTest extends AnyWordSpecLike with MockFactory wit
 
   private def setupDefaultExpectations(): Unit = {
     (connector.getTeamsPage _).when(lastReleaseId).returns(EitherT.rightT[Future, Throwable](teamPage))
-    (connector.getCityTeamsPage _).when().returns(EitherT.rightT[Future, Throwable](cityTeamsPage))
+    (connector.getCityTeamsPage _).when(lastReleaseId).returns(EitherT.rightT[Future, Throwable](cityTeamsPage))
     (connector.getCountryTeamsPage _).when().returns(EitherT.rightT[Future, Throwable](countryTeamsPage))
     (releasesProvider.getLastReleaseId _).when().returns(EitherT.rightT[Future, Throwable](lastReleaseId))
   }
