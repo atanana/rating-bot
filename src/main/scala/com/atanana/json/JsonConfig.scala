@@ -31,7 +31,7 @@ case class Config(
                    tgToken: String,
                    apiToken: String,
                    authCookie: String,
-                   chat: Int,
+                   chat: Long,
                    team: Int,
                    city: Int,
                    port: Int,
