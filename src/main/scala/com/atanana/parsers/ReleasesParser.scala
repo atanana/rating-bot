@@ -9,8 +9,7 @@ import scala.util.Try
 
 class ReleasesParser {
   def getReleases(releasesPage: String): Try[List[Release]] = Try {
-    val releasesJson = releasesPage.parseJson.asInstanceOf[JsObject]
-    releasesJson.fields("hydra:member").asInstanceOf[JsArray]
+    releasesPage.parseJson.asInstanceOf[JsArray]
       .elements
       .map(parseRelease)
       .toList
