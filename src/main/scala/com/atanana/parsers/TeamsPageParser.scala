@@ -15,10 +15,10 @@ class TeamsPageParser {
   private def parseTeam(json: JsValue) = Try {
     val teamJson = json.asJsObject
     Team(
-      id = teamJson.fields("id").toString().toInt,
+      id = teamJson.fields("id").asInstanceOf[JsNumber].value.toInt,
       name = teamJson.fields("teamName").asInstanceOf[JsString].value,
       city = teamJson.fields("townName").asInstanceOf[JsString].value,
-      rating = teamJson.fields("teamRating").toString().toInt,
-      position = teamJson.fields("teamRatingPosition").toString().toInt)
+      rating = teamJson.fields("teamRating").asInstanceOf[JsNumber].value.toInt,
+      position = teamJson.fields("teamRatingPosition").asInstanceOf[JsNumber].value.toInt)
   }.toOption
 }

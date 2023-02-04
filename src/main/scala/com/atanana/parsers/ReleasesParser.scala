@@ -17,7 +17,7 @@ class ReleasesParser {
 
   private def parseRelease(json: JsValue): Release = {
     val obj = json.asJsObject
-    val id = obj.fields("id").toString().toInt
+    val id = obj.fields("id").asInstanceOf[JsNumber].value.toInt
     val date = LocalDateTime.parse(obj.fields("date").asInstanceOf[JsString].value, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
     Release(id, date)
   }
