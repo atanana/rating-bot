@@ -2,7 +2,7 @@ package com.atanana
 
 import com.atanana.data.{Data, Requisition, Tournament}
 import com.atanana.fs.{FsHandlerImpl, MockFsHandler}
-import com.atanana.json.JsonStore
+import com.atanana.json.JsonStoreImpl
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
@@ -13,7 +13,7 @@ import scala.util.{Failure, Success}
 
 class JsonStoreTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
   private val fsHandler = new MockFsHandler()
-  private val jsonStore = new JsonStore(fsHandler)
+  private val jsonStore = new JsonStoreImpl(fsHandler)
 
   after {
     fsHandler.clear()

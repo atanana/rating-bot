@@ -4,7 +4,7 @@ import cats.data.EitherT
 import com.atanana.CheckResultHandler
 import com.atanana.checkers.MainChecker
 import com.atanana.data.Data
-import com.atanana.json.JsonStore
+import com.atanana.json.{JsonStore, JsonStoreImpl}
 import com.atanana.providers.PollingDataProvider
 
 import scala.concurrent.ExecutionContext.Implicits.global
