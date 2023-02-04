@@ -2,7 +2,7 @@ package com.atanana
 
 import com.atanana.json.{JsonConfig, JsonStore}
 
-trait InitModule {
+object InitModule {
 
   import com.softwaremill.macwire._
 

@@ -9,11 +9,11 @@ import scala.concurrent.Await
 import scala.concurrent.duration._
 import scala.util.{Failure, Success}
 
-object Main extends InitModule {
+object Main {
   def main(args: Array[String]): Unit = {
     val isDebug = args.contains("-debug")
 
-    jsonConfig.read match {
+    InitModule.jsonConfig.read match {
       case Success(config) => start(config, isDebug)
       case Failure(e) => println(e.getMessage)
     }
@@ -21,7 +21,7 @@ object Main extends InitModule {
 
   private def start(config: Config, isDebug: Boolean): Unit = {
     val logger = Logger("main")
-    val configModule = new ConfigModule(this, config, isDebug)
+    val configModule = new ConfigModule(config, isDebug)
     val processor = configModule.commandProcessor
     val serverChannel: ServerSocketChannel = createServerChannel(config)
     val commandProvider = new CommandProvider(serverChannel)

@@ -7,10 +7,10 @@ import com.atanana.posters.{Poster, RealPoster, TestPoster}
 import com.atanana.processors.{CommandProcessor, PollProcessor, ReminderProcessor, TeamPositionsProcessor}
 import com.atanana.providers.{PollingDataProvider, ReleasesProvider, TeamPositionsInfoComposer, TeamPositionsInfoProvider, TournamentInfoProvider, TournamentPollingFilter}
 
-class ConfigModule(ratingModule: InitModule, config: Config, isDebug: Boolean) {
+class ConfigModule(config: Config, isDebug: Boolean) {
 
   import com.softwaremill.macwire._
-  import ratingModule._
+  import InitModule._
 
   lazy val poster: Poster = if (isDebug) wire[TestPoster] else wire[RealPoster]
   lazy val checkResultHandler: CheckResultHandler = wire[CheckResultHandler]
