@@ -2,7 +2,7 @@ package com.atanana.processors
 
 import cats.data.EitherT
 import com.atanana.CheckResultHandler
-import com.atanana.checkers.MainChecker
+import com.atanana.checkers.{MainChecker, MainCheckerImpl}
 import com.atanana.data.Data
 import com.atanana.json.{JsonStore, JsonStoreImpl}
 import com.atanana.providers.{PollingDataProvider, PollingDataProviderImpl}

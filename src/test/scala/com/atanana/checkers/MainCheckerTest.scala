@@ -12,7 +12,7 @@ class MainCheckerTest extends AnyWordSpecLike with Matchers {
 
   private val tournamentsChecker = new MockTournamentsChecker()
   private val requisitionsChecker = new MockRequisitionsChecker()
-  private val checker = new MainChecker(tournamentsChecker, requisitionsChecker)
+  private val checker = new MainCheckerImpl(tournamentsChecker, requisitionsChecker)
 
   "MainChecker" should {
 
