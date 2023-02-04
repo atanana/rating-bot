@@ -1,7 +1,7 @@
 package com.atanana.processors
 
 import cats.data.EitherT
-import com.atanana.MessageComposer
+import com.atanana.{MessageComposer, MessageComposerImpl}
 import com.atanana.posters.Poster
 import com.atanana.providers.TeamPositionsInfoProvider
 

@@ -44,7 +44,7 @@ class ConfigModule(config: Config, isDebug: Boolean) {
   lazy val reminderProcessor: ReminderProcessor = wire[ReminderProcessor]
   lazy val teamPositionsProcessor: TeamPositionsProcessor = wire[TeamPositionsProcessor]
 
-  lazy val messageComposer: MessageComposer = wire[MessageComposer]
+  lazy val messageComposer: MessageComposer = wire[MessageComposerImpl]
 
   lazy val mainChecker: MainChecker = wire[MainChecker]
   lazy val tournamentsChecker: TournamentsChecker = wire[TournamentsChecker]

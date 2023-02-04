@@ -2,7 +2,7 @@ package com.atanana.processors
 
 import cats.data.EitherT
 import cats.implicits.toTraverseOps
-import com.atanana.MessageComposer
+import com.atanana.{MessageComposer, MessageComposerImpl}
 import com.atanana.json.JsonStore
 import com.atanana.posters.Poster
 
