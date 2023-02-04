@@ -15,6 +15,8 @@ class MockMessageComposer extends MessageComposer {
 
   val cancelledRequisitionMessages: mutable.Map[Requisition, String] = mutable.Map[Requisition, String]()
 
+  val teamPositionsMessage: mutable.Map[TeamPositionsInfo, String] = mutable.Map()
+
   override def composeNewResult(data: TournamentData): String = newResultMessages(data)
 
   override def currentDay(): String = ???
@@ -26,7 +28,7 @@ class MockMessageComposer extends MessageComposer {
 
   override def composeCancelledRequisition(requisition: Requisition): String = cancelledRequisitionMessages(requisition)
 
-  override def composeTeamPositionsMessage(info: TeamPositionsInfo): String = ???
+  override def composeTeamPositionsMessage(info: TeamPositionsInfo): String = teamPositionsMessage(info)
 
   override def composeChangedResult(changedTournament: ChangedTournament): String = changedResultMessages(changedTournament)
 }

@@ -7,7 +7,7 @@ import com.atanana.net.{Connector, ConnectorImpl, NetWrapper, NetWrapperImpl}
 import com.atanana.parsers.{CsvParser, ReleasesParser, RequisitionsPageParser, RequisitionsParser, TeamsPageParser, TournamentInfoParser, TournamentPageParser, TournamentPageParserImpl}
 import com.atanana.posters.{Poster, RealPoster, TestPoster}
 import com.atanana.processors.{CommandProcessor, PollProcessor, ReminderProcessor, TeamPositionsProcessor}
-import com.atanana.providers.{PollingDataProvider, ReleasesProvider, TeamPositionsInfoComposer, TeamPositionsInfoProvider, TournamentInfoProvider, TournamentInfoProviderImpl, TournamentPollingFilter, TournamentPollingFilterImpl}
+import com.atanana.providers.{PollingDataProvider, ReleasesProvider, TeamPositionsInfoComposer, TeamPositionsInfoProvider, TeamPositionsInfoProviderImpl, TournamentInfoProvider, TournamentInfoProviderImpl, TournamentPollingFilter, TournamentPollingFilterImpl}
 
 class ConfigModule(config: Config, isDebug: Boolean) {
 
@@ -33,7 +33,7 @@ class ConfigModule(config: Config, isDebug: Boolean) {
 
   lazy val timeProvider: TimeProvider = wire[TimeProvider]
   lazy val releasesProvider: ReleasesProvider = wire[ReleasesProvider]
-  lazy val teamPositionsInfoProvider: TeamPositionsInfoProvider = wire[TeamPositionsInfoProvider]
+  lazy val teamPositionsInfoProvider: TeamPositionsInfoProvider = wire[TeamPositionsInfoProviderImpl]
   lazy val teamPositionsInfoComposer = new TeamPositionsInfoComposer(config.team)
 
   lazy val fsHandler: FsHandler = wire[FsHandlerImpl]
