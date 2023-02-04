@@ -10,9 +10,9 @@ import spray.json._
 
 import scala.util.Try
 
-class JsonStore(fsHandler: FsHandler) {
+private val FILE_NAME = "data.json"
 
-  import JsonStore.FILE_NAME
+class JsonStore(fsHandler: FsHandler) {
 
   private implicit object RatingDateTimeFormat extends RootJsonFormat[LocalDateTime] {
     override def write(obj: LocalDateTime): JsValue = JsString(obj.format(DateTimeFormatter.ISO_DATE_TIME))
@@ -38,10 +38,4 @@ class JsonStore(fsHandler: FsHandler) {
   def write(data: Data): Unit = {
     fsHandler.writeFile(data.toJson.prettyPrint, FILE_NAME)
   }
-}
-
-object JsonStore {
-  val FILE_NAME = "data.json"
-
-  def apply(fsHandler: FsHandler): JsonStore = new JsonStore(fsHandler)
 }

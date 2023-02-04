@@ -4,7 +4,7 @@ assembly / assemblyJarName := "rating-bot.jar"
 
 version := "2.5.1"
 
-scalaVersion := "2.13.8"
+scalaVersion := "3.2.2"
 
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.4.5"
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"

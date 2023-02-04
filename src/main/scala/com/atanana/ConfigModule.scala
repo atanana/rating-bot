@@ -1,7 +1,7 @@
 package com.atanana
 
 import com.atanana.checkers.{MainChecker, RequisitionsChecker, TournamentsChecker}
-import com.atanana.json.Config
+import com.atanana.json.{Config, JsonStore}
 import com.atanana.parsers.{CsvParser, ReleasesParser, RequisitionsPageParser, RequisitionsParser, TeamsPageParser, TournamentInfoParser, TournamentPageParser}
 import com.atanana.posters.{Poster, RealPoster, TestPoster}
 import com.atanana.processors.{CommandProcessor, PollProcessor, ReminderProcessor, TeamPositionsProcessor}
@@ -10,7 +10,6 @@ import com.atanana.providers.{PollingDataProvider, ReleasesProvider, TeamPositio
 class ConfigModule(config: Config, isDebug: Boolean) {
 
   import com.softwaremill.macwire._
-  import InitModule._
 
   lazy val poster: Poster = if (isDebug) wire[TestPoster] else wire[RealPoster]
   lazy val checkResultHandler: CheckResultHandler = wire[CheckResultHandler]
@@ -34,6 +33,9 @@ class ConfigModule(config: Config, isDebug: Boolean) {
   lazy val releasesProvider: ReleasesProvider = wire[ReleasesProvider]
   lazy val teamPositionsInfoProvider: TeamPositionsInfoProvider = wire[TeamPositionsInfoProvider]
   lazy val teamPositionsInfoComposer = new TeamPositionsInfoComposer(config.team)
+
+  lazy val fsHandler: FsHandler = wire[FsHandler]
+  lazy val jsonStore: JsonStore = wire[JsonStore]
 
   lazy val commandProcessor: CommandProcessor = wire[CommandProcessor]
   lazy val pollProcessor: PollProcessor = wire[PollProcessor]
