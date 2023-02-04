@@ -2,10 +2,11 @@ package com.atanana.fs
 
 import java.lang
 import scala.util.Try
+import scala.collection.mutable
 
 class MockFsHandler extends FsHandler {
 
-  private val files = scala.collection.mutable.Map[String, String]()
+  private val files = mutable.Map[String, String]()
 
   override def readFile(filename: String): Try[String] = files.get(filename)
     .toRight(new RuntimeException(s"No file $filename"))

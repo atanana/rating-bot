@@ -3,7 +3,8 @@ package com.atanana.providers
 import cats.data.EitherT
 import com.atanana.data.Release
 import com.atanana.parsers.ReleasesParser
-import com.atanana.{Connector, TimeProvider}
+import com.atanana.TimeProvider
+import com.atanana.net.Connector
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

@@ -1,8 +1,8 @@
 package com.atanana.providers
 
 import cats.data.EitherT
-import com.atanana.Connector
 import com.atanana.data.TeamPositionsInfo
+import com.atanana.net.Connector
 import com.atanana.parsers.TeamsPageParser
 
 import scala.concurrent.ExecutionContext.Implicits.global

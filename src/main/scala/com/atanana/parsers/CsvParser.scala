@@ -1,7 +1,7 @@
 package com.atanana.parsers
 
-import com.atanana.Connector
 import com.atanana.data.TournamentData
+import com.atanana.net.Connector
 import com.atanana.providers.TournamentPollingFilter
 import com.github.tototoshi.csv.CSVReader
 

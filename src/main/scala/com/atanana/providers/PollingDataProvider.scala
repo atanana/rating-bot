@@ -2,9 +2,9 @@ package com.atanana.providers
 
 import cats.data.EitherT
 import cats.implicits._
-import com.atanana.Connector
 import com.atanana.data.{ParsedData, PartialRequisitionData, RequisitionData, TournamentData}
 import com.atanana.json.Config
+import com.atanana.net.Connector
 import com.atanana.parsers._
 
 import scala.concurrent.ExecutionContext.Implicits.global
