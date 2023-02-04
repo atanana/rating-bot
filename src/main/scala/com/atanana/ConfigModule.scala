@@ -4,7 +4,7 @@ import com.atanana.checkers.{MainChecker, RequisitionsChecker, TournamentsChecke
 import com.atanana.fs.{FsHandler, FsHandlerImpl}
 import com.atanana.json.{Config, JsonStore}
 import com.atanana.net.{Connector, ConnectorImpl, NetWrapper, NetWrapperImpl}
-import com.atanana.parsers.{CsvParser, ReleasesParser, RequisitionsPageParser, RequisitionsParser, TeamsPageParser, TournamentInfoParser, TournamentPageParser}
+import com.atanana.parsers.{CsvParser, ReleasesParser, RequisitionsPageParser, RequisitionsParser, TeamsPageParser, TournamentInfoParser, TournamentPageParser, TournamentPageParserImpl}
 import com.atanana.posters.{Poster, RealPoster, TestPoster}
 import com.atanana.processors.{CommandProcessor, PollProcessor, ReminderProcessor, TeamPositionsProcessor}
 import com.atanana.providers.{PollingDataProvider, ReleasesProvider, TeamPositionsInfoComposer, TeamPositionsInfoProvider, TournamentInfoProvider, TournamentPollingFilter, TournamentPollingFilterImpl}
@@ -18,7 +18,7 @@ class ConfigModule(config: Config, isDebug: Boolean) {
 
   lazy val tournamentPollingFilter: TournamentPollingFilter = wire[TournamentPollingFilterImpl]
   lazy val csvParser: CsvParser = wire[CsvParser]
-  lazy val tournamentPageParser: TournamentPageParser = wire[TournamentPageParser]
+  lazy val tournamentPageParser: TournamentPageParser = wire[TournamentPageParserImpl]
   lazy val requisitionsParser: RequisitionsParser = wire[RequisitionsParser]
   lazy val requisitionsPageParser: RequisitionsPageParser = wire[RequisitionsPageParser]
   lazy val teamsPageParser: TeamsPageParser = wire[TeamsPageParser]

@@ -11,7 +11,7 @@ class TournamentPageParserTest extends AnyWordSpecLike with Matchers {
   "TournamentPageParser" should {
     "provide correct editors data" in {
       val html = Source.fromFile("src/test/scala/com/atanana/parsers/editorsTest.html", "cp1251").getLines().mkString
-      TournamentPageParser().getEditors(html) shouldEqual List(
+      TournamentPageParserImpl().getEditors(html) shouldEqual List(
         Editor("Демьянцев Игорь Николаевич – команда Горячие головы (Гомель)"),
         Editor("Кожедуб Олег Анатольевич – команда Ультиматум (Гомель)")
       )
