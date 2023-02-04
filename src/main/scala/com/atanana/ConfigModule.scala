@@ -6,7 +6,7 @@ import com.atanana.json.{Config, JsonStore}
 import com.atanana.net.{Connector, ConnectorImpl, NetWrapper, NetWrapperImpl}
 import com.atanana.parsers.{CsvParser, ReleasesParser, RequisitionsPageParser, RequisitionsParser, TeamsPageParser, TournamentInfoParser, TournamentPageParser, TournamentPageParserImpl}
 import com.atanana.posters.{Poster, RealPoster, TestPoster}
-import com.atanana.processors.{CommandProcessor, PollProcessor, ReminderProcessor, TeamPositionsProcessor}
+import com.atanana.processors.{CommandProcessor, PollProcessor, PollProcessorImpl, ReminderProcessor, ReminderProcessorImpl, TeamPositionsProcessor, TeamPositionsProcessorImpl}
 import com.atanana.providers.{PollingDataProvider, ReleasesProvider, TeamPositionsInfoComposer, TeamPositionsInfoProvider, TeamPositionsInfoProviderImpl, TournamentInfoProvider, TournamentInfoProviderImpl, TournamentPollingFilter, TournamentPollingFilterImpl}
 
 class ConfigModule(config: Config, isDebug: Boolean) {
@@ -40,9 +40,9 @@ class ConfigModule(config: Config, isDebug: Boolean) {
   lazy val jsonStore: JsonStore = wire[JsonStore]
 
   lazy val commandProcessor: CommandProcessor = wire[CommandProcessor]
-  lazy val pollProcessor: PollProcessor = wire[PollProcessor]
-  lazy val reminderProcessor: ReminderProcessor = wire[ReminderProcessor]
-  lazy val teamPositionsProcessor: TeamPositionsProcessor = wire[TeamPositionsProcessor]
+  lazy val pollProcessor: PollProcessor = wire[PollProcessorImpl]
+  lazy val reminderProcessor: ReminderProcessor = wire[ReminderProcessorImpl]
+  lazy val teamPositionsProcessor: TeamPositionsProcessor = wire[TeamPositionsProcessorImpl]
 
   lazy val messageComposer: MessageComposer = wire[MessageComposerImpl]
 

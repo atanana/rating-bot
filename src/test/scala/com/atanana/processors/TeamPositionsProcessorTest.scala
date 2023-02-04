@@ -18,7 +18,7 @@ class TeamPositionsProcessorTest extends AnyWordSpecLike with Matchers {
   private val provider = new MockTeamPositionsInfoProvider()
   private val messageComposer = new MockMessageComposer()
   private val poster = new MockPoster()
-  private val processor = new TeamPositionsProcessor(provider, messageComposer, poster)
+  private val processor = new TeamPositionsProcessorImpl(provider, messageComposer, poster)
 
   "TeamPositionsProcessor" should {
 
