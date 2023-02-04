@@ -4,7 +4,7 @@ import cats.data.EitherT
 import com.atanana.data.Release
 import com.atanana.parsers.ReleasesParser
 import com.atanana.TimeProvider
-import com.atanana.net.Connector
+import com.atanana.net.{Connector, ConnectorImpl}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

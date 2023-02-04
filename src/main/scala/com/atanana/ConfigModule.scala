@@ -3,7 +3,7 @@ package com.atanana
 import com.atanana.checkers.{MainChecker, RequisitionsChecker, TournamentsChecker}
 import com.atanana.fs.{FsHandler, FsHandlerImpl}
 import com.atanana.json.{Config, JsonStore}
-import com.atanana.net.{Connector, NetWrapper, NetWrapperImpl}
+import com.atanana.net.{Connector, ConnectorImpl, NetWrapper, NetWrapperImpl}
 import com.atanana.parsers.{CsvParser, ReleasesParser, RequisitionsPageParser, RequisitionsParser, TeamsPageParser, TournamentInfoParser, TournamentPageParser}
 import com.atanana.posters.{Poster, RealPoster, TestPoster}
 import com.atanana.processors.{CommandProcessor, PollProcessor, ReminderProcessor, TeamPositionsProcessor}
@@ -29,7 +29,7 @@ class ConfigModule(config: Config, isDebug: Boolean) {
   lazy val pollingDataProvider: PollingDataProvider = wire[PollingDataProvider]
 
   lazy val netWrapper: NetWrapper = wire[NetWrapperImpl]
-  lazy val connector: Connector = wire[Connector]
+  lazy val connector: Connector = wire[ConnectorImpl]
 
   lazy val timeProvider: TimeProvider = wire[TimeProvider]
   lazy val releasesProvider: ReleasesProvider = wire[ReleasesProvider]

@@ -1,93 +1,29 @@
 package com.atanana.net
 
 import cats.data.EitherT
-import com.atanana.json.Config
-import com.atanana.net.Connector.{API_URL, SITE_URL}
-import sttp.client3.*
-import sttp.client3.okhttp.OkHttpFutureBackend
-import sttp.model.{Header, Uri}
+import sttp.model.Uri
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class Connector(netWrapper: NetWrapper, config: Config) {
+trait Connector {
 
-  def getTeamPage: EitherT[Future, Throwable, String] = {
-    val url = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
-    getPageAsync(url)
-  }
+  def getTeamPage: EitherT[Future, Throwable, String]
 
-  def getRequisitionPage: EitherT[Future, Throwable, String] = {
-    val url = uri"$SITE_URL/synch_town/${config.city}"
-    getPageAsync(url)
-  }
+  def getRequisitionPage: EitherT[Future, Throwable, String]
 
-  def getTournamentPage(id: Int): EitherT[Future, Throwable, String] = {
-    val url = uri"$SITE_URL/tournament/$id"
-    getPageAsync(url)
-  }
+  def getTournamentPage(id: Int): EitherT[Future, Throwable, String]
 
-  def getTournamentRequisitionsPage(tournamentId: Int): EitherT[Future, Throwable, String] = {
-    val url = uri"$SITE_URL/tournament/$tournamentId/requests"
-    getPageAsync(url)
-  }
+  def getTournamentRequisitionsPage(tournamentId: Int): EitherT[Future, Throwable, String]
 
-  def getTeamsPage(releaseId: Int): EitherT[Future, Throwable, String] = {
-    val url = uri"$SITE_URL/ajax/teams/data?draw=&columns[0][data]=rowNumber&columns[1][data]=teamRatingPosition&columns[2][data]=teamRating&columns[3][data]=trb&columns[4][data]=id&columns[5][data]=teamName&columns[6][data]=townName&columns[7][data]=playedTournaments&columns[8][data]=tournamentsPlayedInSeason&columns[9][data]=tournamentsPlayedB&order[0][column]=2&order[0][dir]=desc&start=0&length=500&form[townId]=&form[countryId]=&form[releaseId]=$releaseId"
-    getPageAsync(url)
-  }
+  def getTeamsPage(releaseId: Int): EitherT[Future, Throwable, String]
 
-  def getCityTeamsPage(releaseId: Int): EitherT[Future, Throwable, String] = {
-    val url = uri"$SITE_URL/ajax/teams/data?draw=&columns[0][data]=rowNumber&columns[1][data]=teamRatingPosition&columns[2][data]=teamRating&columns[3][data]=trb&columns[4][data]=id&columns[5][data]=teamName&columns[6][data]=townName&columns[7][data]=playedTournaments&columns[8][data]=tournamentsPlayedInSeason&columns[9][data]=tournamentsPlayedB&order[0][column]=2&order[0][dir]=desc&start=0&length=500&form[townId]=${config.city}&form[countryId]=&form[releaseId]=$releaseId"
-    getPageAsync(url)
-  }
+  def getCityTeamsPage(releaseId: Int): EitherT[Future, Throwable, String]
 
-  def getCountryTeamsPage(releaseId: Int): EitherT[Future, Throwable, String] = {
-    val url = uri"$SITE_URL/ajax/teams/data?draw=&columns[0][data]=rowNumber&columns[1][data]=teamRatingPosition&columns[2][data]=teamRating&columns[3][data]=trb&columns[4][data]=id&columns[5][data]=teamName&columns[6][data]=townName&columns[7][data]=playedTournaments&columns[8][data]=tournamentsPlayedInSeason&columns[9][data]=tournamentsPlayedB&order[0][column]=2&order[0][dir]=desc&start=0&length=500&form[townId]=&form[countryId]=${config.country}&form[releaseId]=$releaseId"
-    getPageAsync(url)
-  }
+  def getCountryTeamsPage(releaseId: Int): EitherT[Future, Throwable, String]
 
-  def getTournamentInfo(tournamentId: Int): EitherT[Future, Throwable, String] = {
-    val url = uri"$API_URL/tournaments/$tournamentId"
-    getApiAsync(url)
-  }
+  def getTournamentInfo(tournamentId: Int): EitherT[Future, Throwable, String]
 
-  def getReleases: EitherT[Future, Throwable, String] = {
-    val url = uri"$API_URL/releases?pagination=false"
-    getApiAsync(url)
-  }
+  def getReleases: EitherT[Future, Throwable, String]
 
-  private def getApiAsync(uri: Uri): EitherT[Future, Throwable, String] =
-    wrapGet(uri, netWrapper.getApi(uri))
-
-  private def getPageAsync(uri: Uri): EitherT[Future, Throwable, String] =
-    wrapGet(uri, netWrapper.getPageAsync(uri))
-
-  private def wrapGet(uri: Uri, request: Future[Either[String, String]]): EitherT[Future, Throwable, String] =
-    EitherT(
-      request
-        .map(_.left.map(error => new ConnectorException(uri, error)))
-        .recover(exception => Left(new ConnectorException(uri, cause = exception)))
-    )
-
-  def postAsync(uri: Uri, params: Map[String, String]): EitherT[Future, Throwable, String] =
-    EitherT(
-      netWrapper.postAsync(uri, params)
-        .map(_.left.map(error => new ConnectorException(uri, s"$error with params $params")))
-        .recover(exception => Left(new ConnectorException(uri, cause = exception)))
-    )
-}
-
-object Connector {
-  val SITE_URL = "https://rating.chgk.info"
-  val API_URL = "https://api.rating.chgk.net"
-  val TOURNAMENT_URL_TEMPLATE: String = SITE_URL + "/tournament/"
-}
-
-class ConnectorException(
-                          val uri: Uri,
-                          message: String = null,
-                          cause: Throwable = null
-                        ) extends RuntimeException(message, cause) {
-  override def getMessage: String = s"Error uri: $uri\n${super.getMessage}"
+  def postAsync(uri: Uri, params: Map[String, String]): EitherT[Future, Throwable, String]
 }

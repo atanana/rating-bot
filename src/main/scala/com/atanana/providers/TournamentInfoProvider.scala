@@ -2,7 +2,7 @@ package com.atanana.providers
 
 import cats.data.EitherT
 import com.atanana.data.Editor
-import com.atanana.net.Connector
+import com.atanana.net.{Connector, ConnectorImpl}
 import com.atanana.parsers.TournamentPageParser
 
 import scala.concurrent.ExecutionContext.Implicits.global

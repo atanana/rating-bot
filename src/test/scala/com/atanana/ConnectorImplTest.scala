@@ -1,8 +1,8 @@
 package com.atanana
 
-import com.atanana.net.Connector.{API_URL, SITE_URL}
+import com.atanana.net.ConnectorImpl.{API_URL, SITE_URL}
 import com.atanana.TestUtils.{awaitEither, awaitError, fakeConfig}
-import com.atanana.net.{Connector, ConnectorException, MockNetWrapper, NetWrapperImpl}
+import com.atanana.net.{ConnectorImpl, ConnectorException, MockNetWrapper, NetWrapperImpl}
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
@@ -12,12 +12,12 @@ import sttp.client3.UriContext
 import scala.concurrent.Future
 import scala.util.chaining.scalaUtilChainingOps
 
-class ConnectorTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
+class ConnectorImplTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
 
   private val config = fakeConfig
   private val wrapper = new MockNetWrapper()
 
-  private val connector = new Connector(wrapper, config)
+  private val connector = new ConnectorImpl(wrapper, config)
 
   after {
     wrapper.clear()

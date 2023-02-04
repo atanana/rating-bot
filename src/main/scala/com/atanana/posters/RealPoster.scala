@@ -2,7 +2,7 @@ package com.atanana.posters
 
 import cats.data.EitherT
 import com.atanana.json.Config
-import com.atanana.net.Connector
+import com.atanana.net.{Connector, ConnectorImpl}
 import com.typesafe.scalalogging.Logger
 import sttp.client3.UriContext
 

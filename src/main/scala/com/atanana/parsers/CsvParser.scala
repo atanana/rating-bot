@@ -1,7 +1,7 @@
 package com.atanana.parsers
 
 import com.atanana.data.TournamentData
-import com.atanana.net.Connector
+import com.atanana.net.ConnectorImpl
 import com.atanana.providers.TournamentPollingFilter
 import com.github.tototoshi.csv.CSVReader
 
@@ -24,7 +24,7 @@ class CsvParser(filter: TournamentPollingFilter) {
       val tournamentData = TournamentData(
         row(0).toInt,
         row(1),
-        Connector.TOURNAMENT_URL_TEMPLATE + row(0),
+        ConnectorImpl.TOURNAMENT_URL_TEMPLATE + row(0),
         row(8).replace(',', '.').toFloat,
         row(11).toInt,
         row(12).toInt)
