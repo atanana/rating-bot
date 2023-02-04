@@ -5,7 +5,7 @@ import com.atanana.CheckResultHandler
 import com.atanana.checkers.MainChecker
 import com.atanana.data.Data
 import com.atanana.json.{JsonStore, JsonStoreImpl}
-import com.atanana.providers.PollingDataProvider
+import com.atanana.providers.{PollingDataProvider, PollingDataProviderImpl}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
