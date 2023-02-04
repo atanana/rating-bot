@@ -2,7 +2,7 @@ package com.atanana.parsers
 
 import com.atanana.data.TournamentData
 import com.atanana.net.ConnectorImpl
-import com.atanana.providers.TournamentPollingFilter
+import com.atanana.providers.{TournamentPollingFilter, TournamentPollingFilterImpl}
 import com.github.tototoshi.csv.CSVReader
 
 import scala.io.Source
