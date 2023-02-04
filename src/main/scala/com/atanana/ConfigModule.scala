@@ -1,6 +1,6 @@
 package com.atanana
 
-import com.atanana.checkers.{MainChecker, RequisitionsChecker, TournamentsChecker}
+import com.atanana.checkers.{MainChecker, RequisitionsChecker, RequisitionsCheckerImpl, TournamentsChecker}
 import com.atanana.fs.{FsHandler, FsHandlerImpl}
 import com.atanana.json.{Config, JsonStore}
 import com.atanana.net.{Connector, ConnectorImpl, NetWrapper, NetWrapperImpl}
@@ -48,5 +48,5 @@ class ConfigModule(config: Config, isDebug: Boolean) {
 
   lazy val mainChecker: MainChecker = wire[MainChecker]
   lazy val tournamentsChecker: TournamentsChecker = wire[TournamentsChecker]
-  lazy val requisitionsChecker: RequisitionsChecker = wire[RequisitionsChecker]
+  lazy val requisitionsChecker: RequisitionsChecker = wire[RequisitionsCheckerImpl]
 }
