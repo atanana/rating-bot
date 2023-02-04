@@ -14,7 +14,7 @@ class ConfigModule(config: Config, isDebug: Boolean) {
   import com.softwaremill.macwire._
 
   lazy val poster: Poster = if (isDebug) wire[TestPoster] else wire[RealPoster]
-  lazy val checkResultHandler: CheckResultHandler = wire[CheckResultHandler]
+  lazy val checkResultHandler: CheckResultHandler = wire[CheckResultHandlerImpl]
 
   lazy val tournamentPollingFilter: TournamentPollingFilter = wire[TournamentPollingFilterImpl]
   lazy val csvParser: CsvParser = wire[CsvParser]

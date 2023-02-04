@@ -45,7 +45,7 @@ class CheckResultHandlerTest extends AnyWordSpecLike with Matchers with MockFact
         TournamentsCheckResult(Set(tournamentData), Set(changedTournament)),
         RequisitionsCheckResult(Set(requisitionData), Set(requisitionData))
       )
-      new CheckResultHandler(poster, messageComposer, tournamentInfoProvider).processCheckResult(checkResult).pipe(awaitEither)
+      new CheckResultHandlerImpl(poster, messageComposer, tournamentInfoProvider).processCheckResult(checkResult).pipe(awaitEither)
 
       poster.responses shouldBe empty
     }
@@ -55,7 +55,7 @@ class CheckResultHandlerTest extends AnyWordSpecLike with Matchers with MockFact
 
       tournamentInfoProvider.editors.put(1, EitherT.leftT(new RuntimeException("editors error")))
 
-      new CheckResultHandler(poster, messageComposer, tournamentInfoProvider).processCheckResult(CheckResult(
+      new CheckResultHandlerImpl(poster, messageComposer, tournamentInfoProvider).processCheckResult(CheckResult(
         TournamentsCheckResult(Set(tournamentData), Set(changedTournament)),
         RequisitionsCheckResult(Set(requisitionData), Set(requisitionData))
       )).pipe(awaitError) should have message "editors error"
