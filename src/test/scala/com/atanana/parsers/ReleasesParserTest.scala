@@ -15,54 +15,38 @@ class ReleasesParserTest extends AnyWordSpecLike with Matchers {
 
     "parse last release id" in {
       val json =
-        """
-          |{
-          |  "@context": "\/contexts\/Release",
-          |  "@id": "\/releases",
-          |  "@type": "hydra:Collection",
-          |  "hydra:member": [
-          |    {
-          |      "@id": "\/releases\/1593",
-          |      "@type": "Release",
-          |      "id": 1593,
-          |      "date": "2022-12-22T00:00:00+03:00",
-          |      "realDate": "2022-12-22T00:00:00+03:00",
-          |      "lastRunRefresh": "2023-01-08T02:00:02+03:00"
-          |    },
-          |    {
-          |      "@id": "\/releases\/1594",
-          |      "@type": "Release",
-          |      "id": 1594,
-          |      "date": "2022-12-29T00:00:00+03:00",
-          |      "realDate": "2022-12-29T00:00:00+03:00",
-          |      "lastRunRefresh": "2023-01-08T02:00:02+03:00"
-          |    },
-          |    {
-          |      "@id": "\/releases\/1595",
-          |      "@type": "Release",
-          |      "id": 1595,
-          |      "date": "2023-01-05T00:00:00+03:00",
-          |      "realDate": "2023-01-05T00:00:00+03:00",
-          |      "lastRunRefresh": "2023-01-08T02:00:02+03:00"
-          |    },
-          |    {
-          |      "@id": "\/releases\/1596",
-          |      "@type": "Release",
-          |      "id": 1596,
-          |      "date": "2023-01-12T00:00:00+03:00",
-          |      "realDate": "2023-01-12T00:00:00+03:00",
-          |      "lastRunRefresh": "2023-01-08T02:00:02+03:00"
-          |    }
-          |  ],
-          |  "hydra:totalItems": 1168
-          |}
-          |""".stripMargin
+        """[
+          |  {
+          |    "id": 29,
+          |    "date": "2000-12-28T00:00:00+03:00",
+          |    "realDate": "2000-12-28T00:00:00+03:00",
+          |    "lastRunRefresh": "2018-10-30T02:25:57+03:00"
+          |  },
+          |  {
+          |    "id": 30,
+          |    "date": "2000-07-06T00:00:00+04:00",
+          |    "realDate": "2000-07-06T00:00:00+04:00",
+          |    "lastRunRefresh": "2018-10-30T02:23:08+03:00"
+          |  },
+          |  {
+          |    "id": 31,
+          |    "date": "1999-12-30T00:00:00+03:00",
+          |    "realDate": "1999-12-30T00:00:00+03:00",
+          |    "lastRunRefresh": "2018-10-30T02:21:45+03:00"
+          |  },
+          |  {
+          |    "id": 32,
+          |    "date": "2002-06-27T00:00:00+04:00",
+          |    "realDate": "2002-06-27T00:00:00+04:00",
+          |    "lastRunRefresh": "2018-10-30T02:30:02+03:00"
+          |  }
+          |]""".stripMargin
 
       parser.getReleases(json) shouldEqual Success(List(
-        Release(1593, LocalDateTime.of(2022, 12, 22, 0, 0)),
-        Release(1594, LocalDateTime.of(2022, 12, 29, 0, 0)),
-        Release(1595, LocalDateTime.of(2023, 1, 5, 0, 0)),
-        Release(1596, LocalDateTime.of(2023, 1, 12, 0, 0)),
+        Release(29, LocalDateTime.of(2000, 12, 28, 0, 0)),
+        Release(30, LocalDateTime.of(2000, 7, 6, 0, 0)),
+        Release(31, LocalDateTime.of(1999, 12, 30, 0, 0)),
+        Release(32, LocalDateTime.of(2002, 6, 27, 0, 0)),
       ))
     }
   }
