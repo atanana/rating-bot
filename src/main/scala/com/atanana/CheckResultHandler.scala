@@ -1,10 +1,10 @@
 package com.atanana
 
 import cats.data.EitherT
-import cats.implicits._
+import cats.implicits.*
 import com.atanana.data.{CheckResult, RequisitionData}
 import com.atanana.posters.Poster
-import com.atanana.providers.TournamentInfoProvider
+import com.atanana.providers.{TournamentInfoProvider, TournamentInfoProviderImpl}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

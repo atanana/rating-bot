@@ -7,7 +7,7 @@ import com.atanana.net.{Connector, ConnectorImpl, NetWrapper, NetWrapperImpl}
 import com.atanana.parsers.{CsvParser, ReleasesParser, RequisitionsPageParser, RequisitionsParser, TeamsPageParser, TournamentInfoParser, TournamentPageParser, TournamentPageParserImpl}
 import com.atanana.posters.{Poster, RealPoster, TestPoster}
 import com.atanana.processors.{CommandProcessor, PollProcessor, ReminderProcessor, TeamPositionsProcessor}
-import com.atanana.providers.{PollingDataProvider, ReleasesProvider, TeamPositionsInfoComposer, TeamPositionsInfoProvider, TournamentInfoProvider, TournamentPollingFilter, TournamentPollingFilterImpl}
+import com.atanana.providers.{PollingDataProvider, ReleasesProvider, TeamPositionsInfoComposer, TeamPositionsInfoProvider, TournamentInfoProvider, TournamentInfoProviderImpl, TournamentPollingFilter, TournamentPollingFilterImpl}
 
 class ConfigModule(config: Config, isDebug: Boolean) {
 
@@ -25,7 +25,7 @@ class ConfigModule(config: Config, isDebug: Boolean) {
   lazy val tournamentInfoParser: TournamentInfoParser = wire[TournamentInfoParser]
   lazy val releasesParser: ReleasesParser = wire[ReleasesParser]
 
-  lazy val tournamentInfoProvider: TournamentInfoProvider = wire[TournamentInfoProvider]
+  lazy val tournamentInfoProvider: TournamentInfoProvider = wire[TournamentInfoProviderImpl]
   lazy val pollingDataProvider: PollingDataProvider = wire[PollingDataProvider]
 
   lazy val netWrapper: NetWrapper = wire[NetWrapperImpl]

@@ -6,7 +6,7 @@ import com.atanana.data.Editor
 import com.atanana.mocks.MockTournamentPageParser
 import com.atanana.net.MockConnector
 import com.atanana.parsers.TournamentPageParserImpl
-import com.atanana.providers.TournamentInfoProvider
+import com.atanana.providers.TournamentInfoProviderImpl
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
@@ -19,7 +19,7 @@ class TournamentInfoProviderTest extends AnyWordSpecLike with Matchers {
   private val connector = new MockConnector()
   private val parser = new MockTournamentPageParser()
 
-  private val provider = new TournamentInfoProvider(connector, parser)
+  private val provider = new TournamentInfoProviderImpl(connector, parser)
 
   "TournamentInfoProvider" should {
 
