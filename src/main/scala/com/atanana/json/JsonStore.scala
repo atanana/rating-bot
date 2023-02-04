@@ -2,11 +2,10 @@ package com.atanana.json
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
-import com.atanana.FsHandler
 import com.atanana.data.{Data, Requisition, Tournament}
-import spray.json.DefaultJsonProtocol._
-import spray.json._
+import com.atanana.fs.{FsHandler, FsHandlerImpl}
+import spray.json.DefaultJsonProtocol.*
+import spray.json.*
 
 import scala.util.Try
 

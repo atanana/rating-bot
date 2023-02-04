@@ -1,12 +1,11 @@
-package com.atanana
+package com.atanana.fs
 
 import java.io.PrintWriter
-
 import scala.io.Source
 import scala.util.Try
 
-class FsHandler {
-  def readFile(filename: String): Try[String] = {
+class FsHandlerImpl extends FsHandler {
+  override def readFile(filename: String): Try[String] = {
     Try {
       val source = Source.fromFile(filename)
       try {
@@ -17,7 +16,7 @@ class FsHandler {
     }
   }
 
-  def writeFile(contents: String, filename: String): Unit = {
+  override def writeFile(contents: String, filename: String): Unit = {
     val writer = new PrintWriter(filename)
     try {
       writer.print(contents)

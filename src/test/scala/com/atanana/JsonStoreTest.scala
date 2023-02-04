@@ -1,17 +1,23 @@
 package com.atanana
 
 import com.atanana.data.{Data, Requisition, Tournament}
+import com.atanana.fs.{FsHandlerImpl, MockFsHandler}
 import com.atanana.json.JsonStore
 import org.scalamock.scalatest.MockFactory
+import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
 import java.time.LocalDateTime
 import scala.util.{Failure, Success}
 
-class JsonStoreTest extends AnyWordSpecLike with MockFactory with Matchers {
-  private val fsHandler = mock[FsHandler]
+class JsonStoreTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
+  private val fsHandler = new MockFsHandler()
   private val jsonStore = new JsonStore(fsHandler)
+
+  after {
+    fsHandler.clear()
+  }
 
   "JsonStore" should {
     "write correct data" in {
@@ -45,12 +51,12 @@ class JsonStoreTest extends AnyWordSpecLike with MockFactory with Matchers {
           |    "score": 1
           |  }]
           |}""".stripMargin
-      (fsHandler.writeFile _).expects(json, JsonStore.FILE_NAME)
       jsonStore.write(data)
+      fsHandler.readFile("data.json").get shouldEqual json
     }
 
     "read data" in {
-      (fsHandler.readFile _).expects(JsonStore.FILE_NAME).returns(Success(
+      fsHandler.writeFile(
         """{
           |  "tournaments": [{
           |    "id": 1,
@@ -73,7 +79,7 @@ class JsonStoreTest extends AnyWordSpecLike with MockFactory with Matchers {
           |    "dateTime": "2017-05-06T12:22:00",
           |    "questionsCount": 45
           |  }]
-          |}""".stripMargin))
+          |}""".stripMargin, "data.json")
       jsonStore.read shouldEqual Data(
         Set(Tournament(1, 3), Tournament(2, 2), Tournament(3, 1)),
         Set(
@@ -84,12 +90,11 @@ class JsonStoreTest extends AnyWordSpecLike with MockFactory with Matchers {
     }
 
     "return empty data when no file" in {
-      (fsHandler.readFile _).expects(JsonStore.FILE_NAME).returns(Failure(new RuntimeException))
       jsonStore.read shouldEqual Data(Set.empty, Set.empty)
     }
 
     "return empty data when invalid json in file" in {
-      (fsHandler.readFile _).expects(JsonStore.FILE_NAME).returns(Success(""))
+      fsHandler.writeFile("test", "data.json")
       jsonStore.read shouldEqual Data(Set.empty, Set.empty)
     }
   }

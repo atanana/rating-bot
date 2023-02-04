@@ -1,6 +1,7 @@
 package com.atanana
 
 import com.atanana.checkers.{MainChecker, RequisitionsChecker, TournamentsChecker}
+import com.atanana.fs.{FsHandler, FsHandlerImpl}
 import com.atanana.json.{Config, JsonStore}
 import com.atanana.parsers.{CsvParser, ReleasesParser, RequisitionsPageParser, RequisitionsParser, TeamsPageParser, TournamentInfoParser, TournamentPageParser}
 import com.atanana.posters.{Poster, RealPoster, TestPoster}
@@ -34,7 +35,7 @@ class ConfigModule(config: Config, isDebug: Boolean) {
   lazy val teamPositionsInfoProvider: TeamPositionsInfoProvider = wire[TeamPositionsInfoProvider]
   lazy val teamPositionsInfoComposer = new TeamPositionsInfoComposer(config.team)
 
-  lazy val fsHandler: FsHandler = wire[FsHandler]
+  lazy val fsHandler: FsHandler = wire[FsHandlerImpl]
   lazy val jsonStore: JsonStore = wire[JsonStore]
 
   lazy val commandProcessor: CommandProcessor = wire[CommandProcessor]
