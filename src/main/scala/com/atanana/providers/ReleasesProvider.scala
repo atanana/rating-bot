@@ -5,11 +5,10 @@ import com.atanana.data.Release
 import com.atanana.parsers.ReleasesParser
 import com.atanana.{Connector, TimeProvider}
 
-import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ReleasesProvider @Inject()(connector: Connector, parser: ReleasesParser, timeProvider: TimeProvider) {
+class ReleasesProvider(connector: Connector, parser: ReleasesParser, timeProvider: TimeProvider) {
 
   def getLastReleaseId: EitherT[Future, Throwable, Int] = for {
     releasesPage <- connector.getReleases

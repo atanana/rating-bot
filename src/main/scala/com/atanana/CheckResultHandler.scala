@@ -6,15 +6,14 @@ import com.atanana.data.{CheckResult, RequisitionData}
 import com.atanana.posters.Poster
 import com.atanana.providers.TournamentInfoProvider
 
-import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class CheckResultHandler @Inject()(
-                                    poster: Poster,
-                                    messageComposer: MessageComposer,
-                                    tournamentInfoProvider: TournamentInfoProvider
-                                  ) {
+class CheckResultHandler(
+                          poster: Poster,
+                          messageComposer: MessageComposer,
+                          tournamentInfoProvider: TournamentInfoProvider
+                        ) {
 
   def processCheckResult(checkResult: CheckResult): EitherT[Future, Throwable, Unit] =
     for {

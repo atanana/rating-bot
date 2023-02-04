@@ -7,18 +7,17 @@ import com.atanana.data.{ParsedData, PartialRequisitionData, RequisitionData, To
 import com.atanana.json.Config
 import com.atanana.parsers._
 
-import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class PollingDataProvider @Inject()(
-                                     connector: Connector,
-                                     csvParser: CsvParser,
-                                     requisitionsParser: RequisitionsParser,
-                                     requisitionsPageParser: RequisitionsPageParser,
-                                     tournamentInfoParser: TournamentInfoParser,
-                                     config: Config
-                                   ) {
+class PollingDataProvider(
+                           connector: Connector,
+                           csvParser: CsvParser,
+                           requisitionsParser: RequisitionsParser,
+                           requisitionsPageParser: RequisitionsPageParser,
+                           tournamentInfoParser: TournamentInfoParser,
+                           config: Config
+                         ) {
 
   def data: EitherT[Future, Throwable, ParsedData] =
     for {

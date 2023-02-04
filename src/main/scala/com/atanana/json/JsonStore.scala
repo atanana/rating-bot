@@ -2,7 +2,6 @@ package com.atanana.json
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import javax.inject.Inject
 
 import com.atanana.FsHandler
 import com.atanana.data.{Data, Requisition, Tournament}
@@ -11,7 +10,7 @@ import spray.json._
 
 import scala.util.Try
 
-class JsonStore @Inject()(fsHandler: FsHandler) {
+class JsonStore(fsHandler: FsHandler) {
 
   import JsonStore.FILE_NAME
 

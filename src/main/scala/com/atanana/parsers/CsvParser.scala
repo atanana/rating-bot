@@ -5,11 +5,10 @@ import com.atanana.data.TournamentData
 import com.atanana.providers.TournamentPollingFilter
 import com.github.tototoshi.csv.CSVReader
 
-import javax.inject.Inject
 import scala.io.Source
 import scala.util.Try
 
-class CsvParser @Inject()(filter: TournamentPollingFilter) {
+class CsvParser(filter: TournamentPollingFilter) {
   def getTournamentsData(csv: String): List[TournamentData] = {
     CSVReader.open(Source.fromString(csv)).all()
       .map(tryParseTournamentRow)

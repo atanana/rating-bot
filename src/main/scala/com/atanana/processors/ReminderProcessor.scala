@@ -7,11 +7,10 @@ import com.atanana.json.JsonStore
 import com.atanana.posters.Poster
 
 import java.time.LocalDate
-import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ReminderProcessor @Inject()(store: JsonStore, messageComposer: MessageComposer, poster: Poster) extends Processor {
+class ReminderProcessor(store: JsonStore, messageComposer: MessageComposer, poster: Poster) extends Processor {
 
   override def process(): EitherT[Future, Throwable, Unit] = {
     val data = store.read

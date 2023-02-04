@@ -7,11 +7,10 @@ import sttp.client3._
 import sttp.client3.okhttp.OkHttpFutureBackend
 import sttp.model.{Header, Uri}
 
-import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class Connector @Inject()(netWrapper: NetWrapper, config: Config) {
+class Connector(netWrapper: NetWrapper, config: Config) {
 
   def getTeamPage: EitherT[Future, Throwable, String] = {
     val url = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
@@ -93,7 +92,7 @@ class ConnectorException(
   override def getMessage: String = s"Error uri: $uri\n${super.getMessage}"
 }
 
-class NetWrapper @Inject()(config: Config) {
+class NetWrapper(config: Config) {
 
   private val asyncBackend = OkHttpFutureBackend()
   private val authCookie = ("REMEMBERME", config.authCookie)

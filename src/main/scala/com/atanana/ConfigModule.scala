@@ -1,33 +1,48 @@
 package com.atanana
 
+import com.atanana.checkers.{MainChecker, RequisitionsChecker, TournamentsChecker}
 import com.atanana.json.Config
+import com.atanana.parsers.{CsvParser, ReleasesParser, RequisitionsPageParser, RequisitionsParser, TeamsPageParser, TournamentInfoParser, TournamentPageParser}
 import com.atanana.posters.{Poster, RealPoster, TestPoster}
 import com.atanana.processors.{CommandProcessor, PollProcessor, ReminderProcessor, TeamPositionsProcessor}
-import com.atanana.providers.{PollingDataProvider, TeamPositionsInfoComposer, TeamPositionsInfoProvider, TournamentInfoProvider}
-import com.google.inject.AbstractModule
-import net.codingwell.scalaguice.ScalaModule
+import com.atanana.providers.{PollingDataProvider, ReleasesProvider, TeamPositionsInfoComposer, TeamPositionsInfoProvider, TournamentInfoProvider, TournamentPollingFilter}
 
-class ConfigModule(config: Config, isDebug: Boolean) extends AbstractModule with ScalaModule {
-  override def configure(): Unit = {
-    bind[Config].toInstance(config)
-    if (isDebug) {
-      bind[Poster].to[TestPoster]
-    } else {
-      bind[Poster].to[RealPoster]
-    }
-    bind[CheckResultHandler]
-    bind[TournamentInfoProvider]
-    bind[PollingDataProvider]
+class ConfigModule(ratingModule: InitModule, config: Config, isDebug: Boolean) {
 
-    bind[NetWrapper]
-    bind[Connector]
+  import com.softwaremill.macwire._
+  import ratingModule._
 
-    bind[TeamPositionsInfoProvider]
-    bind[TeamPositionsInfoComposer].toInstance(new TeamPositionsInfoComposer(config.team))
+  lazy val poster: Poster = if (isDebug) wire[TestPoster] else wire[RealPoster]
+  lazy val checkResultHandler: CheckResultHandler = wire[CheckResultHandler]
 
-    bind[CommandProcessor]
-    bind[PollProcessor]
-    bind[ReminderProcessor]
-    bind[TeamPositionsProcessor]
-  }
+  lazy val tournamentPollingFilter: TournamentPollingFilter = wire[TournamentPollingFilter]
+  lazy val csvParser: CsvParser = wire[CsvParser]
+  lazy val tournamentPageParser: TournamentPageParser = wire[TournamentPageParser]
+  lazy val requisitionsParser: RequisitionsParser = wire[RequisitionsParser]
+  lazy val requisitionsPageParser: RequisitionsPageParser = wire[RequisitionsPageParser]
+  lazy val teamsPageParser: TeamsPageParser = wire[TeamsPageParser]
+  lazy val tournamentInfoParser: TournamentInfoParser = wire[TournamentInfoParser]
+  lazy val releasesParser: ReleasesParser = wire[ReleasesParser]
+
+  lazy val tournamentInfoProvider: TournamentInfoProvider = wire[TournamentInfoProvider]
+  lazy val pollingDataProvider: PollingDataProvider = wire[PollingDataProvider]
+
+  lazy val netWrapper: NetWrapper = wire[NetWrapper]
+  lazy val connector: Connector = wire[Connector]
+
+  lazy val timeProvider: TimeProvider = wire[TimeProvider]
+  lazy val releasesProvider: ReleasesProvider = wire[ReleasesProvider]
+  lazy val teamPositionsInfoProvider: TeamPositionsInfoProvider = wire[TeamPositionsInfoProvider]
+  lazy val teamPositionsInfoComposer = new TeamPositionsInfoComposer(config.team)
+
+  lazy val commandProcessor: CommandProcessor = wire[CommandProcessor]
+  lazy val pollProcessor: PollProcessor = wire[PollProcessor]
+  lazy val reminderProcessor: ReminderProcessor = wire[ReminderProcessor]
+  lazy val teamPositionsProcessor: TeamPositionsProcessor = wire[TeamPositionsProcessor]
+
+  lazy val messageComposer: MessageComposer = wire[MessageComposer]
+
+  lazy val mainChecker: MainChecker = wire[MainChecker]
+  lazy val tournamentsChecker: TournamentsChecker = wire[TournamentsChecker]
+  lazy val requisitionsChecker: RequisitionsChecker = wire[RequisitionsChecker]
 }

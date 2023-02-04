@@ -2,9 +2,7 @@ package com.atanana.checkers
 
 import com.atanana.data._
 
-import javax.inject.Inject
-
-class MainChecker @Inject()(tournamentsChecker: TournamentsChecker, requisitionsChecker: RequisitionsChecker) {
+class MainChecker(tournamentsChecker: TournamentsChecker, requisitionsChecker: RequisitionsChecker) {
   def check(storedData: Data, parsedData: ParsedData): CheckResult = {
     val tournamentsCheckResult = tournamentsChecker.check(storedData.tournaments, parsedData.tournaments)
     CheckResult(

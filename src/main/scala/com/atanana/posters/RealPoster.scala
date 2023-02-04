@@ -6,11 +6,10 @@ import com.atanana.json.Config
 import com.typesafe.scalalogging.Logger
 import sttp.client3.UriContext
 
-import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class RealPoster @Inject()(connector: Connector, config: Config) extends Poster {
+class RealPoster(connector: Connector, config: Config) extends Poster {
 
   import RealPoster.logger
 

@@ -5,16 +5,15 @@ import com.atanana.Connector
 import com.atanana.data.TeamPositionsInfo
 import com.atanana.parsers.TeamsPageParser
 
-import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class TeamPositionsInfoProvider @Inject()(
-                                           connector: Connector,
-                                           parser: TeamsPageParser,
-                                           composer: TeamPositionsInfoComposer,
-                                           releasesProvider: ReleasesProvider
-                                         ) {
+class TeamPositionsInfoProvider(
+                                 connector: Connector,
+                                 parser: TeamsPageParser,
+                                 composer: TeamPositionsInfoComposer,
+                                 releasesProvider: ReleasesProvider
+                               ) {
 
   def data: EitherT[Future, Throwable, TeamPositionsInfo] = for {
     releaseId <- releasesProvider.getLastReleaseId

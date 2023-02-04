@@ -7,16 +7,15 @@ import com.atanana.data.Data
 import com.atanana.json.JsonStore
 import com.atanana.providers.PollingDataProvider
 
-import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class PollProcessor @Inject()(
-                               pollingDataProvider: PollingDataProvider,
-                               store: JsonStore,
-                               checker: MainChecker,
-                               checkResultHandler: CheckResultHandler
-                             ) extends Processor {
+class PollProcessor(
+                     pollingDataProvider: PollingDataProvider,
+                     store: JsonStore,
+                     checker: MainChecker,
+                     checkResultHandler: CheckResultHandler
+                   ) extends Processor {
 
   override def process(): EitherT[Future, Throwable, Unit] =
     for {

@@ -2,12 +2,11 @@ package com.atanana.processors
 
 import cats.data.EitherT
 
-import javax.inject.Inject
 import scala.concurrent.Future
 
-class CommandProcessor @Inject()(pollProcessor: PollProcessor,
-                                 reminderProcessor: ReminderProcessor,
-                                 teamPositionsProcessor: TeamPositionsProcessor) {
+class CommandProcessor(pollProcessor: PollProcessor,
+                       reminderProcessor: ReminderProcessor,
+                       teamPositionsProcessor: TeamPositionsProcessor) {
   private val processors = Map(
     "poll" -> pollProcessor,
     "remind" -> reminderProcessor,
