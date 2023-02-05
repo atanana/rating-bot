@@ -4,7 +4,7 @@ import com.atanana.data.TournamentData
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
-class TournamentPollingFilterImplTest extends AnyWordSpecLike with Matchers {
+class TournamentPollingFilterTest extends AnyWordSpecLike with Matchers {
   private val filter = new TournamentPollingFilterImpl()
 
   "TournamentPollingFilter" should {

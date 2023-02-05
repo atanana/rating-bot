@@ -11,7 +11,7 @@ import sttp.client3.UriContext
 import scala.concurrent.Future
 import scala.util.chaining.scalaUtilChainingOps
 
-class ConnectorImplTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
+class ConnectorTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
 
   private val config = fakeConfig
   private val wrapper = new MockNetWrapper()
