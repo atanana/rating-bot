@@ -31,7 +31,7 @@ class ConfigModule(config: Config, isDebug: Boolean) {
   lazy val netWrapper: NetWrapper = wire[NetWrapperImpl]
   lazy val connector: Connector = wire[ConnectorImpl]
 
-  lazy val timeProvider: TimeProvider = wire[TimeProvider]
+  lazy val timeProvider: TimeProvider = wire[TimeProviderImpl]
   lazy val releasesProvider: ReleasesProvider = wire[ReleasesProviderImpl]
   lazy val teamPositionsInfoComposer: TeamPositionsInfoComposer = wire[TeamPositionsInfoComposerImpl]
   lazy val teamPositionsInfoProvider: TeamPositionsInfoProvider = wire[TeamPositionsInfoProviderImpl]
