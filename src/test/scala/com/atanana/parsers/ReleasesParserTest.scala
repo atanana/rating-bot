@@ -9,7 +9,7 @@ import scala.util.Success
 
 class ReleasesParserTest extends AnyWordSpecLike with Matchers {
 
-  val parser = new ReleasesParser()
+  val parser = new ReleasesParserImpl()
 
   "ReleasesParser" should {
 

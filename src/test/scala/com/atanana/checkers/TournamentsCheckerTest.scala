@@ -7,7 +7,7 @@ import org.scalatest.wordspec.AnyWordSpecLike
 class TournamentsCheckerTest extends AnyWordSpecLike with Matchers {
   "TournamentsChecker" should {
     "provide valid new tournaments data" in {
-      TournamentsChecker().check(Set(
+      TournamentsCheckerImpl().check(Set(
         Tournament(1, 1),
         Tournament(2, 2)
       ), Set(
@@ -22,7 +22,7 @@ class TournamentsCheckerTest extends AnyWordSpecLike with Matchers {
     }
 
     "provide no new tournaments" in {
-      TournamentsChecker().check(Set(
+      TournamentsCheckerImpl().check(Set(
         Tournament(1, 1),
         Tournament(2, 2),
         Tournament(3, 3)
@@ -34,7 +34,7 @@ class TournamentsCheckerTest extends AnyWordSpecLike with Matchers {
     }
 
     "provide valid changed tournaments data" in {
-      TournamentsChecker().check(Set(
+      TournamentsCheckerImpl().check(Set(
         Tournament(1, 1),
         Tournament(2, 2),
         Tournament(3, 3)
@@ -48,7 +48,7 @@ class TournamentsCheckerTest extends AnyWordSpecLike with Matchers {
     }
 
     "provide no changed tournaments" in {
-      TournamentsChecker().check(Set(
+      TournamentsCheckerImpl().check(Set(
         Tournament(1, 1),
         Tournament(2, 2)
       ), Set(
@@ -59,7 +59,7 @@ class TournamentsCheckerTest extends AnyWordSpecLike with Matchers {
     }
 
     "handle new scores with errors" in {
-      TournamentsChecker().check(Set(
+      TournamentsCheckerImpl().check(Set(
         Tournament(1, 1),
         Tournament(2, 2)
       ), Set(

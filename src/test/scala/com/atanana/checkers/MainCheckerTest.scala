@@ -1,17 +1,17 @@
 package com.atanana.checkers
 
-import com.atanana.data._
-import org.scalamock.scalatest.MockFactory
+import com.atanana.data.*
+import com.atanana.mocks.{MockRequisitionsChecker, MockTournamentsChecker}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
 import java.time.LocalDateTime
 
-class MainCheckerTest extends AnyWordSpecLike with MockFactory with Matchers {
+class MainCheckerTest extends AnyWordSpecLike with Matchers {
 
-  private val tournamentsChecker = stub[TournamentsChecker]
-  private val requisitionsChecker = stub[RequisitionsChecker]
-  private val checker = new MainChecker(tournamentsChecker, requisitionsChecker)
+  private val tournamentsChecker = new MockTournamentsChecker()
+  private val requisitionsChecker = new MockRequisitionsChecker()
+  private val checker = new MainCheckerImpl(tournamentsChecker, requisitionsChecker)
 
   "MainChecker" should {
 
@@ -24,9 +24,9 @@ class MainCheckerTest extends AnyWordSpecLike with MockFactory with Matchers {
         RequisitionData("tournament 4", 4, "agent 4", LocalDateTime.now())
       )
       val tournamentsCheckResult = TournamentsCheckResult(newTournaments, Set.empty)
+      tournamentsChecker.checkResults.put((data.tournaments, newTournaments), tournamentsCheckResult)
       val requisitionsCheckResult = RequisitionsCheckResult(newRequisitions, Set.empty)
-      (tournamentsChecker.check _).when(data.tournaments, newTournaments).returns(tournamentsCheckResult)
-      (requisitionsChecker.check _).when(data.requisitions, newRequisitions).returns(requisitionsCheckResult)
+      requisitionsChecker.checkResults.put((data.requisitions, newRequisitions), requisitionsCheckResult)
 
       checker.check(data, ParsedData(newTournaments, newRequisitions)) shouldEqual CheckResult(tournamentsCheckResult, requisitionsCheckResult)
     }
@@ -35,10 +35,8 @@ class MainCheckerTest extends AnyWordSpecLike with MockFactory with Matchers {
       val data = Data(Set.empty, Set.empty)
       val tournament = TournamentData(2, "tournament 2", "link 2", 2f, 2, 2)
       val newTournaments = Set(tournament)
-      (tournamentsChecker.check _).when(data.tournaments, newTournaments).returns(
-        TournamentsCheckResult(Set(tournament), Set(ChangedTournament(tournament, 4)))
-      )
-      (requisitionsChecker.check _).when(*, *).returns(mock[RequisitionsCheckResult])
+      tournamentsChecker.checkResults.put((data.tournaments, newTournaments), TournamentsCheckResult(Set(tournament), Set(ChangedTournament(tournament, 4))))
+      requisitionsChecker.checkResults.put((Set.empty, Set.empty), RequisitionsCheckResult(Set.empty, Set.empty))
 
       checker.check(data, ParsedData(newTournaments, Set.empty)).tournamentsCheckResult shouldEqual TournamentsCheckResult(Set.empty, Set(ChangedTournament(tournament, 4)))
     }

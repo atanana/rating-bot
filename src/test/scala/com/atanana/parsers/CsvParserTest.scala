@@ -1,18 +1,18 @@
 package com.atanana.parsers
 
 import com.atanana.data.TournamentData
-import com.atanana.providers.TournamentPollingFilter
-import org.scalamock.scalatest.MockFactory
+import com.atanana.mocks.MockTournamentPollingFilter
+import com.atanana.providers.TournamentPollingFilterImpl
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
-class CsvParserTest extends AnyWordSpecLike with Matchers with MockFactory {
-  private val filter = stub[TournamentPollingFilter]
-  private val parser = new CsvParser(filter)
+class CsvParserTest extends AnyWordSpecLike with Matchers {
+  private val filter = new MockTournamentPollingFilter()
+  private val parser = new CsvParserImpl(filter)
 
   "CsvParser" should {
     "correct parse data" in {
-      (filter.isInteresting _).when(*, *).returns(true)
+      filter.isInteresting = true
       val data = StringContext.processEscapes(
         """
           |"Ид","Турнир","Город","Тип","С","По","RG","MP","M","BP","B","D","Взято","Из"
@@ -22,7 +22,7 @@ class CsvParserTest extends AnyWordSpecLike with Matchers with MockFactory {
     }
 
     "correct trim title row" in {
-      (filter.isInteresting _).when(*, *).returns(true)
+      filter.isInteresting = true
       val data = StringContext.processEscapes(
         """
           |"Ид","Турнир","Город","Тип","С","По","RG","MP","M","BP","B","D","Взято","Из"
@@ -41,7 +41,7 @@ class CsvParserTest extends AnyWordSpecLike with Matchers with MockFactory {
     }
 
     "filter results" in {
-      (filter.isInteresting _).when("Синхрон", *).returns(false)
+      filter.isInteresting = false
       val data = StringContext.processEscapes(
         """
           |Ид;Турнир;Город;Тип;С;По;RG;MP;M;BP;B;D;Взято;Из \r

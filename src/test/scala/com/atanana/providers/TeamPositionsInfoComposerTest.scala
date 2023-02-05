@@ -1,12 +1,13 @@
 package com.atanana.providers
 
 import com.atanana.data.{TargetTeam, Team, TeamPositionsInfo}
+import com.atanana.json.Config
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
 class TeamPositionsInfoComposerTest extends AnyWordSpecLike with Matchers {
   val teamId = 123
-  val provider = new TeamPositionsInfoComposer(teamId)
+  val provider = new TeamPositionsInfoComposerImpl(Config("", "", "", 0, teamId, 0, 0, 0, List.empty))
 
   "TeamPositionsInfoComposer" should {
     "provide correct positions info" in {

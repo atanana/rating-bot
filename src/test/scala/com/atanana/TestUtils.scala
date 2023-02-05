@@ -5,7 +5,7 @@ import com.atanana.json.Config
 import com.atanana.processors.Processor
 import org.scalatest.Assertions.fail
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 import scala.concurrent.{Await, Future}
 
 //noinspection ScalaDeprecation

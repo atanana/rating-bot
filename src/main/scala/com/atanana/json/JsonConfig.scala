@@ -1,13 +1,12 @@
 package com.atanana.json
 
-import com.atanana.FsHandler
-import spray.json.DefaultJsonProtocol._
-import spray.json._
+import com.atanana.fs.FsHandler
+import spray.json.*
+import spray.json.DefaultJsonProtocol.*
 
-import javax.inject.Inject
 import scala.util.Try
 
-class JsonConfig @Inject()(fsHandler: FsHandler) {
+class JsonConfig(fsHandler: FsHandler) {
 
   import JsonConfig.FILE_NAME
 

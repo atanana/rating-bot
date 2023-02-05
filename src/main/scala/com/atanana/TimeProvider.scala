@@ -2,7 +2,7 @@ package com.atanana
 
 import java.time.LocalDateTime
 
-class TimeProvider {
+trait TimeProvider {
 
-  def now: LocalDateTime = LocalDateTime.now()
+  def now: LocalDateTime
 }

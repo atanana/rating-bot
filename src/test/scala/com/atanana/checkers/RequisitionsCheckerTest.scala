@@ -11,7 +11,7 @@ class RequisitionsCheckerTest extends AnyWordSpecLike with Matchers {
 
   "RequisitionsCheckerTest" should {
     "provide correct new requisitions data" in {
-      RequisitionsChecker().check(Set(
+      RequisitionsCheckerImpl().check(Set(
         Requisition("tournament 1", "agent 1", now.plusDays(1))
       ), Set(
         RequisitionData("tournament 1", 1, "agent 1", now.plusDays(1)),
@@ -24,7 +24,7 @@ class RequisitionsCheckerTest extends AnyWordSpecLike with Matchers {
     }
 
     "provide correct no new requisitions" in {
-      RequisitionsChecker().check(Set(
+      RequisitionsCheckerImpl().check(Set(
         Requisition("tournament 1", "agent 1", now.plusDays(1)),
         Requisition("tournament 2", "agent 2", now.plusDays(2)),
         Requisition("tournament 3", "agent 3", now.plusDays(3))
@@ -35,7 +35,7 @@ class RequisitionsCheckerTest extends AnyWordSpecLike with Matchers {
     }
 
     "provide correct cancelled requisitions data" in {
-      RequisitionsChecker().check(Set(
+      RequisitionsCheckerImpl().check(Set(
         Requisition("tournament 1", "agent 1", now.plusDays(1)),
         Requisition("tournament 2", "agent 2", now.plusDays(2)),
         Requisition("tournament 3", "agent 3", now.plusDays(3))
@@ -48,7 +48,7 @@ class RequisitionsCheckerTest extends AnyWordSpecLike with Matchers {
     }
 
     "provide no cancelled requisitions" in {
-      RequisitionsChecker().check(Set(
+      RequisitionsCheckerImpl().check(Set(
         Requisition("tournament 1", "agent 1", now.plusDays(1)),
         Requisition("tournament 2", "agent 2", now.plusMinutes(15)),
         Requisition("tournament 3", "agent 3", now.plusDays(3))

@@ -6,7 +6,7 @@ import org.scalatest.wordspec.AnyWordSpecLike
 import scala.util.Success
 
 class TournamentInfoParserTest extends AnyWordSpecLike with Matchers {
-  val parser = new TournamentInfoParser()
+  val parser = new TournamentInfoParserImpl()
 
   "TournamentInfoParser" should {
     "parse questions count" in {
