@@ -22,9 +22,9 @@ class JsonStoreImpl(fsHandler: FsHandler) extends JsonStore {
     }
   }
 
-  private implicit val requisitionFormat: RootJsonFormat[Requisition] = jsonFormat4(Requisition)
-  private implicit val tournamentFormat: RootJsonFormat[Tournament] = jsonFormat2(Tournament)
-  private implicit val dataFormat: RootJsonFormat[Data] = jsonFormat2(Data)
+  private implicit val requisitionFormat: RootJsonFormat[Requisition] = jsonFormat4(Requisition.apply)
+  private implicit val tournamentFormat: RootJsonFormat[Tournament] = jsonFormat2(Tournament.apply)
+  private implicit val dataFormat: RootJsonFormat[Data] = jsonFormat2(Data.apply)
 
   override def read: Data = {
     fsHandler.readFile(FILE_NAME)
