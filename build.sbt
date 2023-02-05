@@ -26,6 +26,5 @@ assembly / assemblyMergeStrategy := {
     oldStrategy(x)
 }
 
-scalacOptions += "-deprecation"
 scalacOptions += "-rewrite"
 scalacOptions += "-new-syntax"
