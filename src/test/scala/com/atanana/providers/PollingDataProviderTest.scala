@@ -1,12 +1,13 @@
 package com.atanana.providers
 
 import cats.data.EitherT
-import cats.implicits._
-import com.atanana.Connector
+import cats.implicits.*
 import com.atanana.TestUtils.{awaitEither, awaitError}
 import com.atanana.data.{ParsedData, PartialRequisitionData, TournamentData}
 import com.atanana.json.Config
-import com.atanana.parsers._
+import com.atanana.mocks.{MockCsvParser, MockRequisitionsPageParser, MockRequisitionsParser, MockTournamentInfoParser}
+import com.atanana.net.{ConnectorImpl, MockConnector}
+import com.atanana.parsers.*
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
@@ -17,39 +18,41 @@ import scala.concurrent.Future
 import scala.util.chaining.scalaUtilChainingOps
 import scala.util.{Failure, Success, Try}
 
-class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matchers {
-  private val connector = stub[Connector]
-  private val csvParser = stub[CsvParser]
-  private val requisitionsParser = stub[RequisitionsParser]
-  private val requisitionsPageParser = stub[RequisitionsPageParser]
-  private val tournamentInfoParser = stub[TournamentInfoParser]
+class PollingDataProviderTest extends AnyWordSpecLike with Matchers {
+  private val connector = new MockConnector()
+  private val csvParser = new MockCsvParser()
+  private val requisitionsParser = new MockRequisitionsParser()
+  private val requisitionsPageParser = new MockRequisitionsPageParser()
+  private val tournamentInfoParser = new MockTournamentInfoParser()
   private val config: Config = Config("tg token", "api token", "cookie", 1, 1, 1, 1, 1, List("test venue 1", "test venue 2"))
-  private val provider = new PollingDataProvider(connector, csvParser, requisitionsParser, requisitionsPageParser, tournamentInfoParser, config)
+  private val provider = new PollingDataProviderImpl(connector, csvParser, requisitionsParser, requisitionsPageParser, tournamentInfoParser, config)
 
   "PollingDataProvider" should {
 
     "provider valid data" in {
       val tournamentId = 123
       val tournamentRequisitionsPage = "tournament requisitions page"
-      val tournamentData = mock[TournamentData]
+      val tournamentData = TournamentData(123, "test name", "test link", 3.0f, 321, 36)
       setTournamentsData(List(tournamentData))
-      (connector.getTournamentRequisitionsPage _).when(tournamentId).returns(EitherT.rightT[Future, Throwable](tournamentRequisitionsPage))
+      connector.tournamentRequisitionsPageResponses.put(tournamentId, EitherT.rightT[Future, Throwable](tournamentRequisitionsPage))
       setQuestionsCount(tournamentId, Success(36))
 
       val requisitionData = PartialRequisitionData("test tournament", tournamentId, "test agent", LocalDateTime.now())
       setRequisitionData(Success(List(requisitionData)))
-      (requisitionsPageParser.additionalData _).when(requisitionData.agent, tournamentRequisitionsPage).returns(Success(RequisitionAdditionalData("test", 5)))
+      requisitionsPageParser.data.put((requisitionData.agent, tournamentRequisitionsPage), Success(RequisitionAdditionalData("test", 5)))
 
       data shouldEqual Right(ParsedData(Set(tournamentData), Set(requisitionData.toRequisitionData(36))))
     }
 
     "pass team page error" in {
-      (() => connector.getTeamPage).when().returns(EitherT.leftT(new RuntimeException("team page error")))
+      connector.teamPage = EitherT.leftT(new RuntimeException("team page error"))
       provider.data.pipe(awaitError) should have message "team page error"
     }
 
     "should filter small requisitions" in {
-      (connector.getTournamentRequisitionsPage _).when(*).onCall((i: Int) => EitherT.rightT[Future, Throwable](i.toString))
+      connector.tournamentRequisitionsPageResponses.put(1, EitherT.rightT[Future, Throwable]("1"))
+      connector.tournamentRequisitionsPageResponses.put(2, EitherT.rightT[Future, Throwable]("2"))
+      connector.tournamentRequisitionsPageResponses.put(3, EitherT.rightT[Future, Throwable]("3"))
       setTournamentsData(List.empty)
       setQuestionsCount(2, Success(36))
       setQuestionsCount(3, Success(45))
@@ -58,13 +61,17 @@ class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matc
       val requisitionData2 = PartialRequisitionData("test tournament", 2, "test agent 2", LocalDateTime.now())
       val requisitionData3 = PartialRequisitionData("test tournament", 3, "test agent 3", LocalDateTime.now())
       setRequisitionData(Success(List(requisitionData1, requisitionData2, requisitionData3)))
-      (requisitionsPageParser.additionalData _).when(*, *).onCall((_: String, page: String) => Success(RequisitionAdditionalData("test", page.toInt)))
+      requisitionsPageParser.data.put(("test agent 1", "1"), Success(RequisitionAdditionalData("test", 1)))
+      requisitionsPageParser.data.put(("test agent 2", "2"), Success(RequisitionAdditionalData("test", 2)))
+      requisitionsPageParser.data.put(("test agent 3", "3"), Success(RequisitionAdditionalData("test", 3)))
 
       data shouldEqual Right(ParsedData(Set.empty, Set(requisitionData2.toRequisitionData(36), requisitionData3.toRequisitionData(45))))
     }
 
     "should filter requisitions from ignored venues" in {
-      (connector.getTournamentRequisitionsPage _).when(*).onCall((i: Int) => EitherT.rightT[Future, Throwable](i.toString))
+      connector.tournamentRequisitionsPageResponses.put(1, EitherT.rightT[Future, Throwable]("1"))
+      connector.tournamentRequisitionsPageResponses.put(2, EitherT.rightT[Future, Throwable]("2"))
+      connector.tournamentRequisitionsPageResponses.put(3, EitherT.rightT[Future, Throwable]("3"))
       setTournamentsData(List.empty)
       setQuestionsCount(1, Success(36))
       setQuestionsCount(2, Success(36))
@@ -74,13 +81,15 @@ class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matc
       val requisitionData2 = PartialRequisitionData("test tournament", 2, "test venue 2", LocalDateTime.now())
       val requisitionData3 = PartialRequisitionData("test tournament", 3, "test venue 3", LocalDateTime.now())
       setRequisitionData(Success(List(requisitionData1, requisitionData2, requisitionData3)))
-      (requisitionsPageParser.additionalData _).when(*, *).onCall((agent: String, page: String) => Success(RequisitionAdditionalData(agent, page.toInt)))
+      requisitionsPageParser.data.put(("test venue 1", "3"), Success(RequisitionAdditionalData("test venue 1", 1)))
+      requisitionsPageParser.data.put(("test venue 2", "2"), Success(RequisitionAdditionalData("test venue 2", 2)))
+      requisitionsPageParser.data.put(("test venue 3", "3"), Success(RequisitionAdditionalData("test venue 3", 3)))
 
       data shouldEqual Right(ParsedData(Set.empty, Set(requisitionData3.toRequisitionData(45))))
     }
 
     "should pass failed requisitions" in {
-      val tournamentData = mock[TournamentData]
+      val tournamentData = TournamentData(123, "test name", "test link", 3.0f, 321, 36)
       setTournamentsData(List(tournamentData))
       val requisitionData = Failure(new RuntimeException("123"))
       setRequisitionData(requisitionData)
@@ -91,20 +100,20 @@ class PollingDataProviderTest extends AnyWordSpecLike with MockFactory with Matc
 
   private def setQuestionsCount(tournamentId: Int, questionsCount: Try[Int]): Unit = {
     val page = s"tournament info $tournamentId"
-    (connector.getTournamentInfo _).when(tournamentId).returns(EitherT.rightT(page))
-    (tournamentInfoParser.getQuestionsCount _).when(page).returns(questionsCount)
+    connector.tournamentInfoResponses.put(tournamentId, EitherT.rightT(page))
+    tournamentInfoParser.questionsCount.put(page, questionsCount)
   }
 
   private def setTournamentsData(data: List[TournamentData]): Unit = {
     val teamPage = "team page"
-    (() => connector.getTeamPage).when().returns(EitherT.rightT(teamPage))
-    (csvParser.getTournamentsData _).when(teamPage).returns(data)
+    connector.teamPage = EitherT.rightT(teamPage)
+    csvParser.data.put(teamPage, data)
   }
 
   private def setRequisitionData(data: Try[List[PartialRequisitionData]]): Unit = {
     val requisitionsPage = "requisitions page"
-    (() => connector.getRequisitionPage).when().returns(EitherT.rightT(requisitionsPage))
-    (requisitionsParser.getRequisitionsData _).when(requisitionsPage).returns(data)
+    connector.requisitionPage = EitherT.rightT(requisitionsPage)
+    requisitionsParser.requisitions.put(requisitionsPage, data)
   }
 
   private def data = provider.data.pipe(awaitEither)
