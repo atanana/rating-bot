@@ -20,49 +20,49 @@ class PollingDataProviderImpl(
                              ) extends PollingDataProvider {
 
   override def data: EitherT[Future, Throwable, ParsedData] =
-    for {
+    for
       newTournaments <- getNewTournaments
       newRequisitions <- getNewRequisitions
-    } yield ParsedData(newTournaments, newRequisitions)
+    yield ParsedData(newTournaments, newRequisitions)
 
   private def getNewRequisitions: EitherT[Future, Throwable, Set[RequisitionData]] =
-    for {
+    for
       requisitionsPage <- connector.getRequisitionPage
       requisitions <- EitherT.fromEither[Future](requisitionsParser.getRequisitionsData(requisitionsPage).toEither)
       filteredRequisitions <- filterRequisitions(requisitions.toSet)
       results <- addQuestionsCount(filteredRequisitions)
-    } yield results
+    yield results
 
   private def filterRequisitions(requisitions: Set[PartialRequisitionData]): EitherT[Future, Throwable, Set[PartialRequisitionData]] = {
-    for {
+    for
       results <- requisitions.toList.traverse(requisition =>
         checkRequisitionAsync(requisition).map((_, requisition))
       ).map(_.toSet)
-    } yield for {
+    yield for
       (checkResult, requisition) <- results
       if checkResult
-    } yield requisition
+    yield requisition
   }
 
   private def checkRequisitionAsync(requisition: PartialRequisitionData): EitherT[Future, Throwable, Boolean] =
-    for {
+    for
       requisitionsPage <- connector.getTournamentRequisitionsPage(requisition.tournamentId)
       data <- EitherT.fromEither[Future](requisitionsPageParser.additionalData(requisition.agent, requisitionsPage).toEither)
-    } yield data.teamsCount > 1 && !config.ignoredVenues.contains(data.venue)
+    yield data.teamsCount > 1 && !config.ignoredVenues.contains(data.venue)
 
   private def addQuestionsCount(requisitions: Set[PartialRequisitionData]): EitherT[Future, Throwable, Set[RequisitionData]] =
     requisitions.toList.traverse(requisition =>
       getQuestionCount(requisition.tournamentId).map(requisition.toRequisitionData)
     ).map(_.toSet)
 
+  private def getNewTournaments: EitherT[Future, Throwable, Set[TournamentData]] =
+    for
+      page <- connector.getTeamPage
+    yield csvParser.getTournamentsData(page).toSet
+
   private def getQuestionCount(tournamentId: Int): EitherT[Future, Throwable, Int] =
-    for {
+    for
       tournamentInfo <- connector.getTournamentInfo(tournamentId)
       questionsCount <- EitherT.fromEither[Future](tournamentInfoParser.getQuestionsCount(tournamentInfo).toEither)
-    } yield questionsCount
-
-  private def getNewTournaments: EitherT[Future, Throwable, Set[TournamentData]] =
-    for {
-      page <- connector.getTeamPage
-    } yield csvParser.getTournamentsData(page).toSet
+    yield questionsCount
 }

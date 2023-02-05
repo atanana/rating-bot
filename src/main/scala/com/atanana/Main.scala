@@ -26,13 +26,13 @@ object Main {
     val serverChannel: ServerSocketChannel = createServerChannel(config)
     val commandProvider = new CommandProvider(serverChannel)
 
-    while (true) {
+    while true do {
       try {
-        for {
+        for
           command <- commandProvider.getCommand.get
           future = processor.processCommand(command).value
           result = Await.result(future, 10.minutes)
-        } yield result.left.map(logger.error("Error!", _))
+        yield result.left.map(logger.error("Error!", _))
       } catch {
         case e: SocketTimeoutException => logger.info("Timeout!", e)
         case e: ConnectException => logger.info("Connect error!", e)

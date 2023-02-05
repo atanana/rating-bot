@@ -6,7 +6,7 @@ import com.atanana.json.Config
 
 class TeamPositionsInfoComposerImpl(config: Config) extends TeamPositionsInfoComposer {
   override def positionsInfo(teams: List[Team], cityTeams: List[Team], countryTeams: List[Team]): Either[String, TeamPositionsInfo] = {
-    for {
+    for
       lastTeam <- getLastTop100Team(teams)
       team <- findTeam(teams)
       targetTeam <- findTargetTeam(teams, "all")
@@ -14,7 +14,7 @@ class TeamPositionsInfoComposerImpl(config: Config) extends TeamPositionsInfoCom
       overcomingCountryTeam <- findOvercomingTeam(countryTeams)
       cityPosition <- getPosition(cityTeams, "city")
       countryPosition <- getPosition(countryTeams, "country")
-    } yield TeamPositionsInfo(
+    yield TeamPositionsInfo(
       targetTeam.map(TargetTeam(_, team)),
       targetCountryTeam.map(TargetTeam(_, team)),
       TargetTeam(overcomingCountryTeam, team),

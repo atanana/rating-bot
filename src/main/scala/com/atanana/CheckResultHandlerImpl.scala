@@ -16,23 +16,23 @@ class CheckResultHandlerImpl(
                             ) extends CheckResultHandler {
 
   override def processCheckResult(checkResult: CheckResult): EitherT[Future, Throwable, Unit] =
-    for {
+    for
       messages <- composeMessages(checkResult)
       _ <- messages.map(poster.postAsync).sequence
-    } yield ()
+    yield ()
 
   private def composeMessages(checkResult: CheckResult): EitherT[Future, Throwable, List[String]] = {
     val tournaments = checkResult.tournamentsCheckResult
     val requisitions = checkResult.requisitionsCheckResult
-    for {
+    for
       newRequisitionsMessages <- requisitions.newRequisitions.map(getNewRequisitionMessage).toList.sequence
       newTournamentsMessages = tournaments.newTournaments.map(messageComposer.composeNewResult)
       changedTournamentsMessages = tournaments.changedTournaments.map(messageComposer.composeChangedResult)
       cancelledRequisitionsMessages = requisitions.cancelledRequisitions.map(messageComposer.composeCancelledRequisition)
-    } yield List(newTournamentsMessages, changedTournamentsMessages, newRequisitionsMessages, cancelledRequisitionsMessages).flatten
+    yield List(newTournamentsMessages, changedTournamentsMessages, newRequisitionsMessages, cancelledRequisitionsMessages).flatten
   }
 
-  private def getNewRequisitionMessage(newRequisition: RequisitionData) = for {
+  private def getNewRequisitionMessage(newRequisition: RequisitionData) = for
     editors <- tournamentInfoProvider.getEditors(newRequisition.tournamentId)
-  } yield messageComposer.composeNewRequisition(newRequisition, editors)
+  yield messageComposer.composeNewRequisition(newRequisition, editors)
 }

@@ -18,14 +18,14 @@ class PollProcessorImpl(
                        ) extends PollProcessor {
 
   override def process(): EitherT[Future, Throwable, Unit] =
-    for {
+    for
       parsedData <- pollingDataProvider.data
       storedData = store.read
       checkResult = checker.check(storedData, parsedData)
       _ <- checkResultHandler.processCheckResult(checkResult)
-    } yield {
+    yield {
       val finalData = addMissingTournaments(storedData, parsedData)
-      if (hasChanges(storedData, finalData)) {
+      if hasChanges(storedData, finalData) then {
         store.write(finalData)
       }
     }
@@ -33,8 +33,8 @@ class PollProcessorImpl(
   private def addMissingTournaments(storedData: Data, parsedData: Data): Data = {
     val parsedIds = parsedData.tournaments.map(_.id)
     var newTournaments = parsedData.tournaments
-    for (tournament <- storedData.tournaments) {
-      if (!parsedIds.contains(tournament.id)) {
+    for tournament <- storedData.tournaments do {
+      if !parsedIds.contains(tournament.id) then {
         newTournaments += tournament
       }
     }

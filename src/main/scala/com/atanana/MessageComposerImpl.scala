@@ -28,7 +28,7 @@ class MessageComposerImpl extends MessageComposer {
   }
 
   private def printPlace(place: Float): String = {
-    if (place % 1 == 0) {
+    if place % 1 == 0 then {
       place.toInt.toString
     } else {
       place.toString

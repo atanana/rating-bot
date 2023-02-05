@@ -15,7 +15,7 @@ class TeamPositionsInfoProviderImpl(
                                      releasesProvider: ReleasesProvider
                                    ) extends TeamPositionsInfoProvider {
 
-  override def data: EitherT[Future, Throwable, TeamPositionsInfo] = for {
+  override def data: EitherT[Future, Throwable, TeamPositionsInfo] = for
     releaseId <- releasesProvider.getLastReleaseId
     allTeams <- connector.getTeamsPage(releaseId).map(parser.getTeams)
     cityTeams <- connector.getCityTeamsPage(releaseId).map(parser.getTeams)
@@ -23,5 +23,5 @@ class TeamPositionsInfoProviderImpl(
 
     positionsInfo <- EitherT.fromEither[Future](composer.positionsInfo(allTeams, cityTeams, countryTeams)
       .left.map[Throwable](new RuntimeException(_)))
-  } yield positionsInfo
+  yield positionsInfo
 }

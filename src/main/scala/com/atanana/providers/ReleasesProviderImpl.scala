@@ -11,15 +11,15 @@ import scala.concurrent.Future
 
 class ReleasesProviderImpl(connector: Connector, parser: ReleasesParser, timeProvider: TimeProvider) extends ReleasesProvider {
 
-  override def getLastReleaseId: EitherT[Future, Throwable, Int] = for {
+  override def getLastReleaseId: EitherT[Future, Throwable, Int] = for
     releasesPage <- connector.getReleases
     lastRelease <- EitherT.fromEither[Future](processReleasesPage(releasesPage))
-  } yield lastRelease.id
+  yield lastRelease.id
 
-  private def processReleasesPage(releasesPage: String): Either[Throwable, Release] = for {
+  private def processReleasesPage(releasesPage: String): Either[Throwable, Release] = for
     releases <- parser.getReleases(releasesPage).toEither
     lastRelease <- selectLastRelease(releases)
-  } yield lastRelease
+  yield lastRelease
 
   private def selectLastRelease(releases: List[Release]): Either[Throwable, Release] = {
     val now = timeProvider.now

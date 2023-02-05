@@ -27,3 +27,5 @@ assembly / assemblyMergeStrategy := {
 }
 
 scalacOptions += "-deprecation"
+scalacOptions += "-rewrite"
+scalacOptions += "-new-syntax"

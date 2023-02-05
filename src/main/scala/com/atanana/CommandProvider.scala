@@ -13,9 +13,9 @@ class CommandProvider(socket: ServerSocketChannel) {
     Try {
       var command: Option[String] = None
       val socketChannel = socket.accept()
-      if (socketChannel != null) {
+      if socketChannel != null then {
         val read = socketChannel.read(buffer)
-        if (read > 0) {
+        if read > 0 then {
           command = Some(Source.fromBytes(buffer.array()).mkString.trim)
         }
         util.Arrays.fill(buffer.array(), 0.toByte)

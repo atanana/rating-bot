@@ -11,7 +11,7 @@ import scala.concurrent.Future
 class TournamentInfoProviderImpl(connector: Connector, tournamentPageParser: TournamentPageParser) extends TournamentInfoProvider {
 
   override def getEditors(id: Int): EitherT[Future, Throwable, List[Editor]] =
-    for {
+    for
       tournamentPage <- connector.getTournamentPage(id)
-    } yield tournamentPageParser.getEditors(tournamentPage)
+    yield tournamentPageParser.getEditors(tournamentPage)
 }
