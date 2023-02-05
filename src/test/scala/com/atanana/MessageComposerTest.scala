@@ -3,6 +3,7 @@ package com.atanana
 import com.atanana.data.*
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
+import cats.implicits._
 
 import java.time.LocalDateTime
 
@@ -56,7 +57,7 @@ class MessageComposerTest extends AnyWordSpecLike with Matchers {
     val targetTeam = TargetTeam("target team", "target city", 20)
     val targetCountryTeam = TargetTeam("country team", "country city", 10)
     val overtakingTeam = TargetTeam("overtaking team", "overtaking city", -10)
-    val info = TeamPositionsInfo(Some(targetTeam), Some(targetCountryTeam), overtakingTeam, 123, 200, 100, 20, 30)
+    val info = TeamPositionsInfo(targetTeam.some, targetCountryTeam.some, overtakingTeam, 123, 200, 100, 20, 30)
     MessageComposerImpl().composeTeamPositionsMessage(info) shouldEqual
       s"""
          |Небольшая сводка по новому релизу:

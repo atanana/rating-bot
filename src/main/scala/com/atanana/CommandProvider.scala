@@ -5,6 +5,7 @@ import java.nio.channels.ServerSocketChannel
 import java.util
 import scala.io.Source
 import scala.util.Try
+import cats.implicits._
 
 class CommandProvider(socket: ServerSocketChannel) {
   private val buffer = ByteBuffer.allocate(128)
@@ -16,7 +17,7 @@ class CommandProvider(socket: ServerSocketChannel) {
       if socketChannel != null then {
         val read = socketChannel.read(buffer)
         if read > 0 then {
-          command = Some(Source.fromBytes(buffer.array()).mkString.trim)
+          command = Source.fromBytes(buffer.array()).mkString.trim.some
         }
         util.Arrays.fill(buffer.array(), 0.toByte)
         buffer.clear()

@@ -1,6 +1,7 @@
 package com.atanana.processors
 
 import cats.data.EitherT
+import cats.implicits._
 import com.atanana.MessageComposer
 import com.atanana.TestUtils.{getResult, getResultErrorMessage}
 import com.atanana.data.{TargetTeam, TeamPositionsInfo}
@@ -23,7 +24,7 @@ class TeamPositionsProcessorTest extends AnyWordSpecLike with Matchers {
 
     "post correct message" in {
       val targetTeam = TargetTeam("test team", "test city", 100)
-      val info = TeamPositionsInfo(Some(targetTeam), Some(targetTeam), targetTeam, 123, 200, 3000, 20, 30)
+      val info = TeamPositionsInfo(targetTeam.some, targetTeam.some, targetTeam, 123, 200, 3000, 20, 30)
       provider.result = EitherT.rightT[Future, Throwable](info)
       messageComposer.teamPositionsMessage.put(info, "test message")
       poster.responses.put("test message", EitherT.rightT(()))
@@ -40,7 +41,7 @@ class TeamPositionsProcessorTest extends AnyWordSpecLike with Matchers {
 
     "pass error from poster" in {
       val targetTeam = TargetTeam("test team", "test city", 100)
-      val info = TeamPositionsInfo(Some(targetTeam), Some(targetTeam), targetTeam, 123, 200, 3000, 20, 30)
+      val info = TeamPositionsInfo(targetTeam.some, targetTeam.some, targetTeam, 123, 200, 3000, 20, 30)
       provider.result = EitherT.rightT[Future, Throwable](info)
       messageComposer.teamPositionsMessage.put(info, "test message")
       poster.responses.put("test message", EitherT.leftT(new RuntimeException("123")))

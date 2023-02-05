@@ -4,6 +4,7 @@ import com.atanana.data.{TargetTeam, Team, TeamPositionsInfo}
 import com.atanana.json.Config
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
+import cats.implicits._
 
 class TeamPositionsInfoComposerTest extends AnyWordSpecLike with Matchers {
   val teamId = 123
@@ -28,8 +29,8 @@ class TeamPositionsInfoComposerTest extends AnyWordSpecLike with Matchers {
         .updated(28, Team(1, targetCountryRatingTeamName, targetCountryRatingTeamCity, 50, 30))
         .updated(30, Team(1, overcomingRatingTeamName, overcomingRatingTeamCity, 47, 30))
       provider.positionsInfo(teams, cityTeams, countryTeams) shouldEqual Right(TeamPositionsInfo(
-        Some(TargetTeam(targetAllRatingTeamName, targetAllRatingTeamCity, 2)),
-        Some(TargetTeam(targetCountryRatingTeamName, targetCountryRatingTeamCity, 1)),
+        TargetTeam(targetAllRatingTeamName, targetAllRatingTeamCity, 2).some,
+        TargetTeam(targetCountryRatingTeamName, targetCountryRatingTeamCity, 1).some,
         TargetTeam(overcomingRatingTeamName, overcomingRatingTeamCity, -2),
         51,
         200,

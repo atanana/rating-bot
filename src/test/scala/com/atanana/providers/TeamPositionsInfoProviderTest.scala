@@ -12,6 +12,7 @@ import org.scalatest.wordspec.AnyWordSpecLike
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.util.chaining.scalaUtilChainingOps
+import cats.implicits._
 
 class TeamPositionsInfoProviderTest extends AnyWordSpecLike with Matchers {
   private val teamPage = "teams page"
@@ -43,10 +44,10 @@ class TeamPositionsInfoProviderTest extends AnyWordSpecLike with Matchers {
     val targetTeam = TargetTeam("test team", "test city", 100)
     composer.responses.put(
       (List(team), List(cityTeam), List(countryTeam)),
-      Right(TeamPositionsInfo(Some(targetTeam), Some(targetTeam), targetTeam, 123, 200, 3000, 20, 30))
+      Right(TeamPositionsInfo(targetTeam.some, targetTeam.some, targetTeam, 123, 200, 3000, 20, 30))
     )
 
-    provider.data.pipe(awaitEither) shouldEqual Right(TeamPositionsInfo(Some(targetTeam), Some(targetTeam), targetTeam, 123, 200, 3000, 20, 30))
+    provider.data.pipe(awaitEither) shouldEqual Right(TeamPositionsInfo(targetTeam.some, targetTeam.some, targetTeam, 123, 200, 3000, 20, 30))
   }
 
   private def setupDefaultExpectations(): Unit = {

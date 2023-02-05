@@ -10,6 +10,7 @@ import java.nio.channels.spi.SelectorProvider
 import java.nio.channels.{ServerSocketChannel, SocketChannel}
 import java.util
 import scala.util.Success
+import cats.implicits._
 
 class CommandProviderTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
   private val socket = new TestSocket(null)
@@ -39,14 +40,14 @@ class CommandProviderTest extends AnyWordSpecLike with Matchers with BeforeAndAf
       socketChannel.bytes = "test command\n".getBytes
       socketChannel.readResult = 123
 
-      provider.getCommand shouldEqual Success(Some("test command"))
+      provider.getCommand shouldEqual Success("test command".some)
       socketChannel.readCount shouldEqual 1
 
       //check that buffer was cleared
       socketChannel.bytes = "tttt\n".getBytes
       socketChannel.readResult = 123
 
-      provider.getCommand shouldEqual Success(Some("tttt"))
+      provider.getCommand shouldEqual Success("tttt".some)
       socketChannel.readCount shouldEqual 2
     }
   }
