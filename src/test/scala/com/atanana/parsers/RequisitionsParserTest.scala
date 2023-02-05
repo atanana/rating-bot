@@ -13,7 +13,7 @@ class RequisitionsParserTest extends AnyWordSpecLike with Matchers {
   "RequisitionsParser" should {
     "parse valid data" in {
       val html = Source.fromFile("src/test/scala/com/atanana/parsers/testValidRequisitions.html", "cp1251").getLines().mkString
-      RequisitionsParser().getRequisitionsData(html) shouldEqual Success(List(
+      RequisitionsParserImpl().getRequisitionsData(html) shouldEqual Success(List(
         PartialRequisitionData("Африканский бобр", 422, "Иванов Иван Иванович", LocalDateTime.of(2017, 4, 5, 12, 45)),
         PartialRequisitionData("Малахитовая шкатулка", 4220, "Мерзляков Максим Петрович", LocalDateTime.of(2017, 4, 10, 18, 0))
       ))
@@ -21,11 +21,11 @@ class RequisitionsParserTest extends AnyWordSpecLike with Matchers {
 
     "parse empty data" in {
       val html = Source.fromFile("src/test/scala/com/atanana/parsers/emptyRequisitions.html", "cp1251").getLines().mkString
-      RequisitionsParser().getRequisitionsData(html) shouldEqual Success(List.empty)
+      RequisitionsParserImpl().getRequisitionsData(html) shouldEqual Success(List.empty)
     }
 
     "parse incorrect data" in {
-      RequisitionsParser().getRequisitionsData("html") shouldBe a[Failure[_]]
+      RequisitionsParserImpl().getRequisitionsData("html") shouldBe a[Failure[_]]
     }
   }
 }
