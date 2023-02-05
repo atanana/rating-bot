@@ -2,9 +2,9 @@ package com.atanana.providers
 
 import cats.data.EitherT
 import com.atanana.data.Release
+import com.atanana.net.{Connector, ConnectorImpl}
 import com.atanana.parsers.{ReleasesParser, ReleasesParserImpl}
 import com.atanana.{TimeProvider, TimeProviderImpl}
-import com.atanana.net.{Connector, ConnectorImpl}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

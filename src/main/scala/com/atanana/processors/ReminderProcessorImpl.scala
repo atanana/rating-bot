@@ -2,9 +2,9 @@ package com.atanana.processors
 
 import cats.data.EitherT
 import cats.implicits.toTraverseOps
-import com.atanana.{MessageComposer, MessageComposerImpl}
 import com.atanana.json.{JsonStore, JsonStoreImpl}
 import com.atanana.posters.Poster
+import com.atanana.{MessageComposer, MessageComposerImpl}
 
 import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global

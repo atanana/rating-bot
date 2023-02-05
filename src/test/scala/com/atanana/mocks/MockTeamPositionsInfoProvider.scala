@@ -4,8 +4,8 @@ import cats.data.EitherT
 import com.atanana.data.TeamPositionsInfo
 import com.atanana.providers.TeamPositionsInfoProvider
 
-import scala.concurrent.Future
 import scala.collection.mutable
+import scala.concurrent.Future
 
 class MockTeamPositionsInfoProvider extends TeamPositionsInfoProvider {
 

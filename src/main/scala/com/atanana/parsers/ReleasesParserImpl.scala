@@ -1,7 +1,7 @@
 package com.atanana.parsers
 
 import com.atanana.data.Release
-import spray.json._
+import spray.json.*
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

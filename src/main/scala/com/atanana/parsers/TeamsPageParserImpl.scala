@@ -1,7 +1,7 @@
 package com.atanana.parsers
 
 import com.atanana.data.Team
-import spray.json._
+import spray.json.*
 
 import scala.util.Try
 

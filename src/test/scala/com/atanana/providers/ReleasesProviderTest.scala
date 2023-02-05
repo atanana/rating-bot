@@ -2,11 +2,11 @@ package com.atanana.providers
 
 import cats.data.EitherT
 import com.atanana.TestUtils.{awaitEither, awaitError}
-import com.atanana.data.Release
-import com.atanana.parsers.ReleasesParserImpl
 import com.atanana.TimeProviderImpl
+import com.atanana.data.Release
 import com.atanana.mocks.{MockReleasesParser, MockTimeProvider}
 import com.atanana.net.{ConnectorImpl, MockConnector}
+import com.atanana.parsers.ReleasesParserImpl
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 

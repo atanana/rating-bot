@@ -1,7 +1,6 @@
 package com.atanana.data
 
 import java.time.LocalDateTime
-
 import scala.language.implicitConversions
 
 case class Requisition(tournament: String, agent: String, dateTime: LocalDateTime, questionsCount: Int = 0)

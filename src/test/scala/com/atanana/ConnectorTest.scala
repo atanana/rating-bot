@@ -1,8 +1,8 @@
 package com.atanana
 
-import com.atanana.net.ConnectorImpl.{API_URL, SITE_URL}
 import com.atanana.TestUtils.{awaitEither, awaitError, fakeConfig}
-import com.atanana.net.{ConnectorImpl, ConnectorException, MockNetWrapper, NetWrapperImpl}
+import com.atanana.net.ConnectorImpl.{API_URL, SITE_URL}
+import com.atanana.net.{ConnectorException, ConnectorImpl, MockNetWrapper, NetWrapperImpl}
 import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike

@@ -1,6 +1,6 @@
 package com.atanana
 
-import com.atanana.data._
+import com.atanana.data.*
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 

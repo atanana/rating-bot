@@ -1,12 +1,12 @@
 package com.atanana.json
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import com.atanana.data.{Data, Requisition, Tournament}
 import com.atanana.fs.{FsHandler, FsHandlerImpl}
-import spray.json.DefaultJsonProtocol.*
 import spray.json.*
+import spray.json.DefaultJsonProtocol.*
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import scala.util.Try
 
 private val FILE_NAME = "data.json"

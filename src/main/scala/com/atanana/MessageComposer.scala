@@ -1,6 +1,6 @@
 package com.atanana
 
-import com.atanana.data.{ChangedTournament, Editor, Requisition, TeamPositionsInfo, TournamentData}
+import com.atanana.data.*
 
 trait MessageComposer {
 

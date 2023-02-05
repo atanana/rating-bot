@@ -1,11 +1,11 @@
 package com.atanana.processors
 
 import cats.data.EitherT
-import com.atanana.{CheckResultHandler, CheckResultHandlerImpl}
 import com.atanana.checkers.{MainChecker, MainCheckerImpl}
 import com.atanana.data.Data
 import com.atanana.json.{JsonStore, JsonStoreImpl}
 import com.atanana.providers.{PollingDataProvider, PollingDataProviderImpl}
+import com.atanana.{CheckResultHandler, CheckResultHandlerImpl}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

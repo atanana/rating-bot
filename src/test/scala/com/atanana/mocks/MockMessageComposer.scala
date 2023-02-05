@@ -1,7 +1,7 @@
 package com.atanana.mocks
 
 import com.atanana.MessageComposer
-import com.atanana.data.{ChangedTournament, Editor, Requisition, TeamPositionsInfo, TournamentData}
+import com.atanana.data.*
 
 import scala.collection.mutable
 

@@ -1,8 +1,8 @@
 package com.atanana.json
 
 import com.atanana.fs.FsHandler
-import spray.json.DefaultJsonProtocol.*
 import spray.json.*
+import spray.json.DefaultJsonProtocol.*
 
 import scala.util.Try
 

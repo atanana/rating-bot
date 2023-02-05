@@ -1,7 +1,7 @@
 package com.atanana
 
 import com.atanana.MessageComposerImpl.{alarms, timePattern}
-import com.atanana.data._
+import com.atanana.data.*
 
 import java.time.format.DateTimeFormatter
 import java.time.{DayOfWeek, LocalDate}

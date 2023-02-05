@@ -6,7 +6,7 @@ import com.typesafe.scalalogging.Logger
 import java.net.{ConnectException, InetSocketAddress, SocketTimeoutException}
 import java.nio.channels.ServerSocketChannel
 import scala.concurrent.Await
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 import scala.util.{Failure, Success}
 
 object Main {

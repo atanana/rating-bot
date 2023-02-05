@@ -2,8 +2,8 @@ package com.atanana.mocks
 
 import com.atanana.parsers.{RequisitionAdditionalData, RequisitionsPageParser}
 
-import scala.util.Try
 import scala.collection.mutable
+import scala.util.Try
 
 class MockRequisitionsPageParser extends RequisitionsPageParser {
 

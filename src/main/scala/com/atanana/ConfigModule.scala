@@ -1,17 +1,17 @@
 package com.atanana
 
-import com.atanana.checkers.{MainChecker, MainCheckerImpl, RequisitionsChecker, RequisitionsCheckerImpl, TournamentsChecker, TournamentsCheckerImpl}
+import com.atanana.checkers.*
 import com.atanana.fs.{FsHandler, FsHandlerImpl}
 import com.atanana.json.{Config, JsonStore, JsonStoreImpl}
 import com.atanana.net.{Connector, ConnectorImpl, NetWrapper, NetWrapperImpl}
-import com.atanana.parsers.{CsvParser, CsvParserImpl, ReleasesParser, ReleasesParserImpl, RequisitionsPageParser, RequisitionsPageParserImpl, RequisitionsParser, RequisitionsParserImpl, TeamsPageParser, TeamsPageParserImpl, TournamentInfoParser, TournamentInfoParserImpl, TournamentPageParser, TournamentPageParserImpl}
+import com.atanana.parsers.*
 import com.atanana.posters.{Poster, RealPoster, TestPoster}
-import com.atanana.processors.{CommandProcessor, PollProcessor, PollProcessorImpl, ReminderProcessor, ReminderProcessorImpl, TeamPositionsProcessor, TeamPositionsProcessorImpl}
-import com.atanana.providers.{PollingDataProvider, PollingDataProviderImpl, ReleasesProvider, ReleasesProviderImpl, TeamPositionsInfoComposer, TeamPositionsInfoComposerImpl, TeamPositionsInfoProvider, TeamPositionsInfoProviderImpl, TournamentInfoProvider, TournamentInfoProviderImpl, TournamentPollingFilter, TournamentPollingFilterImpl}
+import com.atanana.processors.*
+import com.atanana.providers.*
 
 class ConfigModule(config: Config, isDebug: Boolean) {
 
-  import com.softwaremill.macwire._
+  import com.softwaremill.macwire.*
 
   lazy val poster: Poster = if (isDebug) wire[TestPoster] else wire[RealPoster]
   lazy val checkResultHandler: CheckResultHandler = wire[CheckResultHandlerImpl]

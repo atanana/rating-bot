@@ -3,8 +3,8 @@ package com.atanana.mocks
 import com.atanana.data.Release
 import com.atanana.parsers.ReleasesParser
 
-import scala.util.Try
 import scala.collection.mutable
+import scala.util.Try
 
 class MockReleasesParser extends ReleasesParser {
 

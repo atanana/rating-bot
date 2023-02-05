@@ -2,8 +2,8 @@ package com.atanana.mocks
 
 import com.atanana.parsers.TournamentInfoParser
 
-import scala.util.Try
 import scala.collection.mutable
+import scala.util.Try
 
 class MockTournamentInfoParser extends TournamentInfoParser {
 

@@ -3,8 +3,8 @@ package com.atanana.mocks
 import com.atanana.data.PartialRequisitionData
 import com.atanana.parsers.RequisitionsParser
 
-import scala.util.Try
 import scala.collection.mutable
+import scala.util.Try
 
 class MockRequisitionsParser extends RequisitionsParser {
 

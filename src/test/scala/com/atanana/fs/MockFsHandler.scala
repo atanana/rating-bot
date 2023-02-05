@@ -1,8 +1,8 @@
 package com.atanana.fs
 
 import java.lang
-import scala.util.Try
 import scala.collection.mutable
+import scala.util.Try
 
 class MockFsHandler extends FsHandler {
 

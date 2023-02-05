@@ -3,8 +3,8 @@ package com.atanana.mocks
 import cats.data.EitherT
 import com.atanana.processors.{PollProcessor, ReminderProcessor, TeamPositionsProcessor}
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class MockProcessor extends PollProcessor with ReminderProcessor with TeamPositionsProcessor {
 
