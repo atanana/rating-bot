@@ -6,7 +6,7 @@ import org.scalatest.wordspec.AnyWordSpecLike
 
 class TeamPositionsInfoComposerTest extends AnyWordSpecLike with Matchers {
   val teamId = 123
-  val provider = new TeamPositionsInfoComposer(teamId)
+  val provider = new TeamPositionsInfoComposerImpl(teamId)
 
   "TeamPositionsInfoComposer" should {
     "provide correct positions info" in {
