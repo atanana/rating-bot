@@ -8,7 +8,7 @@ import scala.io.Source
 
 //noinspection SourceNotClosed
 class TeamsPageParserTest extends AnyWordSpecLike with Matchers {
-  val parser = new TeamsPageParser
+  val parser = new TeamsPageParserImpl
   private val content = Source.fromFile("src/test/scala/com/atanana/parsers/allTeams.json").getLines().mkString
   private val teams = parser.getTeams(content)
 

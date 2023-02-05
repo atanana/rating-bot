@@ -3,7 +3,7 @@ package com.atanana.providers
 import cats.data.EitherT
 import com.atanana.data.TeamPositionsInfo
 import com.atanana.net.{Connector, ConnectorImpl}
-import com.atanana.parsers.TeamsPageParser
+import com.atanana.parsers.{TeamsPageParser, TeamsPageParserImpl}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
