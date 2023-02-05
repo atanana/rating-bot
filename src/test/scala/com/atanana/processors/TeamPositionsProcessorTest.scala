@@ -7,7 +7,6 @@ import com.atanana.data.{TargetTeam, TeamPositionsInfo}
 import com.atanana.mocks.{MockMessageComposer, MockPoster, MockTeamPositionsInfoProvider}
 import com.atanana.posters.Poster
 import com.atanana.providers.TeamPositionsInfoProviderImpl
-import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 

@@ -8,7 +8,6 @@ import com.atanana.data.*
 import com.atanana.json.JsonStoreImpl
 import com.atanana.mocks.{MockCheckResultHandler, MockJsonStore, MockMainChecker, MockPollingDataProvider}
 import com.atanana.providers.PollingDataProviderImpl
-import org.scalamock.scalatest.MockFactory
 import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike

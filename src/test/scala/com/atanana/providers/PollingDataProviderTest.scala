@@ -8,7 +8,6 @@ import com.atanana.json.Config
 import com.atanana.mocks.{MockCsvParser, MockRequisitionsPageParser, MockRequisitionsParser, MockTournamentInfoParser}
 import com.atanana.net.{ConnectorImpl, MockConnector}
 import com.atanana.parsers.*
-import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 

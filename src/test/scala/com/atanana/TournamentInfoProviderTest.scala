@@ -7,7 +7,6 @@ import com.atanana.mocks.MockTournamentPageParser
 import com.atanana.net.MockConnector
 import com.atanana.parsers.TournamentPageParserImpl
 import com.atanana.providers.TournamentInfoProviderImpl
-import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 

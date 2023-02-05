@@ -7,7 +7,6 @@ import com.atanana.parsers.ReleasesParserImpl
 import com.atanana.TimeProviderImpl
 import com.atanana.mocks.{MockReleasesParser, MockTimeProvider}
 import com.atanana.net.{ConnectorImpl, MockConnector}
-import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 

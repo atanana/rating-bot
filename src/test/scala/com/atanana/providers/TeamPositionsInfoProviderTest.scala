@@ -6,7 +6,6 @@ import com.atanana.data.{TargetTeam, Team, TeamPositionsInfo}
 import com.atanana.mocks.{MockReleasesProvider, MockTeamPositionsInfoComposer, MockTeamsPageParser}
 import com.atanana.net.{ConnectorImpl, MockConnector}
 import com.atanana.parsers.TeamsPageParserImpl
-import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
@@ -14,7 +13,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.util.chaining.scalaUtilChainingOps
 
-class TeamPositionsInfoProviderTest extends AnyWordSpecLike with MockFactory with Matchers {
+class TeamPositionsInfoProviderTest extends AnyWordSpecLike with Matchers {
   private val teamPage = "teams page"
   private val cityTeamsPage = "city teams page"
   private val countryTeamsPage = "country teams page"

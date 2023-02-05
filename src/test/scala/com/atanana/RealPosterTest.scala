@@ -5,7 +5,6 @@ import cats.implicits.catsStdInstancesForFuture
 import com.atanana.TestUtils.fakeConfig
 import com.atanana.net.MockConnector
 import com.atanana.posters.RealPoster
-import org.scalamock.scalatest.MockFactory
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 import sttp.client3.UriContext
@@ -13,7 +12,7 @@ import sttp.client3.UriContext
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class RealPosterTest extends AnyFunSuite with MockFactory with Matchers {
+class RealPosterTest extends AnyFunSuite with Matchers {
 
   test("testPost") {
     val connector = new MockConnector()

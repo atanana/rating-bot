@@ -2,7 +2,6 @@ package com.atanana.checkers
 
 import com.atanana.data.*
 import com.atanana.mocks.{MockRequisitionsChecker, MockTournamentsChecker}
-import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 

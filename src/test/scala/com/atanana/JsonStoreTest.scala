@@ -3,7 +3,6 @@ package com.atanana
 import com.atanana.data.{Data, Requisition, Tournament}
 import com.atanana.fs.{FsHandlerImpl, MockFsHandler}
 import com.atanana.json.JsonStoreImpl
-import org.scalamock.scalatest.MockFactory
 import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike

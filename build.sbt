@@ -17,7 +17,6 @@ libraryDependencies += "com.softwaremill.sttp.client3" %% "okhttp-backend" % "3.
 libraryDependencies += "org.typelevel" %% "cats-core" % "2.9.0"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.15" % Test
-libraryDependencies += "org.scalamock" %% "scalamock" % "5.2.0" % Test cross CrossVersion.for3Use2_13
 
 assembly / assemblyMergeStrategy := {
   case PathList("module-info.class") => MergeStrategy.discard

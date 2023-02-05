@@ -3,7 +3,6 @@ package com.atanana.parsers
 import com.atanana.data.TournamentData
 import com.atanana.mocks.MockTournamentPollingFilter
 import com.atanana.providers.TournamentPollingFilterImpl
-import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 

@@ -1,7 +1,6 @@
 package com.atanana.json
 
 import com.atanana.fs.{FsHandler, MockFsHandler}
-import org.scalamock.scalatest.MockFactory
 import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike

@@ -7,7 +7,6 @@ import com.atanana.data.{Data, Requisition}
 import com.atanana.json.JsonStoreImpl
 import com.atanana.mocks.{MockJsonStore, MockMessageComposer, MockPoster}
 import com.atanana.posters.Poster
-import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 

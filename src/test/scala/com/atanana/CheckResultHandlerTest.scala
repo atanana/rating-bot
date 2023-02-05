@@ -6,7 +6,6 @@ import com.atanana.data.*
 import com.atanana.mocks.{MockMessageComposer, MockPoster, MockTournamentInfoProvider}
 import com.atanana.posters.Poster
 import com.atanana.providers.TournamentInfoProviderImpl
-import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.matchers.should.Matchers.shouldBe
 import org.scalatest.wordspec.AnyWordSpecLike
@@ -15,7 +14,7 @@ import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.chaining.scalaUtilChainingOps
 
-class CheckResultHandlerTest extends AnyWordSpecLike with Matchers with MockFactory {
+class CheckResultHandlerTest extends AnyWordSpecLike with Matchers {
 
   private val tournamentData = TournamentData(1, "test", "test link", 1.0f, 1, 12)
   private val changedTournament = ChangedTournament(tournamentData, 13)
