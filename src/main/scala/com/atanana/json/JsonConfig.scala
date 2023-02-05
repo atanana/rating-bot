@@ -22,8 +22,6 @@ class JsonConfig(fsHandler: FsHandler) {
 
 object JsonConfig {
   val FILE_NAME = "config.json"
-
-  def apply(fsHandler: FsHandler): JsonConfig = new JsonConfig(fsHandler)
 }
 
 case class Config(

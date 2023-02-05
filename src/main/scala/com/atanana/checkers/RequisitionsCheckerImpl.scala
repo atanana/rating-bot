@@ -26,7 +26,3 @@ class RequisitionsCheckerImpl extends RequisitionsChecker {
     oldRequisitions -- newRequisitions
   }
 }
-
-object RequisitionsCheckerImpl {
-  def apply(): RequisitionsCheckerImpl = new RequisitionsCheckerImpl()
-}

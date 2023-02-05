@@ -52,6 +52,4 @@ class RequisitionsParserImpl extends RequisitionsParser {
 object RequisitionsParserImpl {
   val timePattern: DateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy HH:mm:ss", new Locale("ru"))
   private val logger = Logger(classOf[RequisitionsParserImpl])
-
-  def apply(): RequisitionsParserImpl = new RequisitionsParserImpl()
 }

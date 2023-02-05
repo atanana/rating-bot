@@ -107,6 +107,4 @@ object MessageComposerImpl {
   val alarms: Seq[String] = List("Ахтунг", "Алярм", "Бида-бида", "Усё пропало")
 
   val timePattern: DateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy HH:mm:ss", new Locale("ru"))
-
-  def apply(): MessageComposerImpl = new MessageComposerImpl()
 }

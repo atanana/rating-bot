@@ -30,6 +30,4 @@ class RealPoster(connector: Connector, config: Config) extends Poster {
 
 object RealPoster {
   private val logger = Logger(classOf[RealPoster])
-
-  def apply(connector: Connector, config: Config): RealPoster = new RealPoster(connector, config)
 }

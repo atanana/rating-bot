@@ -29,7 +29,3 @@ class TournamentsCheckerImpl extends TournamentsChecker {
       .filter(_.tournament.questions > 0) //handle site errors when score actually not changed
   }
 }
-
-object TournamentsCheckerImpl {
-  def apply(): TournamentsCheckerImpl = new TournamentsCheckerImpl()
-}

@@ -23,7 +23,3 @@ class TournamentPageParserImpl extends TournamentPageParser {
     title.text == "Редакторы"
   }
 }
-
-object TournamentPageParserImpl {
-  def apply(): TournamentPageParserImpl = new TournamentPageParserImpl()
-}

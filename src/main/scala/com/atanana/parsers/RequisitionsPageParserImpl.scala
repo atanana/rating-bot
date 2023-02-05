@@ -40,7 +40,3 @@ private case class RequisitionRowData(venue: String, agent: String, teamsCount: 
 }
 
 case class RequisitionAdditionalData(venue: String, teamsCount: Int)
-
-object RequisitionsPageParserImpl {
-  def apply(): RequisitionsPageParserImpl = new RequisitionsPageParserImpl()
-}
