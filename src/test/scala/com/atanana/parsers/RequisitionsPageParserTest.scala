@@ -14,7 +14,7 @@ class RequisitionsPageParserTest extends AnyWordSpecLike with Matchers {
       val html = Using.resource(Source.fromFile("src/test/scala/com/atanana/parsers/requisitionsPage.html")) {
         _.getLines().mkString
       }
-      RequisitionsPageParser().additionalData("Кондратеня Андрей Александрович", html) shouldEqual Success(RequisitionAdditionalData("Минск", 1))
+      RequisitionsPageParserImpl().additionalData("Кондратеня Андрей Александрович", html) shouldEqual Success(RequisitionAdditionalData("Минск", 1))
     }
   }
 }

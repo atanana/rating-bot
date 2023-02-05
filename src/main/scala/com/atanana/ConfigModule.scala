@@ -4,7 +4,7 @@ import com.atanana.checkers.{MainChecker, MainCheckerImpl, RequisitionsChecker, 
 import com.atanana.fs.{FsHandler, FsHandlerImpl}
 import com.atanana.json.{Config, JsonStore, JsonStoreImpl}
 import com.atanana.net.{Connector, ConnectorImpl, NetWrapper, NetWrapperImpl}
-import com.atanana.parsers.{CsvParser, CsvParserImpl, ReleasesParser, ReleasesParserImpl, RequisitionsPageParser, RequisitionsParser, RequisitionsParserImpl, TeamsPageParser, TeamsPageParserImpl, TournamentInfoParser, TournamentPageParser, TournamentPageParserImpl}
+import com.atanana.parsers.{CsvParser, CsvParserImpl, ReleasesParser, ReleasesParserImpl, RequisitionsPageParser, RequisitionsPageParserImpl, RequisitionsParser, RequisitionsParserImpl, TeamsPageParser, TeamsPageParserImpl, TournamentInfoParser, TournamentPageParser, TournamentPageParserImpl}
 import com.atanana.posters.{Poster, RealPoster, TestPoster}
 import com.atanana.processors.{CommandProcessor, PollProcessor, PollProcessorImpl, ReminderProcessor, ReminderProcessorImpl, TeamPositionsProcessor, TeamPositionsProcessorImpl}
 import com.atanana.providers.{PollingDataProvider, PollingDataProviderImpl, ReleasesProvider, ReleasesProviderImpl, TeamPositionsInfoComposer, TeamPositionsInfoComposerImpl, TeamPositionsInfoProvider, TeamPositionsInfoProviderImpl, TournamentInfoProvider, TournamentInfoProviderImpl, TournamentPollingFilter, TournamentPollingFilterImpl}
@@ -20,7 +20,7 @@ class ConfigModule(config: Config, isDebug: Boolean) {
   lazy val csvParser: CsvParser = wire[CsvParserImpl]
   lazy val tournamentPageParser: TournamentPageParser = wire[TournamentPageParserImpl]
   lazy val requisitionsParser: RequisitionsParser = wire[RequisitionsParserImpl]
-  lazy val requisitionsPageParser: RequisitionsPageParser = wire[RequisitionsPageParser]
+  lazy val requisitionsPageParser: RequisitionsPageParser = wire[RequisitionsPageParserImpl]
   lazy val teamsPageParser: TeamsPageParser = wire[TeamsPageParserImpl]
   lazy val tournamentInfoParser: TournamentInfoParser = wire[TournamentInfoParser]
   lazy val releasesParser: ReleasesParser = wire[ReleasesParserImpl]
