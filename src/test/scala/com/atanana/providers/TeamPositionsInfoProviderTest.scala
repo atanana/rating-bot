@@ -1,10 +1,11 @@
 package com.atanana.providers
 
 import cats.data.EitherT
-import com.atanana.Connector
 import com.atanana.TestUtils.awaitEither
 import com.atanana.data.{TargetTeam, Team, TeamPositionsInfo}
-import com.atanana.parsers.TeamsPageParser
+import com.atanana.mocks.{MockReleasesProvider, MockTeamPositionsInfoComposer, MockTeamsPageParser}
+import com.atanana.net.{ConnectorImpl, MockConnector}
+import com.atanana.parsers.TeamsPageParserImpl
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
@@ -19,11 +20,11 @@ class TeamPositionsInfoProviderTest extends AnyWordSpecLike with MockFactory wit
   private val countryTeamsPage = "country teams page"
   private val lastReleaseId = 123
 
-  private val connector = stub[Connector]
-  private val parser = stub[TeamsPageParser]
-  private val composer = stub[TeamPositionsInfoComposer]
-  private val releasesProvider = stub[ReleasesProvider]
-  private val provider = new TeamPositionsInfoProvider(connector, parser, composer, releasesProvider)
+  private val connector = new MockConnector()
+  private val parser = new MockTeamsPageParser()
+  private val composer = new MockTeamPositionsInfoComposer()
+  private val releasesProvider = new MockReleasesProvider()
+  private val provider = new TeamPositionsInfoProviderImpl(connector, parser, composer, releasesProvider)
 
   "TeamPositionsInfoProvider" should {
     "provide correct info" in {
@@ -31,9 +32,9 @@ class TeamPositionsInfoProviderTest extends AnyWordSpecLike with MockFactory wit
       val team = createTeam(1)
       val cityTeam = createTeam(2)
       val countryTeam = createTeam(3)
-      (parser.getTeams _).when(teamPage).returns(List(team))
-      (parser.getTeams _).when(cityTeamsPage).returns(List(cityTeam))
-      (parser.getTeams _).when(countryTeamsPage).returns(List(countryTeam))
+      parser.teams.put(teamPage, List(team))
+      parser.teams.put(cityTeamsPage, List(cityTeam))
+      parser.teams.put(countryTeamsPage, List(countryTeam))
 
       checkTeams(team, cityTeam, countryTeam)
     }
@@ -41,7 +42,8 @@ class TeamPositionsInfoProviderTest extends AnyWordSpecLike with MockFactory wit
 
   private def checkTeams(team: Team, cityTeam: Team, countryTeam: Team) = {
     val targetTeam = TargetTeam("test team", "test city", 100)
-    (composer.positionsInfo _).when(List(team), List(cityTeam), List(countryTeam)).returns(
+    composer.responses.put(
+      (List(team), List(cityTeam), List(countryTeam)),
       Right(TeamPositionsInfo(Some(targetTeam), Some(targetTeam), targetTeam, 123, 200, 3000, 20, 30))
     )
 
@@ -49,10 +51,10 @@ class TeamPositionsInfoProviderTest extends AnyWordSpecLike with MockFactory wit
   }
 
   private def setupDefaultExpectations(): Unit = {
-    (connector.getTeamsPage _).when(lastReleaseId).returns(EitherT.rightT[Future, Throwable](teamPage))
-    (connector.getCityTeamsPage _).when(lastReleaseId).returns(EitherT.rightT[Future, Throwable](cityTeamsPage))
-    (connector.getCountryTeamsPage _).when(lastReleaseId).returns(EitherT.rightT[Future, Throwable](countryTeamsPage))
-    (() => releasesProvider.getLastReleaseId).when().returns(EitherT.rightT[Future, Throwable](lastReleaseId))
+    connector.teamsPageResponses.put(lastReleaseId, EitherT.rightT[Future, Throwable](teamPage))
+    connector.cityTeamsPageResponses.put(lastReleaseId, EitherT.rightT[Future, Throwable](cityTeamsPage))
+    connector.countryTeamsPageResponses.put(lastReleaseId, EitherT.rightT[Future, Throwable](countryTeamsPage))
+    releasesProvider.releaseId = EitherT.rightT[Future, Throwable](lastReleaseId)
   }
 
   private def createTeam(id: Int): Team = Team(id, "", "", 0, 0)

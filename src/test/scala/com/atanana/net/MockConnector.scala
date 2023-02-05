@@ -8,8 +8,11 @@ import scala.concurrent.Future
 
 class MockConnector extends Connector {
 
-  val postResponses: mutable.Map[(Uri, Map[String, String]), EitherT[Future, Throwable, String]] = mutable.Map[(Uri, Map[String, String]), EitherT[Future, Throwable, String]]()
-  val tournamentPageResponses: mutable.Map[Int, EitherT[Future, Throwable, String]] = mutable.Map[Int, EitherT[Future, Throwable, String]]()
+  val postResponses: mutable.Map[(Uri, Map[String, String]), EitherT[Future, Throwable, String]] = mutable.Map()
+  val tournamentPageResponses: mutable.Map[Int, EitherT[Future, Throwable, String]] = mutable.Map()
+  val teamsPageResponses: mutable.Map[Int, EitherT[Future, Throwable, String]] = mutable.Map()
+  val cityTeamsPageResponses: mutable.Map[Int, EitherT[Future, Throwable, String]] = mutable.Map()
+  val countryTeamsPageResponses: mutable.Map[Int, EitherT[Future, Throwable, String]] = mutable.Map()
 
   override def getTeamPage: EitherT[Future, Throwable, String] = ???
 
@@ -19,11 +22,11 @@ class MockConnector extends Connector {
 
   override def getTournamentRequisitionsPage(tournamentId: Int): EitherT[Future, Throwable, String] = ???
 
-  override def getTeamsPage(releaseId: Int): EitherT[Future, Throwable, String] = ???
+  override def getTeamsPage(releaseId: Int): EitherT[Future, Throwable, String] = teamsPageResponses(releaseId)
 
-  override def getCityTeamsPage(releaseId: Int): EitherT[Future, Throwable, String] = ???
+  override def getCityTeamsPage(releaseId: Int): EitherT[Future, Throwable, String] = cityTeamsPageResponses(releaseId)
 
-  override def getCountryTeamsPage(releaseId: Int): EitherT[Future, Throwable, String] = ???
+  override def getCountryTeamsPage(releaseId: Int): EitherT[Future, Throwable, String] = countryTeamsPageResponses(releaseId)
 
   override def getTournamentInfo(tournamentId: Int): EitherT[Future, Throwable, String] = ???
 
