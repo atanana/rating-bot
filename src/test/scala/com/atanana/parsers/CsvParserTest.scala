@@ -9,7 +9,7 @@ import org.scalatest.wordspec.AnyWordSpecLike
 
 class CsvParserTest extends AnyWordSpecLike with Matchers {
   private val filter = new MockTournamentPollingFilter()
-  private val parser = new CsvParser(filter)
+  private val parser = new CsvParserImpl(filter)
 
   "CsvParser" should {
     "correct parse data" in {
