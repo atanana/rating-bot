@@ -13,6 +13,7 @@ class MockConnector extends Connector {
   val teamsPageResponses: mutable.Map[Int, EitherT[Future, Throwable, String]] = mutable.Map()
   val cityTeamsPageResponses: mutable.Map[Int, EitherT[Future, Throwable, String]] = mutable.Map()
   val countryTeamsPageResponses: mutable.Map[Int, EitherT[Future, Throwable, String]] = mutable.Map()
+  var releases: EitherT[Future, Throwable, String] = _
 
   override def getTeamPage: EitherT[Future, Throwable, String] = ???
 
@@ -30,7 +31,7 @@ class MockConnector extends Connector {
 
   override def getTournamentInfo(tournamentId: Int): EitherT[Future, Throwable, String] = ???
 
-  override def getReleases: EitherT[Future, Throwable, String] = ???
+  override def getReleases: EitherT[Future, Throwable, String] = releases
 
   override def postAsync(uri: Uri, params: Map[String, String]): EitherT[Future, Throwable, String] =
     postResponses((uri, params))
