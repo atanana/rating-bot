@@ -39,8 +39,8 @@ class CommandProcessorTest extends AnyWordSpecLike with Matchers with BeforeAndA
       teamPositionsProcessor.invocationsCount shouldEqual 1
     }
 
-    "throw an error while processing unknown command" in {
-      an[RuntimeException] should be thrownBy commandProcessor.processCommand("unknown")
+    "do not throw an error while processing unknown command" in {
+      commandProcessor.processCommand("unknown")
     }
   }
 }
