@@ -11,4 +11,4 @@ USER $APPLICATION_USER
 COPY ./target/scala-3.2.2/rating-bot.jar /app/rating-bot.jar
 WORKDIR /app
 
-CMD ["java", "-server", "-XX:+UseContainerSupport", "-XX:+UseG1GC", "-XX:MaxGCPauseMillis=100", "-XX:+UseStringDeduplication", "-jar", "rating-bot.jar"]
+CMD ["java", "-jar", "rating-bot.jar"]
