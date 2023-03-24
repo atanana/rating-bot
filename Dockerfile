@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM eclipse-temurin:11
 
 ENV APPLICATION_USER rating-bot
 RUN useradd -ms /bin/bash $APPLICATION_USER
