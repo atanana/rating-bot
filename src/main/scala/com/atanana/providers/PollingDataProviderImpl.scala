@@ -34,14 +34,10 @@ class PollingDataProviderImpl(
     yield results
 
   private def filterRequisitions(requisitions: Set[PartialRequisitionData]): EitherT[Future, Throwable, Set[PartialRequisitionData]] = {
-    for
-      results <- requisitions.toList.traverse(requisition =>
-        checkRequisitionAsync(requisition).map((_, requisition))
-      ).map(_.toSet)
-    yield for
-      (checkResult, requisition) <- results
-      if checkResult
-    yield requisition
+    requisitions.toList.traverseFilter(requisition => {
+      checkRequisitionAsync(requisition).map(_.guard[Option].as(requisition))
+        .recover(* => None) //todo don't swallow errors here
+    }).map(_.toSet)
   }
 
   private def checkRequisitionAsync(requisition: PartialRequisitionData): EitherT[Future, Throwable, Boolean] =
