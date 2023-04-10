@@ -18,7 +18,7 @@ class ConnectorImpl(netWrapper: NetWrapper, config: Config) extends Connector {
   }
 
   override def getRequisitionPage: EitherT[Future, Throwable, String] = {
-    val url = uri"$SITE_URL/synch_town/${config.city}"
+    val url = uri"$SITE_URL/jq_backend/synch.php?upcoming_synch=true&town_id=${config.city}"
     getPageAsync(url)
   }
 

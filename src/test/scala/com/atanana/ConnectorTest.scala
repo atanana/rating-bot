@@ -62,12 +62,12 @@ class ConnectorTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
     }
 
     "get requisitions page by wrapper" in {
-      wrapper.pageResponses.put(uri"$SITE_URL/synch_town/${config.city}", Future.successful(Right("requisitions page")))
+      wrapper.pageResponses.put(uri"$SITE_URL/jq_backend/synch.php?upcoming_synch=true&town_id=${config.city}", Future.successful(Right("requisitions page")))
       connector.getRequisitionPage.pipe(awaitEither) shouldEqual Right("requisitions page")
     }
 
     "pass requisitions page error from wrapper" in {
-      val requisitionsUrl = uri"$SITE_URL/synch_town/${config.city}"
+      val requisitionsUrl = uri"$SITE_URL/jq_backend/synch.php?upcoming_synch=true&town_id=${config.city}"
       wrapper.pageResponses.put(requisitionsUrl, Future.successful(Left("123")))
       val exception = connector.getRequisitionPage.pipe(awaitError)
       exception shouldBe a[ConnectorException]
