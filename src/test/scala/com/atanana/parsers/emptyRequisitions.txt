@@ -1,0 +1,3 @@
+<div class="center_message">
+    Нет заявок
+</div>

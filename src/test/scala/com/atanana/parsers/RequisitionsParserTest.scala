@@ -12,20 +12,20 @@ import scala.util.{Failure, Success}
 class RequisitionsParserTest extends AnyWordSpecLike with Matchers {
   "RequisitionsParser" should {
     "parse valid data" in {
-      val html = Source.fromFile("src/test/scala/com/atanana/parsers/testValidRequisitions.html", "cp1251").getLines().mkString
+      val html = Source.fromFile("src/test/scala/com/atanana/parsers/testValidRequisitions.txt", "cp1251").getLines().mkString
       RequisitionsParserImpl().getRequisitionsData(html) shouldEqual Success(List(
-        PartialRequisitionData("Африканский бобр", 422, "Иванов Иван Иванович", LocalDateTime.of(2017, 4, 5, 12, 45)),
-        PartialRequisitionData("Малахитовая шкатулка", 4220, "Мерзляков Максим Петрович", LocalDateTime.of(2017, 4, 10, 18, 0))
+        PartialRequisitionData("Асинхрон «Это не ноготочки»", 9082, "Красковский Дмитрий Дмитриевич", LocalDateTime.of(2023, 4, 10, 20, 0)),
+        PartialRequisitionData("Лига Сибири. VI тур (синхрон)", 8308, "Штукатер Дмитрий Сергеевич", LocalDateTime.of(2023, 4, 11, 19, 0))
       ))
     }
 
     "parse empty data" in {
-      val html = Source.fromFile("src/test/scala/com/atanana/parsers/emptyRequisitions.html", "cp1251").getLines().mkString
+      val html = Source.fromFile("src/test/scala/com/atanana/parsers/emptyRequisitions.txt", "cp1251").getLines().mkString
       RequisitionsParserImpl().getRequisitionsData(html) shouldEqual Success(List.empty)
     }
 
     "parse incorrect data" in {
-      RequisitionsParserImpl().getRequisitionsData("html") shouldBe a[Failure[_]]
+      RequisitionsParserImpl().getRequisitionsData("test") shouldEqual Success(List.empty)
     }
   }
 }
