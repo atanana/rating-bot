@@ -10,7 +10,7 @@ class JsonConfig(fsHandler: FsHandler) {
 
   import JsonConfig.FILE_NAME
 
-  private implicit val configFormat: RootJsonFormat[Config] = jsonFormat9(Config.apply)
+  private implicit val configFormat: RootJsonFormat[Config] = jsonFormat8(Config.apply)
 
   def read: Try[Config] = {
     fsHandler.readFile(FILE_NAME)
@@ -26,7 +26,6 @@ object JsonConfig {
 
 case class Config(
                    tgToken: String,
-                   apiToken: String,
                    authCookie: String,
                    chat: Long,
                    team: Int,

@@ -11,7 +11,7 @@ import scala.concurrent.{Await, Future}
 //noinspection ScalaDeprecation
 object TestUtils {
 
-  val fakeConfig: Config = Config("tg token", "api token", "cookie", 123, 321, 456, 10000, 1, List.empty)
+  val fakeConfig: Config = Config("tg token", "cookie", 123, 321, 456, 10000, 1, List.empty)
 
   def getResult(processor: Processor): Either[Throwable, Unit] = await(processor.process().value)
 

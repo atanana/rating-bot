@@ -21,7 +21,6 @@ class JsonConfigTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
       fsHandler.writeFile(
         """{
           |  "tgToken": "tg token",
-          |  "apiToken": "api token",
           |  "authCookie": "test cookie",
           |  "chat": 1,
           |  "team": 2,
@@ -30,7 +29,7 @@ class JsonConfigTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
           |  "ignoredVenues": ["test", "test2"],
           |  "port": 11000
           |}""".stripMargin, "config.json")
-      jsonConfig.read shouldEqual Success(Config("tg token", "api token", "test cookie", 1, 2, 3, 11000, 4, List("test", "test2")))
+      jsonConfig.read shouldEqual Success(Config("tg token", "test cookie", 1, 2, 3, 11000, 4, List("test", "test2")))
     }
 
     "not fails on reading config" in {

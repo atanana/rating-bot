@@ -12,7 +12,6 @@ class NetWrapperImpl(config: Config) extends NetWrapper {
 
   private val asyncBackend = OkHttpFutureBackend()
   private val authCookie = ("REMEMBERME", config.authCookie)
-  private val apiAuthHeader = Header("Authorization", config.apiToken)
 
   override def getPageAsync(uri: Uri): Future[Either[String, String]] =
     basicRequest
@@ -32,7 +31,6 @@ class NetWrapperImpl(config: Config) extends NetWrapper {
   override def getApi(uri: Uri): Future[Either[String, String]] =
     basicRequest
       .get(uri)
-      .header(apiAuthHeader)
       .send(asyncBackend)
       .map(_.body)
 }
