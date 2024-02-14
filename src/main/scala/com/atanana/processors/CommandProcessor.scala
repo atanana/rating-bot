@@ -19,6 +19,7 @@ class CommandProcessor(pollProcessor: PollProcessor,
   )
 
   def processCommand(command: String): EitherT[Future, Throwable, Unit] = {
+    logger.debug(s"Process command $command")
     val processor = processors.getOrElse(command, createDefaultProcessor(command))
     processor.process()
   }

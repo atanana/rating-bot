@@ -6,9 +6,12 @@ import com.atanana.data.{ParsedData, PartialRequisitionData, RequisitionData, To
 import com.atanana.json.Config
 import com.atanana.net.{Connector, ConnectorImpl}
 import com.atanana.parsers.*
+import com.atanana.processors.CommandProcessor
+import com.typesafe.scalalogging.Logger
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.util.chaining._
 
 class PollingDataProviderImpl(
                                connector: Connector,
@@ -19,11 +22,13 @@ class PollingDataProviderImpl(
                                config: Config
                              ) extends PollingDataProvider {
 
+  private val logger = Logger("PollingDataProvider")
+
   override def data: EitherT[Future, Throwable, ParsedData] =
     for
       newTournaments <- getNewTournaments
       newRequisitions <- getNewRequisitions
-    yield ParsedData(newTournaments, newRequisitions)
+    yield ParsedData(newTournaments, newRequisitions).tap(data => logger.debug(s"Got data $data"))
 
   private def getNewRequisitions: EitherT[Future, Throwable, Set[RequisitionData]] =
     for
