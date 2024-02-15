@@ -1,6 +1,7 @@
 package com.atanana.parsers
 
 import com.atanana.data.Team
+import com.atanana.extensions.JsonExtensions.*
 import spray.json.*
 
 import scala.util.Try
@@ -15,10 +16,10 @@ class TeamsPageParserImpl extends TeamsPageParser {
   private def parseTeam(json: JsValue) = Try {
     val teamJson = json.asJsObject
     Team(
-      id = teamJson.fields("id").asInstanceOf[JsNumber].value.toInt,
-      name = teamJson.fields("teamName").asInstanceOf[JsString].value,
-      city = teamJson.fields("townName").asInstanceOf[JsString].value,
-      rating = teamJson.fields("teamRating").asInstanceOf[JsNumber].value.toInt,
-      position = teamJson.fields("teamRatingPosition").asInstanceOf[JsNumber].value.toInt)
+      id = teamJson.intField("id"),
+      name = teamJson.stringField("teamName"),
+      city = teamJson.stringField("townName"),
+      rating = teamJson.intField("teamRating"),
+      position = teamJson.intField("teamRatingPosition"))
   }.toOption
 }

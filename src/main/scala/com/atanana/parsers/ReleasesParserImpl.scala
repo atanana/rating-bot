@@ -1,6 +1,7 @@
 package com.atanana.parsers
 
 import com.atanana.data.Release
+import com.atanana.extensions.JsonExtensions.*
 import spray.json.*
 
 import java.time.LocalDateTime
@@ -17,8 +18,8 @@ class ReleasesParserImpl extends ReleasesParser {
 
   private def parseRelease(json: JsValue): Release = {
     val obj = json.asJsObject
-    val id = obj.fields("id").asInstanceOf[JsNumber].value.toInt
-    val date = LocalDateTime.parse(obj.fields("date").asInstanceOf[JsString].value, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+    val id = obj.intField("id")
+    val date = LocalDateTime.parse(obj.stringField("date"), DateTimeFormatter.ISO_OFFSET_DATE_TIME)
     Release(id, date)
   }
 }
