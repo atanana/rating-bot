@@ -68,7 +68,7 @@ class ConnectorImpl(netWrapper: NetWrapper, config: Config) extends Connector {
   }
 
   override def getTeamTournaments: EitherT[Future, Throwable, String] = {
-    val url = uri"$API_URL/teams/${config.team}/tournaments?page=1&itemsPerPage=30"
+    val url = uri"$API_URL/teams/${config.team}/tournaments?page=1&itemsPerPage=30&pagination=false"
     getApiAsync(url)
   }
 
