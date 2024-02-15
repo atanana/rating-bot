@@ -9,6 +9,8 @@ trait Connector {
 
   def getTeamPage: EitherT[Future, Throwable, String]
 
+  def getTeamTournaments: EitherT[Future, Throwable, String]
+
   def getRequisitionPage: EitherT[Future, Throwable, String]
 
   def getTournamentPage(id: Int): EitherT[Future, Throwable, String]
