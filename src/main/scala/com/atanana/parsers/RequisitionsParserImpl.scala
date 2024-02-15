@@ -1,6 +1,7 @@
 package com.atanana.parsers
 
 import com.atanana.data.PartialRequisitionData
+import com.atanana.types.Ids.TournamentId
 import com.typesafe.scalalogging.Logger
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
 import net.ruippeixotog.scalascraper.dsl.DSL.*
@@ -43,8 +44,9 @@ class RequisitionsParserImpl extends RequisitionsParser {
     }
   }
 
-  private def getTournamentIdFromLink(tournamentLink: Element) = {
-    tournamentLink.attr("href").split('/').last.toInt
+  private def getTournamentIdFromLink(tournamentLink: Element): TournamentId = {
+    val int = tournamentLink.attr("href").split('/').last.toInt
+    TournamentId(int)
   }
 }
 

@@ -3,6 +3,7 @@ package com.atanana
 import com.atanana.TestUtils.{awaitEither, awaitError, fakeConfig}
 import com.atanana.net.ConnectorImpl.{API_URL, SITE_URL}
 import com.atanana.net.{ConnectorException, ConnectorImpl, MockNetWrapper, NetWrapperImpl}
+import com.atanana.types.Ids.TournamentId
 import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
@@ -47,13 +48,13 @@ class ConnectorTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
     }
 
     "get tournament page by wrapper" in {
-      val tournamentId = 111
+      val tournamentId = TournamentId(111)
       wrapper.pageResponses.put(uri"$SITE_URL/tournament/$tournamentId", Future.successful(Right("tournament page")))
       connector.getTournamentPage(tournamentId).pipe(awaitEither) shouldEqual Right("tournament page")
     }
 
     "pass tournament page error from wrapper" in {
-      val tournamentId = 111
+      val tournamentId = TournamentId(111)
       val tournamentUrl = uri"$SITE_URL/tournament/$tournamentId"
       wrapper.pageResponses.put(tournamentUrl, Future.failed(new RuntimeException("123")))
       val exception = connector.getTournamentPage(tournamentId).pipe(awaitError)
@@ -120,13 +121,13 @@ class ConnectorTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
     }
 
     "get tournament requisitions page by wrapper" in {
-      val tournamentId = 111
+      val tournamentId = TournamentId(111)
       wrapper.pageResponses.put(uri"$SITE_URL/tournament/$tournamentId/requests", Future.successful(Right("tournament requests page")))
       connector.getTournamentRequisitionsPage(tournamentId).pipe(awaitEither) shouldEqual Right("tournament requests page")
     }
 
     "pass tournament requisitions page error from wrapper" in {
-      val tournamentId = 111
+      val tournamentId = TournamentId(111)
       val url = uri"$SITE_URL/tournament/$tournamentId/requests"
       wrapper.pageResponses.put(url, Future.successful(Left("123")))
       val exception = connector.getTournamentRequisitionsPage(tournamentId).pipe(awaitError)
@@ -135,13 +136,13 @@ class ConnectorTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
     }
 
     "get tournament info page by wrapper" in {
-      val tournamentId = 111
+      val tournamentId = TournamentId(111)
       wrapper.apiResponses.put(uri"$API_URL/tournaments/$tournamentId", Future.successful(Right("tournament info page")))
       connector.getTournamentInfo(tournamentId).pipe(awaitEither) shouldEqual Right("tournament info page")
     }
 
     "pass tournament info page error from wrapper" in {
-      val tournamentId = 111
+      val tournamentId = TournamentId(111)
       val url = uri"$API_URL/tournaments/$tournamentId"
       wrapper.apiResponses.put(url, Future.successful(Left("123")))
       val exception = connector.getTournamentInfo(tournamentId).pipe(awaitError)
@@ -158,6 +159,34 @@ class ConnectorTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
       val url = uri"$API_URL/releases?pagination=false"
       wrapper.apiResponses.put(url, Future.successful(Left("123")))
       val exception = connector.getReleases.pipe(awaitError)
+      exception shouldBe a[ConnectorException]
+      exception should have message s"Error uri: $url\n123"
+    }
+
+    "get team tournaments page by wrapper" in {
+      wrapper.apiResponses.put(uri"$API_URL/teams/${config.team}/tournaments?pagination=false", Future.successful(Right("team tournaments page")))
+      connector.getTeamTournaments.pipe(awaitEither) shouldEqual Right("team tournaments page")
+    }
+
+    "pass team tournaments page error from wrapper" in {
+      val url = uri"$API_URL/teams/${config.team}/tournaments?pagination=false"
+      wrapper.apiResponses.put(url, Future.successful(Left("123")))
+      val exception = connector.getTeamTournaments.pipe(awaitError)
+      exception shouldBe a[ConnectorException]
+      exception should have message s"Error uri: $url\n123"
+    }
+
+    "get tournament results page by wrapper" in {
+      val tournamentId = TournamentId(123)
+      wrapper.apiResponses.put(uri"$API_URL/tournaments/$tournamentId/results?includeRatingB=1", Future.successful(Right("tournament results page")))
+      connector.getTournamentResultsPage(tournamentId).pipe(awaitEither) shouldEqual Right("tournament results page")
+    }
+
+    "pass tournament results page error from wrapper" in {
+      val tournamentId = TournamentId(123)
+      val url = uri"$API_URL/tournaments/$tournamentId/results?includeRatingB=1"
+      wrapper.apiResponses.put(url, Future.successful(Left("123")))
+      val exception = connector.getTournamentResultsPage(tournamentId).pipe(awaitError)
       exception shouldBe a[ConnectorException]
       exception should have message s"Error uri: $url\n123"
     }

@@ -17,9 +17,9 @@ trait Connector {
 
   def getRequisitionPage: EitherT[Future, Throwable, String]
 
-  def getTournamentPage(id: Int): EitherT[Future, Throwable, String]
+  def getTournamentPage(id: TournamentId): EitherT[Future, Throwable, String]
 
-  def getTournamentRequisitionsPage(tournamentId: Int): EitherT[Future, Throwable, String]
+  def getTournamentRequisitionsPage(tournamentId: TournamentId): EitherT[Future, Throwable, String]
 
   def getTeamsPage(releaseId: Int): EitherT[Future, Throwable, String]
 
@@ -27,7 +27,7 @@ trait Connector {
 
   def getCountryTeamsPage(releaseId: Int): EitherT[Future, Throwable, String]
 
-  def getTournamentInfo(tournamentId: Int): EitherT[Future, Throwable, String]
+  def getTournamentInfo(tournamentId: TournamentId): EitherT[Future, Throwable, String]
 
   def getReleases: EitherT[Future, Throwable, String]
 

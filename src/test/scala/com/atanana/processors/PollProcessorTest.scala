@@ -8,6 +8,7 @@ import com.atanana.data.*
 import com.atanana.json.JsonStoreImpl
 import com.atanana.mocks.{MockCheckResultHandler, MockJsonStore, MockMainChecker, MockPollingDataProvider}
 import com.atanana.providers.PollingDataProviderImpl
+import com.atanana.types.Ids.TournamentId
 import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
@@ -102,7 +103,7 @@ class PollProcessorTest extends AnyWordSpecLike with Matchers with BeforeAndAfte
   private def setUpDefaults() = {
     val parsedData = ParsedData(
       Set(TournamentData(1, "tournament 1", "link 1", 1f, 1, 1)),
-      Set(RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now()))
+      Set(RequisitionData("tournament 1", TournamentId(1), "agent 1", LocalDateTime.now()))
     )
     provider.result = EitherT.rightT[Future, Throwable](parsedData)
     parsedData

@@ -7,6 +7,7 @@ import com.atanana.mocks.MockTournamentPageParser
 import com.atanana.net.MockConnector
 import com.atanana.parsers.TournamentPageParserImpl
 import com.atanana.providers.TournamentInfoProviderImpl
+import com.atanana.types.Ids.TournamentId
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
@@ -23,7 +24,7 @@ class TournamentInfoProviderTest extends AnyWordSpecLike with Matchers {
   "TournamentInfoProvider" should {
 
     "provide correct info" in {
-      val tournamentId = 123
+      val tournamentId = TournamentId(123)
       val page = "tournament page"
       val editor = Editor("test")
       connector.tournamentPageResponses.put(tournamentId, EitherT.rightT[Future, Throwable](page))
@@ -33,7 +34,7 @@ class TournamentInfoProviderTest extends AnyWordSpecLike with Matchers {
     }
 
     "pass error from connector" in {
-      val tournamentId = 123
+      val tournamentId = TournamentId(123)
       connector.tournamentPageResponses.put(tournamentId, EitherT.leftT(new RuntimeException("tournament page error")))
       provider.getEditors(tournamentId).pipe(awaitError) should have message "tournament page error"
     }

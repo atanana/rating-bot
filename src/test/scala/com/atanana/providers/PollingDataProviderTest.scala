@@ -8,6 +8,7 @@ import com.atanana.json.Config
 import com.atanana.mocks.{MockCsvParser, MockRequisitionsPageParser, MockRequisitionsParser, MockTournamentInfoParser}
 import com.atanana.net.{ConnectorImpl, MockConnector}
 import com.atanana.parsers.*
+import com.atanana.types.Ids.TournamentId
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
@@ -29,12 +30,12 @@ class PollingDataProviderTest extends AnyWordSpecLike with Matchers {
   "PollingDataProvider" should {
 
     "provider valid data" in {
-      val tournamentId = 123
+      val tournamentId = TournamentId(123)
       val tournamentRequisitionsPage = "tournament requisitions page"
       val tournamentData = TournamentData(123, "test name", "test link", 3.0f, 321, 36)
       setTournamentsData(List(tournamentData))
       connector.tournamentRequisitionsPageResponses.put(tournamentId, EitherT.rightT[Future, Throwable](tournamentRequisitionsPage))
-      setQuestionsCount(tournamentId, Success(36))
+      setQuestionsCount(123, Success(36))
 
       val requisitionData = PartialRequisitionData("test tournament", tournamentId, "test agent", LocalDateTime.now())
       setRequisitionData(Success(List(requisitionData)))
@@ -49,16 +50,16 @@ class PollingDataProviderTest extends AnyWordSpecLike with Matchers {
     }
 
     "should filter small requisitions" in {
-      connector.tournamentRequisitionsPageResponses.put(1, EitherT.rightT[Future, Throwable]("1"))
-      connector.tournamentRequisitionsPageResponses.put(2, EitherT.rightT[Future, Throwable]("2"))
-      connector.tournamentRequisitionsPageResponses.put(3, EitherT.rightT[Future, Throwable]("3"))
+      connector.tournamentRequisitionsPageResponses.put(TournamentId(1), EitherT.rightT[Future, Throwable]("1"))
+      connector.tournamentRequisitionsPageResponses.put(TournamentId(2), EitherT.rightT[Future, Throwable]("2"))
+      connector.tournamentRequisitionsPageResponses.put(TournamentId(3), EitherT.rightT[Future, Throwable]("3"))
       setTournamentsData(List.empty)
       setQuestionsCount(2, Success(36))
       setQuestionsCount(3, Success(45))
 
-      val requisitionData1 = PartialRequisitionData("test tournament", 1, "test agent 1", LocalDateTime.now())
-      val requisitionData2 = PartialRequisitionData("test tournament", 2, "test agent 2", LocalDateTime.now())
-      val requisitionData3 = PartialRequisitionData("test tournament", 3, "test agent 3", LocalDateTime.now())
+      val requisitionData1 = PartialRequisitionData("test tournament", TournamentId(1), "test agent 1", LocalDateTime.now())
+      val requisitionData2 = PartialRequisitionData("test tournament", TournamentId(2), "test agent 2", LocalDateTime.now())
+      val requisitionData3 = PartialRequisitionData("test tournament", TournamentId(3), "test agent 3", LocalDateTime.now())
       setRequisitionData(Success(List(requisitionData1, requisitionData2, requisitionData3)))
       requisitionsPageParser.data.put(("test agent 1", "1"), Success(RequisitionAdditionalData("test", 1)))
       requisitionsPageParser.data.put(("test agent 2", "2"), Success(RequisitionAdditionalData("test", 2)))
@@ -68,17 +69,17 @@ class PollingDataProviderTest extends AnyWordSpecLike with Matchers {
     }
 
     "should filter requisitions from ignored venues" in {
-      connector.tournamentRequisitionsPageResponses.put(1, EitherT.rightT[Future, Throwable]("1"))
-      connector.tournamentRequisitionsPageResponses.put(2, EitherT.rightT[Future, Throwable]("2"))
-      connector.tournamentRequisitionsPageResponses.put(3, EitherT.rightT[Future, Throwable]("3"))
+      connector.tournamentRequisitionsPageResponses.put(TournamentId(1), EitherT.rightT[Future, Throwable]("1"))
+      connector.tournamentRequisitionsPageResponses.put(TournamentId(2), EitherT.rightT[Future, Throwable]("2"))
+      connector.tournamentRequisitionsPageResponses.put(TournamentId(3), EitherT.rightT[Future, Throwable]("3"))
       setTournamentsData(List.empty)
       setQuestionsCount(1, Success(36))
       setQuestionsCount(2, Success(36))
       setQuestionsCount(3, Success(45))
 
-      val requisitionData1 = PartialRequisitionData("test tournament", 3, "test venue 1", LocalDateTime.now())
-      val requisitionData2 = PartialRequisitionData("test tournament", 2, "test venue 2", LocalDateTime.now())
-      val requisitionData3 = PartialRequisitionData("test tournament", 3, "test venue 3", LocalDateTime.now())
+      val requisitionData1 = PartialRequisitionData("test tournament", TournamentId(3), "test venue 1", LocalDateTime.now())
+      val requisitionData2 = PartialRequisitionData("test tournament", TournamentId(2), "test venue 2", LocalDateTime.now())
+      val requisitionData3 = PartialRequisitionData("test tournament", TournamentId(3), "test venue 3", LocalDateTime.now())
       setRequisitionData(Success(List(requisitionData1, requisitionData2, requisitionData3)))
       requisitionsPageParser.data.put(("test venue 1", "3"), Success(RequisitionAdditionalData("test venue 1", 1)))
       requisitionsPageParser.data.put(("test venue 2", "2"), Success(RequisitionAdditionalData("test venue 2", 2)))
@@ -99,7 +100,7 @@ class PollingDataProviderTest extends AnyWordSpecLike with Matchers {
 
   private def setQuestionsCount(tournamentId: Int, questionsCount: Try[Int]): Unit = {
     val page = s"tournament info $tournamentId"
-    connector.tournamentInfoResponses.put(tournamentId, EitherT.rightT(page))
+    connector.tournamentInfoResponses.put(TournamentId(tournamentId), EitherT.rightT(page))
     tournamentInfoParser.questionsCount.put(page, questionsCount)
   }
 

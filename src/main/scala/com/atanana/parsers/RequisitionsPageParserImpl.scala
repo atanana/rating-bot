@@ -8,6 +8,7 @@ import net.ruippeixotog.scalascraper.scraper.ContentExtractors.elementList
 import scala.util.Try
 
 class RequisitionsPageParserImpl extends RequisitionsPageParser {
+
   override def additionalData(agent: String, html: String): Try[RequisitionAdditionalData] = {
     Try {
       val document = JsoupBrowser().parseString(html)

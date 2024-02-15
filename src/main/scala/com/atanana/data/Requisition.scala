@@ -1,15 +1,17 @@
 package com.atanana.data
 
+import com.atanana.types.Ids.TournamentId
+
 import java.time.LocalDateTime
 import scala.language.implicitConversions
 
 case class Requisition(tournament: String, agent: String, dateTime: LocalDateTime, questionsCount: Int = 0)
 
-case class PartialRequisitionData(tournament: String, tournamentId: Int, agent: String, dateTime: LocalDateTime) {
+case class PartialRequisitionData(tournament: String, tournamentId: TournamentId, agent: String, dateTime: LocalDateTime) {
   def toRequisitionData(questionsCount: Int): RequisitionData = RequisitionData(tournament, tournamentId, agent, dateTime, questionsCount)
 }
 
-case class RequisitionData(tournament: String, tournamentId: Int, agent: String, dateTime: LocalDateTime, questionsCount: Int = 0) {
+case class RequisitionData(tournament: String, tournamentId: TournamentId, agent: String, dateTime: LocalDateTime, questionsCount: Int = 0) {
   def toRequisition: Requisition = Requisition(tournament, agent, dateTime, questionsCount)
 }
 

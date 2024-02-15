@@ -7,11 +7,12 @@ import com.atanana.json.Config
 import com.atanana.net.{Connector, ConnectorImpl}
 import com.atanana.parsers.*
 import com.atanana.processors.CommandProcessor
+import com.atanana.types.Ids.TournamentId
 import com.typesafe.scalalogging.Logger
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.util.chaining._
+import scala.util.chaining.*
 
 class PollingDataProviderImpl(
                                connector: Connector,
@@ -61,7 +62,7 @@ class PollingDataProviderImpl(
       page <- connector.getTeamPage
     yield csvParser.getTournamentsData(page).toSet
 
-  private def getQuestionCount(tournamentId: Int): EitherT[Future, Throwable, Int] =
+  private def getQuestionCount(tournamentId: TournamentId): EitherT[Future, Throwable, Int] =
     for
       tournamentInfo <- connector.getTournamentInfo(tournamentId)
       questionsCount <- EitherT.fromEither[Future](tournamentInfoParser.getQuestionsCount(tournamentInfo).toEither)

@@ -34,12 +34,12 @@ class ConnectorImpl(netWrapper: NetWrapper, config: Config) extends Connector {
         .recover(exception => Left(new ConnectorException(uri, cause = exception)))
     )
 
-  override def getTournamentPage(id: Int): EitherT[Future, Throwable, String] = {
+  override def getTournamentPage(id: TournamentId): EitherT[Future, Throwable, String] = {
     val url = uri"$SITE_URL/tournament/$id"
     getPageAsync(url)
   }
 
-  override def getTournamentRequisitionsPage(tournamentId: Int): EitherT[Future, Throwable, String] = {
+  override def getTournamentRequisitionsPage(tournamentId: TournamentId): EitherT[Future, Throwable, String] = {
     val url = uri"$SITE_URL/tournament/$tournamentId/requests"
     getPageAsync(url)
   }
@@ -59,7 +59,7 @@ class ConnectorImpl(netWrapper: NetWrapper, config: Config) extends Connector {
     getPageAsync(url)
   }
 
-  override def getTournamentInfo(tournamentId: Int): EitherT[Future, Throwable, String] = {
+  override def getTournamentInfo(tournamentId: TournamentId): EitherT[Future, Throwable, String] = {
     val url = uri"$API_URL/tournaments/$tournamentId"
     getApiAsync(url)
   }
