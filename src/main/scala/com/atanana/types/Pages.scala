@@ -12,4 +12,13 @@ object Pages {
 
     extension (page: TeamTournamentsPage) def toJson: JsValue = page.parseJson
   }
+
+  opaque type TournamentResultsPage = String
+
+  object TournamentResultsPage {
+
+    def apply(string: String): TournamentResultsPage = string
+
+    extension (page: TournamentResultsPage) def toJson: JsValue = page.parseJson
+  }
 }
