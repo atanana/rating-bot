@@ -1,5 +1,6 @@
 package com.atanana.parsers
 
+import com.atanana.types.Pages.TeamTournamentsPage
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
@@ -31,7 +32,7 @@ class TeamTournamentsParserImplTest extends AnyWordSpecLike with Matchers {
           |    "idtournament": 3327
           |  }
           |]""".stripMargin
-      parser.getTournamentIds(json) shouldEqual Success(Set(3325, 3326, 3327))
+      parser.getTournamentIds(TeamTournamentsPage(json)) shouldEqual Success(Set(3325, 3326, 3327))
     }
   }
 }

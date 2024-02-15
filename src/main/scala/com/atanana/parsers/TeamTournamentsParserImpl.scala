@@ -3,11 +3,13 @@ package com.atanana.parsers
 import scala.util.Try
 import spray.json.*
 import com.atanana.extensions.JsonExtensions.intField
+import com.atanana.types.Pages.TeamTournamentsPage
+import com.atanana.types.Pages.TeamTournamentsPage.*
 
 class TeamTournamentsParserImpl extends TeamTournamentsParser {
 
-  override def getTournamentIds(teamTournamentsPage: String): Try[Set[Int]] = Try {
-    teamTournamentsPage.parseJson.asInstanceOf[JsArray]
+  override def getTournamentIds(teamTournamentsPage: TeamTournamentsPage): Try[Set[Int]] = Try {
+    teamTournamentsPage.toJson.asInstanceOf[JsArray]
       .elements
       .map(_.intField("idtournament"))
       .toSet

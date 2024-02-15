@@ -1,6 +1,7 @@
 package com.atanana.net
 
 import cats.data.EitherT
+import com.atanana.types.Pages.TeamTournamentsPage
 import sttp.model.Uri
 
 import scala.collection.mutable
@@ -18,7 +19,7 @@ class MockConnector extends Connector {
   val tournamentRequisitionsPageResponses: mutable.Map[Int, EitherT[Future, Throwable, String]] = mutable.Map()
   var requisitionPage: EitherT[Future, Throwable, String] = _
   var teamPage: EitherT[Future, Throwable, String] = _
-  var teamTournamentsPage: EitherT[Future, Throwable, String] = _
+  var teamTournamentsPage: EitherT[Future, Throwable, TeamTournamentsPage] = _
 
   override def getTeamPage: EitherT[Future, Throwable, String] = teamPage
 
@@ -42,5 +43,5 @@ class MockConnector extends Connector {
   override def postAsync(uri: Uri, params: Map[String, String]): EitherT[Future, Throwable, String] =
     postResponses((uri, params))
 
-  override def getTeamTournaments: EitherT[Future, Throwable, String] = teamTournamentsPage
+  override def getTeamTournaments: EitherT[Future, Throwable, TeamTournamentsPage] = teamTournamentsPage
 }

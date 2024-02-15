@@ -1,6 +1,7 @@
 package com.atanana.net
 
 import cats.data.EitherT
+import com.atanana.types.Pages.TeamTournamentsPage
 import sttp.model.Uri
 
 import scala.concurrent.Future
@@ -9,7 +10,7 @@ trait Connector {
 
   def getTeamPage: EitherT[Future, Throwable, String]
 
-  def getTeamTournaments: EitherT[Future, Throwable, String]
+  def getTeamTournaments: EitherT[Future, Throwable, TeamTournamentsPage]
 
   def getRequisitionPage: EitherT[Future, Throwable, String]
 

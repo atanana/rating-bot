@@ -3,6 +3,7 @@ package com.atanana.net
 import cats.data.EitherT
 import com.atanana.json.Config
 import com.atanana.net.ConnectorImpl.{API_URL, SITE_URL}
+import com.atanana.types.Pages.TeamTournamentsPage
 import sttp.client3.*
 import sttp.client3.okhttp.OkHttpFutureBackend
 import sttp.model.{Header, Uri}
@@ -67,9 +68,9 @@ class ConnectorImpl(netWrapper: NetWrapper, config: Config) extends Connector {
     getApiAsync(url)
   }
 
-  override def getTeamTournaments: EitherT[Future, Throwable, String] = {
+  override def getTeamTournaments: EitherT[Future, Throwable, TeamTournamentsPage] = {
     val url = uri"$API_URL/teams/${config.team}/tournaments?pagination=false"
-    getApiAsync(url)
+    getApiAsync(url).map(TeamTournamentsPage(_))
   }
 
   private def getApiAsync(uri: Uri): EitherT[Future, Throwable, String] =
