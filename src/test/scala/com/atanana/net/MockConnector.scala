@@ -1,6 +1,7 @@
 package com.atanana.net
 
 import cats.data.EitherT
+import com.atanana.types.Ids.TournamentId
 import com.atanana.types.Pages.{TeamTournamentsPage, TournamentResultsPage}
 import sttp.model.Uri
 
@@ -20,7 +21,7 @@ class MockConnector extends Connector {
   var requisitionPage: EitherT[Future, Throwable, String] = _
   var teamPage: EitherT[Future, Throwable, String] = _
   var teamTournamentsPage: EitherT[Future, Throwable, TeamTournamentsPage] = _
-  var tournamentResultsPage: mutable.Map[Int, EitherT[Future, Throwable, TournamentResultsPage]] = mutable.Map()
+  var tournamentResultsPage: mutable.Map[TournamentId, EitherT[Future, Throwable, TournamentResultsPage]] = mutable.Map()
 
   override def getTeamPage: EitherT[Future, Throwable, String] = teamPage
 
@@ -46,5 +47,5 @@ class MockConnector extends Connector {
 
   override def getTeamTournaments: EitherT[Future, Throwable, TeamTournamentsPage] = teamTournamentsPage
 
-  override def getTournamentResultsPage(tournamentId: Int): EitherT[Future, Throwable, TournamentResultsPage] = tournamentResultsPage(tournamentId)
+  override def getTournamentResultsPage(id: TournamentId): EitherT[Future, Throwable, TournamentResultsPage] = tournamentResultsPage(id)
 }

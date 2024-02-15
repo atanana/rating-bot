@@ -1,6 +1,7 @@
 package com.atanana.net
 
 import cats.data.EitherT
+import com.atanana.types.Ids.TournamentId
 import com.atanana.types.Pages.{TeamTournamentsPage, TournamentResultsPage}
 import sttp.model.Uri
 
@@ -12,7 +13,7 @@ trait Connector {
 
   def getTeamTournaments: EitherT[Future, Throwable, TeamTournamentsPage]
 
-  def getTournamentResultsPage(tournamentId: Int): EitherT[Future, Throwable, TournamentResultsPage]
+  def getTournamentResultsPage(id: TournamentId): EitherT[Future, Throwable, TournamentResultsPage]
 
   def getRequisitionPage: EitherT[Future, Throwable, String]
 
