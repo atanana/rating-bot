@@ -7,6 +7,7 @@ import com.atanana.mocks.{MockMessageComposer, MockPoster, MockTournamentInfoPro
 import com.atanana.posters.Poster
 import com.atanana.providers.TournamentInfoProviderImpl
 import com.atanana.types.Ids.TournamentId
+import com.atanana.Conversions.fromIntToTournamentId
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.matchers.should.Matchers.shouldBe
 import org.scalatest.wordspec.AnyWordSpecLike
@@ -26,10 +27,10 @@ class CheckResultHandlerTest extends AnyWordSpecLike with Matchers {
   "CheckResultHandler" should {
 
     "post all changes" in {
-      val requisitionData = RequisitionData("tournament 1", TournamentId(1), "agent 1", LocalDateTime.now())
+      val requisitionData = RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now())
 
       val editor = Editor("test editor")
-      tournamentInfoProvider.editors.put(TournamentId(1), EitherT.rightT(List(editor)))
+      tournamentInfoProvider.editors.put(1, EitherT.rightT(List(editor)))
 
       messageComposer.newResultMessages.put(tournamentData, "new result")
       messageComposer.changedResultMessages.put(changedTournament, "changed result")
@@ -51,9 +52,9 @@ class CheckResultHandlerTest extends AnyWordSpecLike with Matchers {
     }
 
     "return an error when cannot get editors" in {
-      val requisitionData = RequisitionData("tournament 1", TournamentId(1), "agent 1", LocalDateTime.now())
+      val requisitionData = RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now())
 
-      tournamentInfoProvider.editors.put(TournamentId(1), EitherT.leftT(new RuntimeException("editors error")))
+      tournamentInfoProvider.editors.put(1, EitherT.leftT(new RuntimeException("editors error")))
 
       new CheckResultHandlerImpl(poster, messageComposer, tournamentInfoProvider).processCheckResult(CheckResult(
         TournamentsCheckResult(Set(tournamentData), Set(changedTournament)),

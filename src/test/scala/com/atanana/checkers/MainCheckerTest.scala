@@ -3,6 +3,7 @@ package com.atanana.checkers
 import com.atanana.data.*
 import com.atanana.mocks.{MockRequisitionsChecker, MockTournamentsChecker}
 import com.atanana.types.Ids.TournamentId
+import com.atanana.Conversions.fromIntToTournamentId
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
@@ -22,7 +23,7 @@ class MainCheckerTest extends AnyWordSpecLike with Matchers {
         TournamentData(2, "tournament 2", "link 2", 2f, 2, 2)
       )
       val newRequisitions = Set(
-        RequisitionData("tournament 4", TournamentId(4), "agent 4", LocalDateTime.now())
+        RequisitionData("tournament 4", 4, "agent 4", LocalDateTime.now())
       )
       val tournamentsCheckResult = TournamentsCheckResult(newTournaments, Set.empty)
       tournamentsChecker.checkResults.put((data.tournaments, newTournaments), tournamentsCheckResult)

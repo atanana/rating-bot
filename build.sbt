@@ -16,7 +16,7 @@ libraryDependencies += "com.softwaremill.sttp.client3" %% "core" % "3.8.12"
 libraryDependencies += "com.softwaremill.sttp.client3" %% "okhttp-backend" % "3.8.13"
 libraryDependencies += "org.typelevel" %% "cats-core" % "2.9.0"
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.15" % Test
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.18" % "test"
 
 assembly / assemblyMergeStrategy := {
   case PathList("module-info.class") => MergeStrategy.discard
@@ -28,3 +28,4 @@ assembly / assemblyMergeStrategy := {
 
 scalacOptions += "-rewrite"
 scalacOptions += "-new-syntax"
+scalacOptions += "-explain"
