@@ -6,7 +6,7 @@ version := "3.0.3"
 
 scalaVersion := "3.3.1"
 
-libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.4.5"
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.4.7"
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
 libraryDependencies += "io.spray" %% "spray-json" % "1.3.6"
 libraryDependencies += "net.ruippeixotog" %% "scala-scraper" % "3.0.0"
