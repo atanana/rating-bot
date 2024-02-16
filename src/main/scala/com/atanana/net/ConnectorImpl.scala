@@ -3,7 +3,7 @@ package com.atanana.net
 import cats.data.EitherT
 import com.atanana.json.Config
 import com.atanana.net.ConnectorImpl.{API_URL, SITE_URL}
-import com.atanana.types.Ids.TournamentId
+import com.atanana.types.Ids.{ReleaseId, TournamentId}
 import com.atanana.types.Pages.{TeamTournamentsPage, TournamentResultsPage}
 import sttp.client3.*
 import sttp.client3.okhttp.OkHttpFutureBackend
@@ -44,17 +44,17 @@ class ConnectorImpl(netWrapper: NetWrapper, config: Config) extends Connector {
     getPageAsync(url)
   }
 
-  override def getTeamsPage(releaseId: Int): EitherT[Future, Throwable, String] = {
+  override def getTeamsPage(releaseId: ReleaseId): EitherT[Future, Throwable, String] = {
     val url = uri"$SITE_URL/ajax/teams/data?draw=&columns[0][data]=rowNumber&columns[1][data]=teamRatingPosition&columns[2][data]=teamRating&columns[3][data]=trb&columns[4][data]=id&columns[5][data]=teamName&columns[6][data]=townName&columns[7][data]=playedTournaments&columns[8][data]=tournamentsPlayedInSeason&columns[9][data]=tournamentsPlayedB&order[0][column]=2&order[0][dir]=desc&start=0&length=500&form[townId]=&form[countryId]=&form[releaseId]=$releaseId"
     getPageAsync(url)
   }
 
-  override def getCityTeamsPage(releaseId: Int): EitherT[Future, Throwable, String] = {
+  override def getCityTeamsPage(releaseId: ReleaseId): EitherT[Future, Throwable, String] = {
     val url = uri"$SITE_URL/ajax/teams/data?draw=&columns[0][data]=rowNumber&columns[1][data]=teamRatingPosition&columns[2][data]=teamRating&columns[3][data]=trb&columns[4][data]=id&columns[5][data]=teamName&columns[6][data]=townName&columns[7][data]=playedTournaments&columns[8][data]=tournamentsPlayedInSeason&columns[9][data]=tournamentsPlayedB&order[0][column]=2&order[0][dir]=desc&start=0&length=500&form[townId]=${config.city}&form[countryId]=&form[releaseId]=$releaseId"
     getPageAsync(url)
   }
 
-  override def getCountryTeamsPage(releaseId: Int): EitherT[Future, Throwable, String] = {
+  override def getCountryTeamsPage(releaseId: ReleaseId): EitherT[Future, Throwable, String] = {
     val url = uri"$SITE_URL/ajax/teams/data?draw=&columns[0][data]=rowNumber&columns[1][data]=teamRatingPosition&columns[2][data]=teamRating&columns[3][data]=trb&columns[4][data]=id&columns[5][data]=teamName&columns[6][data]=townName&columns[7][data]=playedTournaments&columns[8][data]=tournamentsPlayedInSeason&columns[9][data]=tournamentsPlayedB&order[0][column]=2&order[0][dir]=desc&start=0&length=500&form[townId]=&form[countryId]=${config.country}&form[releaseId]=$releaseId"
     getPageAsync(url)
   }

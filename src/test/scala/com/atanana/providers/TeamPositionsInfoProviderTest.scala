@@ -6,6 +6,7 @@ import com.atanana.data.{TargetTeam, Team, TeamPositionsInfo}
 import com.atanana.mocks.{MockReleasesProvider, MockTeamPositionsInfoComposer, MockTeamsPageParser}
 import com.atanana.net.{ConnectorImpl, MockConnector}
 import com.atanana.parsers.TeamsPageParserImpl
+import com.atanana.Conversions.fromIntToReleaseId
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 

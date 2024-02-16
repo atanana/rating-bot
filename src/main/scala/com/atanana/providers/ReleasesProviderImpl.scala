@@ -4,6 +4,7 @@ import cats.data.EitherT
 import com.atanana.data.Release
 import com.atanana.net.{Connector, ConnectorImpl}
 import com.atanana.parsers.{ReleasesParser, ReleasesParserImpl}
+import com.atanana.types.Ids.ReleaseId
 import com.atanana.{TimeProvider, TimeProviderImpl}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -11,7 +12,7 @@ import scala.concurrent.Future
 
 class ReleasesProviderImpl(connector: Connector, parser: ReleasesParser, timeProvider: TimeProvider) extends ReleasesProvider {
 
-  override def getLastReleaseId: EitherT[Future, Throwable, Int] = for
+  override def getLastReleaseId: EitherT[Future, Throwable, ReleaseId] = for
     releasesPage <- connector.getReleases
     lastRelease <- EitherT.fromEither[Future](processReleasesPage(releasesPage))
   yield lastRelease.id

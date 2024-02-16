@@ -1,6 +1,7 @@
 package com.atanana.parsers
 
 import com.atanana.data.Release
+import com.atanana.Conversions.fromIntToReleaseId
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 

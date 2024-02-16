@@ -1,7 +1,7 @@
 package com.atanana.net
 
 import cats.data.EitherT
-import com.atanana.types.Ids.TournamentId
+import com.atanana.types.Ids.{ReleaseId, TournamentId}
 import com.atanana.types.Pages.{TeamTournamentsPage, TournamentResultsPage}
 import sttp.model.Uri
 
@@ -12,9 +12,9 @@ class MockConnector extends Connector {
 
   val postResponses: mutable.Map[(Uri, Map[String, String]), EitherT[Future, Throwable, String]] = mutable.Map()
   val tournamentPageResponses: mutable.Map[TournamentId, EitherT[Future, Throwable, String]] = mutable.Map()
-  val teamsPageResponses: mutable.Map[Int, EitherT[Future, Throwable, String]] = mutable.Map()
-  val cityTeamsPageResponses: mutable.Map[Int, EitherT[Future, Throwable, String]] = mutable.Map()
-  val countryTeamsPageResponses: mutable.Map[Int, EitherT[Future, Throwable, String]] = mutable.Map()
+  val teamsPageResponses: mutable.Map[ReleaseId, EitherT[Future, Throwable, String]] = mutable.Map()
+  val cityTeamsPageResponses: mutable.Map[ReleaseId, EitherT[Future, Throwable, String]] = mutable.Map()
+  val countryTeamsPageResponses: mutable.Map[ReleaseId, EitherT[Future, Throwable, String]] = mutable.Map()
   var releases: EitherT[Future, Throwable, String] = _
   val tournamentInfoResponses: mutable.Map[TournamentId, EitherT[Future, Throwable, String]] = mutable.Map()
   val tournamentRequisitionsPageResponses: mutable.Map[TournamentId, EitherT[Future, Throwable, String]] = mutable.Map()
@@ -32,11 +32,11 @@ class MockConnector extends Connector {
   override def getTournamentRequisitionsPage(tournamentId: TournamentId): EitherT[Future, Throwable, String] =
     tournamentRequisitionsPageResponses(tournamentId)
 
-  override def getTeamsPage(releaseId: Int): EitherT[Future, Throwable, String] = teamsPageResponses(releaseId)
+  override def getTeamsPage(releaseId: ReleaseId): EitherT[Future, Throwable, String] = teamsPageResponses(releaseId)
 
-  override def getCityTeamsPage(releaseId: Int): EitherT[Future, Throwable, String] = cityTeamsPageResponses(releaseId)
+  override def getCityTeamsPage(releaseId: ReleaseId): EitherT[Future, Throwable, String] = cityTeamsPageResponses(releaseId)
 
-  override def getCountryTeamsPage(releaseId: Int): EitherT[Future, Throwable, String] = countryTeamsPageResponses(releaseId)
+  override def getCountryTeamsPage(releaseId: ReleaseId): EitherT[Future, Throwable, String] = countryTeamsPageResponses(releaseId)
 
   override def getTournamentInfo(tournamentId: TournamentId): EitherT[Future, Throwable, String] = tournamentInfoResponses(tournamentId)
 

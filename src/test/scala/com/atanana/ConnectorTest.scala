@@ -5,6 +5,7 @@ import com.atanana.net.ConnectorImpl.{API_URL, SITE_URL}
 import com.atanana.net.{ConnectorException, ConnectorImpl, MockNetWrapper, NetWrapperImpl}
 import com.atanana.types.Ids.TournamentId
 import com.atanana.Conversions.fromIntToTournamentId
+import com.atanana.Conversions.fromIntToReleaseId
 import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
