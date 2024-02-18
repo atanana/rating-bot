@@ -19,4 +19,15 @@ object Ids {
 
     extension (id: ReleaseId) def toString: String = id.toString
   }
+
+  opaque type TeamId = Int
+
+  object TeamId {
+
+    def apply(int: Int): TeamId = int
+
+    extension (id: TeamId) def value: Int = id
+
+    extension (id: TeamId) def toString: String = id.toString
+  }
 }

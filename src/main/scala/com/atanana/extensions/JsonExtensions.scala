@@ -1,6 +1,6 @@
 package com.atanana.extensions
 
-import spray.json.{JsNumber, JsString, JsValue}
+import spray.json.{JsBoolean, JsNumber, JsString, JsValue}
 
 object JsonExtensions {
 
@@ -12,5 +12,10 @@ object JsonExtensions {
   extension (json: JsValue) def stringField(field: String): String = json.asJsObject
     .fields(field)
     .asInstanceOf[JsString]
+    .value
+
+  extension (json: JsValue) def booleanField(field: String): Boolean = json.asJsObject
+    .fields(field)
+    .asInstanceOf[JsBoolean]
     .value
 }
