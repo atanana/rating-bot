@@ -1,5 +1,7 @@
 package com.atanana.types
 
+import scala.math.Ordering
+
 object Ids {
 
   opaque type TournamentId = Int
@@ -9,6 +11,8 @@ object Ids {
     def apply(int: Int): TournamentId = int
 
     extension (id: TournamentId) def toString: String = id.toString
+
+    val ordering: Ordering[TournamentId] = Ordering.Int
   }
 
   opaque type ReleaseId = Int

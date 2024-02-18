@@ -22,8 +22,8 @@ class LastTeamResultsProviderImpl(
   override def getLastTeamResults(teamId: TeamId): EitherT[Future, Throwable, List[TournamentResult]] = for
     teamTournamentsPage <- connector.getTeamTournaments
     tournamentIds <- EitherT.fromEither[Future](teamTournamentsParser.getTournamentIds(teamTournamentsPage).toEither)
-    lastTournaments = tournamentIds.toList.sorted(Ordering[Int].reverse).take(30)
-    results <- lastTournaments.traverse(tournamentId => getTournamentResult(TournamentId(tournamentId), teamId)) //todo
+    lastTournaments = tournamentIds.toList.sorted(TournamentId.ordering.reverse).take(30)
+    results <- lastTournaments.traverse(tournamentId => getTournamentResult(tournamentId, teamId))
   yield results.flatMap(_.toList)
 
   private def getTournamentResult(tournamentId: TournamentId, teamId: TeamId): EitherT[Future, Throwable, Option[TournamentResult]] = for
