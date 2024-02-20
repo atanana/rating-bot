@@ -2,6 +2,7 @@ package com.atanana
 
 import com.atanana.MessageComposerImpl.{alarms, timePattern}
 import com.atanana.data.*
+import com.atanana.net.UriComposer
 
 import java.time.format.DateTimeFormatter
 import java.time.{DayOfWeek, LocalDate}
@@ -10,8 +11,10 @@ import scala.language.implicitConversions
 import scala.util.Random
 
 class MessageComposerImpl extends MessageComposer {
-  override def composeNewResult(data: TournamentData): String = {
-    s"Воздрочим же! На турнире [${data.name}](${data.link}) ${scoreDescription(data.bonus)}. По итогам команда заняла *${printPlace(data.place)}* " +
+
+  override def composeNewResult(data: TournamentResult, info: TournamentInfo): String = {
+    val link = UriComposer.tournamentPageUri(data.id)
+    s"Воздрочим же! На турнире [${info.name}]($link) ${scoreDescription(data.bonus)}. По итогам команда заняла *${printPlace(data.position)}* " +
       s"место и получила *${data.bonus}* рейта."
   }
 
@@ -85,11 +88,12 @@ class MessageComposerImpl extends MessageComposer {
 
   private def printTeam(team: TargetTeam): String = s"${team.name} (${team.city})"
 
-  override def composeChangedResult(changedTournament: ChangedTournament): String = {
+  override def composeChangedResult(changedTournament: ChangedTournament, info: TournamentInfo): String = {
     val data = changedTournament.tournament
     val oldResult = changedTournament.oldScore
-    s"Сегодня ${currentDay()}, а значит настало время дрочить на рейтинг! На турнире ${data.name} у нас было $oldResult, " +
-      s"а стало ${data.questions} взятых. Новый результат: ${printPlace(data.place)} место и ${data.bonus} рейтига. \n${data.link}"
+    val link = UriComposer.tournamentPageUri(data.id)
+    s"Сегодня ${currentDay()}, а значит настало время дрочить на рейтинг! На турнире ${info.name} у нас было $oldResult, " +
+      s"а стало ${data.questionsCount} взятых. Новый результат: ${printPlace(data.position)} место и ${data.bonus} рейтига. \n$link"
   }
 
   override def currentDay(): String = LocalDate.now().getDayOfWeek match {

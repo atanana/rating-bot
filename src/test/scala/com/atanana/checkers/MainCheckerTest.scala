@@ -20,7 +20,7 @@ class MainCheckerTest extends AnyWordSpecLike with Matchers {
     "return correct data from underlying checkers" in {
       val data = Data(Set(Tournament(1, 1)), Set(Requisition("tournament 1", "agent 1", LocalDateTime.now())))
       val newTournaments = Set(
-        TournamentData(2, "tournament 2", "link 2", 2f, 2, 2)
+        TournamentResult(2, 2, 2f, 2)
       )
       val newRequisitions = Set(
         RequisitionData("tournament 4", 4, "agent 4", LocalDateTime.now())
@@ -35,7 +35,7 @@ class MainCheckerTest extends AnyWordSpecLike with Matchers {
 
     "return no new tournaments on first run" in {
       val data = Data(Set.empty, Set.empty)
-      val tournament = TournamentData(2, "tournament 2", "link 2", 2f, 2, 2)
+      val tournament = TournamentResult(2, 2, 2f, 2)
       val newTournaments = Set(tournament)
       tournamentsChecker.checkResults.put((data.tournaments, newTournaments), TournamentsCheckResult(Set(tournament), Set(ChangedTournament(tournament, 4))))
       requisitionsChecker.checkResults.put((Set.empty, Set.empty), RequisitionsCheckResult(Set.empty, Set.empty))

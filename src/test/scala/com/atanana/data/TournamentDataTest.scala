@@ -2,6 +2,7 @@ package com.atanana.data
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
+import com.atanana.Conversions.fromIntToTournamentId
 
 class TournamentDataTest extends AnyWordSpecLike with Matchers {
   "TournamentData" should {

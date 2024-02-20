@@ -13,6 +13,8 @@ object Ids {
     extension (id: TournamentId) def toString: String = id.toString
 
     val ordering: Ordering[TournamentId] = Ordering.Int
+
+    extension (id: TournamentId) def value: Int = id
   }
 
   opaque type ReleaseId = Int

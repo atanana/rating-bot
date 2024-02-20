@@ -2,9 +2,8 @@ package com.atanana.net
 
 import cats.data.EitherT
 import com.atanana.json.Config
-import com.atanana.net.ConnectorImpl.{API_URL, SITE_URL}
-import com.atanana.types.Ids.{ReleaseId, TournamentId}
-import com.atanana.types.Pages.{TeamTournamentsPage, TournamentResultsPage}
+import com.atanana.types.Ids.{ReleaseId, TeamId, TournamentId}
+import com.atanana.types.Pages.{TeamTournamentsPage, TournamentInfoPage, TournamentResultsPage}
 import sttp.client3.*
 import sttp.client3.okhttp.OkHttpFutureBackend
 import sttp.model.{Header, Uri}
@@ -14,13 +13,8 @@ import scala.concurrent.Future
 
 class ConnectorImpl(netWrapper: NetWrapper, config: Config) extends Connector {
 
-  override def getTeamPage: EitherT[Future, Throwable, String] = {
-    val url = uri"$SITE_URL/teams.php?team_id=${config.team}&download_data=export_tournaments"
-    getPageAsync(url)
-  }
-
   override def getRequisitionPage: EitherT[Future, Throwable, String] = {
-    val url = uri"$SITE_URL/jq_backend/synch.php?upcoming_synch=true&town_id=${config.city}"
+    val url = UriComposer.requisitionPageUri(config.city)
     getPageAsync(url)
   }
 
@@ -35,47 +29,47 @@ class ConnectorImpl(netWrapper: NetWrapper, config: Config) extends Connector {
     )
 
   override def getTournamentPage(id: TournamentId): EitherT[Future, Throwable, String] = {
-    val url = uri"$SITE_URL/tournament/$id"
+    val url = UriComposer.tournamentPageUri(id)
     getPageAsync(url)
   }
 
   override def getTournamentRequisitionsPage(tournamentId: TournamentId): EitherT[Future, Throwable, String] = {
-    val url = uri"$SITE_URL/tournament/$tournamentId/requests"
+    val url = UriComposer.tournamentRequisitionsPageUri(tournamentId)
     getPageAsync(url)
   }
 
   override def getTeamsPage(releaseId: ReleaseId): EitherT[Future, Throwable, String] = {
-    val url = uri"$SITE_URL/ajax/teams/data?draw=&columns[0][data]=rowNumber&columns[1][data]=teamRatingPosition&columns[2][data]=teamRating&columns[3][data]=trb&columns[4][data]=id&columns[5][data]=teamName&columns[6][data]=townName&columns[7][data]=playedTournaments&columns[8][data]=tournamentsPlayedInSeason&columns[9][data]=tournamentsPlayedB&order[0][column]=2&order[0][dir]=desc&start=0&length=500&form[townId]=&form[countryId]=&form[releaseId]=$releaseId"
+    val url = UriComposer.teamsPageUri(releaseId)
     getPageAsync(url)
   }
 
   override def getCityTeamsPage(releaseId: ReleaseId): EitherT[Future, Throwable, String] = {
-    val url = uri"$SITE_URL/ajax/teams/data?draw=&columns[0][data]=rowNumber&columns[1][data]=teamRatingPosition&columns[2][data]=teamRating&columns[3][data]=trb&columns[4][data]=id&columns[5][data]=teamName&columns[6][data]=townName&columns[7][data]=playedTournaments&columns[8][data]=tournamentsPlayedInSeason&columns[9][data]=tournamentsPlayedB&order[0][column]=2&order[0][dir]=desc&start=0&length=500&form[townId]=${config.city}&form[countryId]=&form[releaseId]=$releaseId"
+    val url = UriComposer.cityTeamsPageUri(releaseId, config.city)
     getPageAsync(url)
   }
 
   override def getCountryTeamsPage(releaseId: ReleaseId): EitherT[Future, Throwable, String] = {
-    val url = uri"$SITE_URL/ajax/teams/data?draw=&columns[0][data]=rowNumber&columns[1][data]=teamRatingPosition&columns[2][data]=teamRating&columns[3][data]=trb&columns[4][data]=id&columns[5][data]=teamName&columns[6][data]=townName&columns[7][data]=playedTournaments&columns[8][data]=tournamentsPlayedInSeason&columns[9][data]=tournamentsPlayedB&order[0][column]=2&order[0][dir]=desc&start=0&length=500&form[townId]=&form[countryId]=${config.country}&form[releaseId]=$releaseId"
+    val url = UriComposer.countryTeamsPageUri(releaseId, config.country)
     getPageAsync(url)
   }
 
-  override def getTournamentInfo(tournamentId: TournamentId): EitherT[Future, Throwable, String] = {
-    val url = uri"$API_URL/tournaments/$tournamentId"
-    getApiAsync(url)
+  override def getTournamentInfo(tournamentId: TournamentId): EitherT[Future, Throwable, TournamentInfoPage] = {
+    val url = UriComposer.tournamentInfoUri(tournamentId)
+    getApiAsync(url).map(TournamentInfoPage(_))
   }
 
   override def getReleases: EitherT[Future, Throwable, String] = {
-    val url = uri"$API_URL/releases?pagination=false"
+    val url = UriComposer.releasesUri
     getApiAsync(url)
   }
 
   override def getTeamTournaments: EitherT[Future, Throwable, TeamTournamentsPage] = {
-    val url = uri"$API_URL/teams/${config.team}/tournaments?pagination=false"
+    val url = UriComposer.teamTournamentsUri(TeamId(config.team)) //todo
     getApiAsync(url).map(TeamTournamentsPage(_))
   }
 
   override def getTournamentResultsPage(id: TournamentId): EitherT[Future, Throwable, TournamentResultsPage] = {
-    val url = uri"$API_URL/tournaments/$id/results?includeRatingB=1"
+    val url = UriComposer.tournamentResultsUri(id)
     getApiAsync(url).map(TournamentResultsPage(_))
   }
 

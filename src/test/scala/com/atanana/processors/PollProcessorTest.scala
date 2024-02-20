@@ -103,7 +103,7 @@ class PollProcessorTest extends AnyWordSpecLike with Matchers with BeforeAndAfte
 
   private def setUpDefaults() = {
     val parsedData = ParsedData(
-      Set(TournamentData(1, "tournament 1", "link 1", 1f, 1, 1)),
+      Set(TournamentResult(1, 1, 1f, 1)),
       Set(RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now()))
     )
     provider.result = EitherT.rightT[Future, Throwable](parsedData)

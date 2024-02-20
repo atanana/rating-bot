@@ -2,7 +2,7 @@ package com.atanana.net
 
 import cats.data.EitherT
 import com.atanana.types.Ids.{ReleaseId, TournamentId}
-import com.atanana.types.Pages.{TeamTournamentsPage, TournamentResultsPage}
+import com.atanana.types.Pages.{TeamTournamentsPage, TournamentInfoPage, TournamentResultsPage}
 import sttp.model.Uri
 
 import scala.collection.mutable
@@ -16,14 +16,11 @@ class MockConnector extends Connector {
   val cityTeamsPageResponses: mutable.Map[ReleaseId, EitherT[Future, Throwable, String]] = mutable.Map()
   val countryTeamsPageResponses: mutable.Map[ReleaseId, EitherT[Future, Throwable, String]] = mutable.Map()
   var releases: EitherT[Future, Throwable, String] = _
-  val tournamentInfoResponses: mutable.Map[TournamentId, EitherT[Future, Throwable, String]] = mutable.Map()
+  val tournamentInfoResponses: mutable.Map[TournamentId, EitherT[Future, Throwable, TournamentInfoPage]] = mutable.Map()
   val tournamentRequisitionsPageResponses: mutable.Map[TournamentId, EitherT[Future, Throwable, String]] = mutable.Map()
   var requisitionPage: EitherT[Future, Throwable, String] = _
-  var teamPage: EitherT[Future, Throwable, String] = _
   var teamTournamentsPage: EitherT[Future, Throwable, TeamTournamentsPage] = _
   var tournamentResultsPage: mutable.Map[TournamentId, EitherT[Future, Throwable, TournamentResultsPage]] = mutable.Map()
-
-  override def getTeamPage: EitherT[Future, Throwable, String] = teamPage
 
   override def getRequisitionPage: EitherT[Future, Throwable, String] = requisitionPage
 
@@ -38,7 +35,7 @@ class MockConnector extends Connector {
 
   override def getCountryTeamsPage(releaseId: ReleaseId): EitherT[Future, Throwable, String] = countryTeamsPageResponses(releaseId)
 
-  override def getTournamentInfo(tournamentId: TournamentId): EitherT[Future, Throwable, String] = tournamentInfoResponses(tournamentId)
+  override def getTournamentInfo(tournamentId: TournamentId): EitherT[Future, Throwable, TournamentInfoPage] = tournamentInfoResponses(tournamentId)
 
   override def getReleases: EitherT[Future, Throwable, String] = releases
 

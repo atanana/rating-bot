@@ -3,6 +3,7 @@ package com.atanana
 import com.atanana.data.*
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
+import com.atanana.Conversions.fromIntToTournamentId
 import cats.implicits._
 
 import java.time.LocalDateTime
@@ -10,29 +11,29 @@ import java.time.LocalDateTime
 class MessageComposerTest extends AnyWordSpecLike with Matchers {
   "MessageComposer" should {
     "valid message new result 1" in {
-      MessageComposerImpl().composeNewResult(TournamentData(123, "test name", "test link", 123, -33, 0)) shouldEqual
-        "Воздрочим же! На турнире [test name](test link) нас слегка поимели. По итогам команда заняла *123* место и получила *-33* рейта."
+      MessageComposerImpl().composeNewResult(TournamentResult(123, 0, 123, -33), TournamentInfo("test name", 36)) shouldEqual
+        "Воздрочим же! На турнире [test name](https://rating.chgk.info/tournament/123) нас слегка поимели. По итогам команда заняла *123* место и получила *-33* рейта."
     }
   }
 
   "valid message new result 2" in {
-    MessageComposerImpl().composeNewResult(TournamentData(123, "test name", "test link", 123, 0, 0)) shouldEqual
-      "Воздрочим же! На турнире [test name](test link) мы сыграли ровно. По итогам команда заняла *123* место и получила *0* рейта."
+    MessageComposerImpl().composeNewResult(TournamentResult(123, 0, 123, 0), TournamentInfo("test name", 36)) shouldEqual
+      "Воздрочим же! На турнире [test name](https://rating.chgk.info/tournament/123) мы сыграли ровно. По итогам команда заняла *123* место и получила *0* рейта."
   }
 
   "valid message new result 3" in {
-    MessageComposerImpl().composeNewResult(TournamentData(123, "test name", "test link", 123, 15, 0)) shouldEqual
-      "Воздрочим же! На турнире [test name](test link) нам немного повезло. По итогам команда заняла *123* место и получила *15* рейта."
+    MessageComposerImpl().composeNewResult(TournamentResult(123, 0, 123, 15), TournamentInfo("test name", 36)) shouldEqual
+      "Воздрочим же! На турнире [test name](https://rating.chgk.info/tournament/123) нам немного повезло. По итогам команда заняла *123* место и получила *15* рейта."
   }
 
   "valid message new result 4" in {
-    MessageComposerImpl().composeNewResult(TournamentData(123, "test name", "test link", 123.5f, 120, 0)) shouldEqual
-      "Воздрочим же! На турнире [test name](test link) мы видимо кому-то заплатили. По итогам команда заняла *123.5* место и получила *120* рейта."
+    MessageComposerImpl().composeNewResult(TournamentResult(123, 0, 123.5f, 120), TournamentInfo("test name", 36)) shouldEqual
+      "Воздрочим же! На турнире [test name](https://rating.chgk.info/tournament/123) мы видимо кому-то заплатили. По итогам команда заняла *123.5* место и получила *120* рейта."
   }
 
   "valid changed result" in {
-    MessageComposerImpl().composeChangedResult(ChangedTournament(TournamentData(123, "test name", "test link", 123, 15, 20), 10)) shouldEqual
-      s"Сегодня ${MessageComposerImpl().currentDay()}, а значит настало время дрочить на рейтинг! На турнире test name у нас было 10, а стало 20 взятых. Новый результат: 123 место и 15 рейтига. \ntest link"
+    MessageComposerImpl().composeChangedResult(ChangedTournament(TournamentResult(123, 20, 123, 15), 10), TournamentInfo("test name", 36)) shouldEqual
+      s"Сегодня ${MessageComposerImpl().currentDay()}, а значит настало время дрочить на рейтинг! На турнире test name у нас было 10, а стало 20 взятых. Новый результат: 123 место и 15 рейтига. \nhttps://rating.chgk.info/tournament/123"
   }
 
   "valid new requisition" in {

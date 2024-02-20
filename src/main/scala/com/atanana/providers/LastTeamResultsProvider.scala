@@ -8,5 +8,5 @@ import scala.concurrent.Future
 
 trait LastTeamResultsProvider {
 
-  def getLastTeamResults(teamId: TeamId): EitherT[Future, Throwable, List[TournamentResult]]
+  def getLastTeamResults(teamId: TeamId): EitherT[Future, Throwable, Set[TournamentResult]]
 }

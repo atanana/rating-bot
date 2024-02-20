@@ -1,14 +1,14 @@
 package com.atanana.mocks
 
 import com.atanana.checkers.TournamentsChecker
-import com.atanana.data.{Tournament, TournamentData, TournamentsCheckResult}
+import com.atanana.data.{Tournament, TournamentData, TournamentResult, TournamentsCheckResult}
 
 import scala.collection.mutable
 
 class MockTournamentsChecker extends TournamentsChecker {
 
-  val checkResults: mutable.Map[(Set[Tournament], Set[Tournament]), TournamentsCheckResult] = mutable.Map[(Predef.Set[Tournament], Predef.Set[Tournament]), TournamentsCheckResult]()
+  val checkResults: mutable.Map[(Set[Tournament], Set[TournamentResult]), TournamentsCheckResult] = mutable.Map()
 
-  override def check(oldTournaments: Set[Tournament], newTournaments: Set[TournamentData]): TournamentsCheckResult =
+  override def check(oldTournaments: Set[Tournament], newTournaments: Set[TournamentResult]): TournamentsCheckResult =
     checkResults((oldTournaments, newTournaments))
 }

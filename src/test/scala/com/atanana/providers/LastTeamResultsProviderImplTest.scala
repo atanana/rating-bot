@@ -34,7 +34,7 @@ class LastTeamResultsProviderImplTest extends AnyWordSpecLike with Matchers {
         tournamentResultsParser.results((s"tournament results $i", i, 123)) = Success(Some(TournamentResult(i, i, i, i)))
       }
 
-      val results = (50 to 21 by -1).map(i => TournamentResult(i, i, i, i)).toList
+      val results = (50 to 21 by -1).map(i => TournamentResult(i, i, i, i)).toSet
       provider.getLastTeamResults(123).pipe(awaitEither) shouldEqual Right(results)
     }
 
@@ -48,7 +48,7 @@ class LastTeamResultsProviderImplTest extends AnyWordSpecLike with Matchers {
 
       val results = (50 to 21 by -1)
         .filter(_ % 2 == 0)
-        .map(i => TournamentResult(i, i, i, i)).toList
+        .map(i => TournamentResult(i, i, i, i)).toSet
       provider.getLastTeamResults(123).pipe(awaitEither) shouldEqual Right(results)
     }
   }

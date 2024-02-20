@@ -24,8 +24,11 @@ class ConfigModule(config: Config, isDebug: Boolean) {
   lazy val teamsPageParser: TeamsPageParser = wire[TeamsPageParserImpl]
   lazy val tournamentInfoParser: TournamentInfoParser = wire[TournamentInfoParserImpl]
   lazy val releasesParser: ReleasesParser = wire[ReleasesParserImpl]
+  lazy val teamTournamentsParser: TeamTournamentsParser = wire[TeamTournamentsParserImpl]
+  lazy val tournamentResultsParser: TournamentResultsParser = wire[TournamentResultsParserImpl]
 
   lazy val tournamentInfoProvider: TournamentInfoProvider = wire[TournamentInfoProviderImpl]
+  lazy val lastTeamResultsProvider: LastTeamResultsProvider = wire[LastTeamResultsProviderImpl]
   lazy val pollingDataProvider: PollingDataProvider = wire[PollingDataProviderImpl]
 
   lazy val netWrapper: NetWrapper = wire[NetWrapperImpl]

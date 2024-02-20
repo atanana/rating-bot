@@ -1,11 +1,13 @@
 package com.atanana.data
 
+import com.atanana.types.Ids.TournamentId
+
 import scala.language.implicitConversions
 
-case class Tournament(id: Int, score: Int)
+case class Tournament(id: TournamentId, score: Int)
 
 case class TournamentData(id: Int, name: String, link: String, place: Float, bonus: Int, questions: Int) {
-  def toTournament: Tournament = Tournament(id, questions)
+  def toTournament: Tournament = Tournament(TournamentId(id), questions)
 }
 
 object TournamentData {

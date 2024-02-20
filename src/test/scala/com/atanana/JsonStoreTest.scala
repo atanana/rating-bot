@@ -6,6 +6,7 @@ import com.atanana.json.JsonStoreImpl
 import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
+import com.atanana.Conversions.fromIntToTournamentId
 
 import java.time.LocalDateTime
 import scala.util.{Failure, Success}

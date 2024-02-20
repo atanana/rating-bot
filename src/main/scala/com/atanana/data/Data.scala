@@ -4,8 +4,8 @@ import scala.language.implicitConversions
 
 case class Data(tournaments: Set[Tournament], requisitions: Set[Requisition])
 
-case class ParsedData(tournaments: Set[TournamentData], requisitions: Set[RequisitionData]) {
-  def toData: Data = Data(tournaments, requisitions)
+case class ParsedData(tournaments: Set[TournamentResult], requisitions: Set[RequisitionData]) {
+  def toData: Data = Data(tournaments.map(result => Tournament(result.id, result.questionsCount)), requisitions)
 }
 
 object ParsedData {

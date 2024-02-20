@@ -4,7 +4,7 @@ import com.atanana.data.*
 
 trait MessageComposer {
 
-  def composeNewResult(data: TournamentData): String
+  def composeNewResult(data: TournamentResult, info: TournamentInfo): String
 
   def currentDay(): String
 
@@ -16,5 +16,5 @@ trait MessageComposer {
 
   def composeTeamPositionsMessage(info: TeamPositionsInfo): String
 
-  def composeChangedResult(changedTournament: ChangedTournament): String
+  def composeChangedResult(changedTournament: ChangedTournament, info: TournamentInfo): String
 }

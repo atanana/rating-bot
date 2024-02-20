@@ -5,6 +5,7 @@ import com.atanana.extensions.JsonExtensions.{booleanField, intField}
 import com.atanana.types.Ids.{TeamId, TournamentId}
 import com.atanana.types.Pages.TournamentResultsPage
 import spray.json.{JsArray, JsNumber}
+import cats.implicits._
 
 import scala.util.Try
 
@@ -18,11 +19,11 @@ class TournamentResultsParserImpl extends TournamentResultsParser {
       .getOrElse(throw RuntimeException(s"Cannot find team $teamId on page!"))
 
     val ratingJson = teamJson.fields("rating").asJsObject
-    if ratingJson.booleanField("inRating") then {
+    ratingJson.booleanField("inRating").guard[Option].as {
       val questionsCount = teamJson.intField("questionsTotal")
       val position = teamJson.fields("position").asInstanceOf[JsNumber].value.floatValue
       val bonus = ratingJson.intField("d")
-      Some(TournamentResult(tournamentId, questionsCount, position, bonus))
-    } else None
+      TournamentResult(tournamentId, questionsCount, position, bonus)
+    }
   }
 }

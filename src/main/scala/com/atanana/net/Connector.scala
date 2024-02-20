@@ -2,14 +2,12 @@ package com.atanana.net
 
 import cats.data.EitherT
 import com.atanana.types.Ids.{ReleaseId, TournamentId}
-import com.atanana.types.Pages.{TeamTournamentsPage, TournamentResultsPage}
+import com.atanana.types.Pages.{TeamTournamentsPage, TournamentInfoPage, TournamentResultsPage}
 import sttp.model.Uri
 
 import scala.concurrent.Future
 
 trait Connector {
-
-  def getTeamPage: EitherT[Future, Throwable, String]
 
   def getTeamTournaments: EitherT[Future, Throwable, TeamTournamentsPage]
 
@@ -27,7 +25,7 @@ trait Connector {
 
   def getCountryTeamsPage(releaseId: ReleaseId): EitherT[Future, Throwable, String]
 
-  def getTournamentInfo(tournamentId: TournamentId): EitherT[Future, Throwable, String]
+  def getTournamentInfo(tournamentId: TournamentId): EitherT[Future, Throwable, TournamentInfoPage]
 
   def getReleases: EitherT[Future, Throwable, String]
 

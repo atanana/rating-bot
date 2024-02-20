@@ -3,13 +3,14 @@ package com.atanana.providers
 import cats.data.EitherT
 import cats.implicits.*
 import com.atanana.TestUtils.{awaitEither, awaitError}
-import com.atanana.data.{ParsedData, PartialRequisitionData, TournamentData}
+import com.atanana.data.{ParsedData, PartialRequisitionData, TournamentData, TournamentInfo, TournamentResult}
 import com.atanana.json.Config
-import com.atanana.mocks.{MockCsvParser, MockRequisitionsPageParser, MockRequisitionsParser, MockTournamentInfoParser}
+import com.atanana.mocks.{MockCsvParser, MockLastTeamResultsProvider, MockRequisitionsPageParser, MockRequisitionsParser, MockTournamentInfoParser, MockTournamentInfoProvider}
 import com.atanana.net.{ConnectorImpl, MockConnector}
 import com.atanana.parsers.*
 import com.atanana.types.Ids.TournamentId
 import com.atanana.Conversions.fromIntToTournamentId
+import com.atanana.Conversions.fromIntToTeamId
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
@@ -24,39 +25,35 @@ class PollingDataProviderTest extends AnyWordSpecLike with Matchers {
   private val csvParser = new MockCsvParser()
   private val requisitionsParser = new MockRequisitionsParser()
   private val requisitionsPageParser = new MockRequisitionsPageParser()
-  private val tournamentInfoParser = new MockTournamentInfoParser()
+  private val tournamentInfoProvider = new MockTournamentInfoProvider()
+  private val lastTeamResultsProvider = new MockLastTeamResultsProvider()
   private val config: Config = Config("tg token", "cookie", 1, 1, 1, 1, 1, List("test venue 1", "test venue 2"))
-  private val provider = new PollingDataProviderImpl(connector, csvParser, requisitionsParser, requisitionsPageParser, tournamentInfoParser, config)
+  private val provider = new PollingDataProviderImpl(connector, csvParser, requisitionsParser, requisitionsPageParser, tournamentInfoProvider, lastTeamResultsProvider, config)
 
   "PollingDataProvider" should {
 
     "provider valid data" in {
       val tournamentId = 123
       val tournamentRequisitionsPage = "tournament requisitions page"
-      val tournamentData = TournamentData(123, "test name", "test link", 3.0f, 321, 36)
-      setTournamentsData(List(tournamentData))
+      val tournamentResult = TournamentResult(123, 36, 3.0f, 321)
+      setTournamentsData(Set(tournamentResult))
       connector.tournamentRequisitionsPageResponses.put(tournamentId, EitherT.rightT[Future, Throwable](tournamentRequisitionsPage))
-      setQuestionsCount(tournamentId, Success(36))
+      setQuestionsCount(tournamentId, 36)
 
       val requisitionData = PartialRequisitionData("test tournament", tournamentId, "test agent", LocalDateTime.now())
       setRequisitionData(Success(List(requisitionData)))
       requisitionsPageParser.data.put((requisitionData.agent, tournamentRequisitionsPage), Success(RequisitionAdditionalData("test", 5)))
 
-      data shouldEqual Right(ParsedData(Set(tournamentData), Set(requisitionData.toRequisitionData(36))))
-    }
-
-    "pass team page error" in {
-      connector.teamPage = EitherT.leftT(new RuntimeException("team page error"))
-      provider.data.pipe(awaitError) should have message "team page error"
+      data shouldEqual Right(ParsedData(Set(tournamentResult), Set(requisitionData.toRequisitionData(36))))
     }
 
     "should filter small requisitions" in {
       connector.tournamentRequisitionsPageResponses.put(1, EitherT.rightT[Future, Throwable]("1"))
       connector.tournamentRequisitionsPageResponses.put(2, EitherT.rightT[Future, Throwable]("2"))
       connector.tournamentRequisitionsPageResponses.put(3, EitherT.rightT[Future, Throwable]("3"))
-      setTournamentsData(List.empty)
-      setQuestionsCount(2, Success(36))
-      setQuestionsCount(3, Success(45))
+      setTournamentsData(Set.empty)
+      setQuestionsCount(2, 36)
+      setQuestionsCount(3, 45)
 
       val requisitionData1 = PartialRequisitionData("test tournament", 1, "test agent 1", LocalDateTime.now())
       val requisitionData2 = PartialRequisitionData("test tournament", 2, "test agent 2", LocalDateTime.now())
@@ -73,10 +70,10 @@ class PollingDataProviderTest extends AnyWordSpecLike with Matchers {
       connector.tournamentRequisitionsPageResponses.put(1, EitherT.rightT[Future, Throwable]("1"))
       connector.tournamentRequisitionsPageResponses.put(2, EitherT.rightT[Future, Throwable]("2"))
       connector.tournamentRequisitionsPageResponses.put(3, EitherT.rightT[Future, Throwable]("3"))
-      setTournamentsData(List.empty)
-      setQuestionsCount(1, Success(36))
-      setQuestionsCount(2, Success(36))
-      setQuestionsCount(3, Success(45))
+      setTournamentsData(Set.empty)
+      setQuestionsCount(1, 36)
+      setQuestionsCount(2, 36)
+      setQuestionsCount(3, 45)
 
       val requisitionData1 = PartialRequisitionData("test tournament", 3, "test venue 1", LocalDateTime.now())
       val requisitionData2 = PartialRequisitionData("test tournament", 2, "test venue 2", LocalDateTime.now())
@@ -90,8 +87,8 @@ class PollingDataProviderTest extends AnyWordSpecLike with Matchers {
     }
 
     "should pass failed requisitions" in {
-      val tournamentData = TournamentData(123, "test name", "test link", 3.0f, 321, 36)
-      setTournamentsData(List(tournamentData))
+      val tournamentResult = TournamentResult(123, 36, 3.0f, 321)
+      setTournamentsData(Set(tournamentResult))
       val requisitionData = Failure(new RuntimeException("123"))
       setRequisitionData(requisitionData)
 
@@ -99,16 +96,12 @@ class PollingDataProviderTest extends AnyWordSpecLike with Matchers {
     }
   }
 
-  private def setQuestionsCount(tournamentId: Int, questionsCount: Try[Int]): Unit = {
-    val page = s"tournament info $tournamentId"
-    connector.tournamentInfoResponses.put(tournamentId, EitherT.rightT(page))
-    tournamentInfoParser.questionsCount.put(page, questionsCount)
+  private def setQuestionsCount(tournamentId: Int, questionsCount: Int): Unit = {
+    tournamentInfoProvider.tournamentInfos(tournamentId) = EitherT.rightT(TournamentInfo("test", questionsCount))
   }
 
-  private def setTournamentsData(data: List[TournamentData]): Unit = {
-    val teamPage = "team page"
-    connector.teamPage = EitherT.rightT(teamPage)
-    csvParser.data.put(teamPage, data)
+  private def setTournamentsData(data: Set[TournamentResult]): Unit = {
+    lastTeamResultsProvider.results(config.team) = EitherT.rightT(data)
   }
 
   private def setRequisitionData(data: Try[List[PartialRequisitionData]]): Unit = {

@@ -1,5 +1,7 @@
 package com.atanana.parsers
 
+import com.atanana.data.TournamentInfo
+import com.atanana.types.Pages.TournamentInfoPage
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
@@ -112,7 +114,7 @@ class TournamentInfoParserTest extends AnyWordSpecLike with Matchers {
           |  }
           |}
         """.stripMargin
-      parser.getQuestionsCount(json) shouldEqual Success(36)
+      parser.getTournamentInfo(TournamentInfoPage(json)) shouldEqual Success(TournamentInfo("XX ОВСЧ. 1 этап (синхрон)", 36))
     }
   }
 }

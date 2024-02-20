@@ -2,9 +2,9 @@ package com.atanana
 
 import cats.data.EitherT
 import cats.implicits.*
-import com.atanana.data.{CheckResult, RequisitionData}
+import com.atanana.data.{ChangedTournament, CheckResult, RequisitionData, TournamentResult}
 import com.atanana.posters.Poster
-import com.atanana.providers.{TournamentInfoProvider, TournamentInfoProviderImpl}
+import com.atanana.providers.TournamentInfoProvider
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -26,13 +26,21 @@ class CheckResultHandlerImpl(
     val requisitions = checkResult.requisitionsCheckResult
     for
       newRequisitionsMessages <- requisitions.newRequisitions.map(getNewRequisitionMessage).toList.sequence
-      newTournamentsMessages = tournaments.newTournaments.map(messageComposer.composeNewResult)
-      changedTournamentsMessages = tournaments.changedTournaments.map(messageComposer.composeChangedResult)
-      cancelledRequisitionsMessages = requisitions.cancelledRequisitions.map(messageComposer.composeCancelledRequisition)
+      newTournamentsMessages <- tournaments.newTournaments.map(getNewTournamentResultMessage).toList.sequence
+      changedTournamentsMessages <- tournaments.changedTournaments.map(getChangedTournamentResultMessage).toList.sequence
+      cancelledRequisitionsMessages = requisitions.cancelledRequisitions.map(messageComposer.composeCancelledRequisition).toList
     yield List(newTournamentsMessages, changedTournamentsMessages, newRequisitionsMessages, cancelledRequisitionsMessages).flatten
   }
 
   private def getNewRequisitionMessage(newRequisition: RequisitionData) = for
     editors <- tournamentInfoProvider.getEditors(newRequisition.tournamentId)
   yield messageComposer.composeNewRequisition(newRequisition, editors)
+
+  private def getNewTournamentResultMessage(result: TournamentResult) = for
+    tournamentInfo <- tournamentInfoProvider.getInfo(result.id)
+  yield messageComposer.composeNewResult(result, tournamentInfo)
+
+  private def getChangedTournamentResultMessage(tournament: ChangedTournament) = for
+    tournamentInfo <- tournamentInfoProvider.getInfo(tournament.tournament.id)
+  yield messageComposer.composeChangedResult(tournament, tournamentInfo)
 }

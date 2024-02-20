@@ -7,7 +7,7 @@ import scala.collection.mutable
 
 class MockMessageComposer extends MessageComposer {
 
-  val newResultMessages: mutable.Map[TournamentData, String] = mutable.Map()
+  val newResultMessages: mutable.Map[TournamentResult, String] = mutable.Map()
 
   val changedResultMessages: mutable.Map[ChangedTournament, String] = mutable.Map()
 
@@ -19,7 +19,7 @@ class MockMessageComposer extends MessageComposer {
 
   val requisitionReminderMessages: mutable.Map[Requisition, String] = mutable.Map()
 
-  override def composeNewResult(data: TournamentData): String = newResultMessages(data)
+  override def composeNewResult(data: TournamentResult, info: TournamentInfo): String = newResultMessages(data)
 
   override def currentDay(): String = ???
 
@@ -32,5 +32,5 @@ class MockMessageComposer extends MessageComposer {
 
   override def composeTeamPositionsMessage(info: TeamPositionsInfo): String = teamPositionsMessage(info)
 
-  override def composeChangedResult(changedTournament: ChangedTournament): String = changedResultMessages(changedTournament)
+  override def composeChangedResult(changedTournament: ChangedTournament, info: TournamentInfo): String = changedResultMessages(changedTournament)
 }

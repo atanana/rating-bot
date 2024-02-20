@@ -2,12 +2,11 @@ package com.atanana.providers
 
 import cats.data.EitherT
 import cats.implicits.*
-import com.atanana.data.{ParsedData, PartialRequisitionData, RequisitionData, TournamentData}
+import com.atanana.data.{ParsedData, PartialRequisitionData, RequisitionData}
 import com.atanana.json.Config
-import com.atanana.net.{Connector, ConnectorImpl}
+import com.atanana.net.Connector
 import com.atanana.parsers.*
-import com.atanana.processors.CommandProcessor
-import com.atanana.types.Ids.TournamentId
+import com.atanana.types.Ids.{TeamId, TournamentId}
 import com.typesafe.scalalogging.Logger
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -16,18 +15,19 @@ import scala.util.chaining.*
 
 class PollingDataProviderImpl(
                                connector: Connector,
-                               csvParser: CsvParser,
+                               csvParser: CsvParser, //todo
                                requisitionsParser: RequisitionsParser,
                                requisitionsPageParser: RequisitionsPageParser,
-                               tournamentInfoParser: TournamentInfoParser,
-                               config: Config
+                               tournamentInfoProvider: TournamentInfoProvider,
+                               lastTeamResultsProvider: LastTeamResultsProvider,
+                               config: Config,
                              ) extends PollingDataProvider {
 
   private val logger = Logger("PollingDataProvider")
 
   override def data: EitherT[Future, Throwable, ParsedData] =
     for
-      newTournaments <- getNewTournaments
+      newTournaments <- lastTeamResultsProvider.getLastTeamResults(TeamId(config.team))
       newRequisitions <- getNewRequisitions
     yield ParsedData(newTournaments, newRequisitions).tap(data => logger.debug(s"Got data $data"))
 
@@ -57,14 +57,8 @@ class PollingDataProviderImpl(
       getQuestionCount(requisition.tournamentId).map(requisition.toRequisitionData)
     ).map(_.toSet)
 
-  private def getNewTournaments: EitherT[Future, Throwable, Set[TournamentData]] =
-    for
-      page <- connector.getTeamPage
-    yield csvParser.getTournamentsData(page).toSet
-
   private def getQuestionCount(tournamentId: TournamentId): EitherT[Future, Throwable, Int] =
     for
-      tournamentInfo <- connector.getTournamentInfo(tournamentId)
-      questionsCount <- EitherT.fromEither[Future](tournamentInfoParser.getQuestionsCount(tournamentInfo).toEither)
-    yield questionsCount
+      tournamentInfo <- tournamentInfoProvider.getInfo(tournamentId)
+    yield tournamentInfo.questionsCount
 }

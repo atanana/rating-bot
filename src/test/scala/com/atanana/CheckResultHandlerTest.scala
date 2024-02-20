@@ -1,13 +1,10 @@
 package com.atanana
 
 import cats.data.EitherT
+import com.atanana.Conversions.fromIntToTournamentId
 import com.atanana.TestUtils.{awaitEither, awaitError}
 import com.atanana.data.*
 import com.atanana.mocks.{MockMessageComposer, MockPoster, MockTournamentInfoProvider}
-import com.atanana.posters.Poster
-import com.atanana.providers.TournamentInfoProviderImpl
-import com.atanana.types.Ids.TournamentId
-import com.atanana.Conversions.fromIntToTournamentId
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.matchers.should.Matchers.shouldBe
 import org.scalatest.wordspec.AnyWordSpecLike
@@ -18,7 +15,7 @@ import scala.util.chaining.scalaUtilChainingOps
 
 class CheckResultHandlerTest extends AnyWordSpecLike with Matchers {
 
-  private val tournamentData = TournamentData(1, "test", "test link", 1.0f, 1, 12)
+  private val tournamentData = TournamentResult(1, 12, 1.0f, 1)
   private val changedTournament = ChangedTournament(tournamentData, 13)
   private val messageComposer = new MockMessageComposer()
   private val poster = new MockPoster()
@@ -31,6 +28,7 @@ class CheckResultHandlerTest extends AnyWordSpecLike with Matchers {
 
       val editor = Editor("test editor")
       tournamentInfoProvider.editors.put(1, EitherT.rightT(List(editor)))
+      tournamentInfoProvider.tournamentInfos(1) = EitherT.rightT(TournamentInfo("test", 36))
 
       messageComposer.newResultMessages.put(tournamentData, "new result")
       messageComposer.changedResultMessages.put(changedTournament, "changed result")

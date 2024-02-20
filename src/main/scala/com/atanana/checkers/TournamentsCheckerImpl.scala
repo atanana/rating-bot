@@ -1,31 +1,27 @@
 package com.atanana.checkers
 
-import com.atanana.data.{ChangedTournament, Tournament, TournamentData, TournamentsCheckResult}
+import com.atanana.data.{ChangedTournament, Tournament, TournamentData, TournamentResult, TournamentsCheckResult}
+import cats.implicits._
 
 class TournamentsCheckerImpl extends TournamentsChecker {
-  override def check(oldTournaments: Set[Tournament], newTournaments: Set[TournamentData]): TournamentsCheckResult = {
+
+  override def check(oldTournaments: Set[Tournament], newTournaments: Set[TournamentResult]): TournamentsCheckResult = {
     TournamentsCheckResult(
       getNewTournaments(oldTournaments, newTournaments),
       getChangedTournaments(oldTournaments, newTournaments)
     )
   }
 
-  private def getNewTournaments(oldTournaments: Set[Tournament], newTournaments: Set[TournamentData]): Set[TournamentData] = {
-    val newTournamentIds = newTournaments.map(_.id) -- oldTournaments.map(_.id)
-    newTournamentIds
-      .map(id => newTournaments.find(_.id == id))
-      .flatMap(_.toList)
+  private def getNewTournaments(oldTournaments: Set[Tournament], newTournaments: Set[TournamentResult]): Set[TournamentResult] = {
+    val oldTournamentIds = oldTournaments.map(_.id)
+    newTournaments.filter(tournamentResult => !oldTournamentIds.contains(tournamentResult.id))
   }
 
-  private def getChangedTournaments(oldTournaments: Set[Tournament], newTournaments: Set[TournamentData]): Set[ChangedTournament] = {
-    val changedTournaments = oldTournaments -- newTournaments
-    changedTournaments
-      .map(oldTournament =>
-        newTournaments
-          .find(_.id == oldTournament.id)
-          .map(ChangedTournament(_, oldTournament.score))
-      )
-      .flatMap(_.toList)
-      .filter(_.tournament.questions > 0) //handle site errors when score actually not changed
+  private def getChangedTournaments(oldTournaments: Set[Tournament], newTournaments: Set[TournamentResult]): Set[ChangedTournament] = {
+    val oldTournamentsMap = oldTournaments.map(tournament => (tournament.id, tournament.score)).toMap
+    newTournaments.map { tournament =>
+      val oldScore = oldTournamentsMap.getOrElse(tournament.id, tournament.questionsCount)
+      (oldScore != tournament.questionsCount).guard[Option].as(ChangedTournament(tournament, oldScore))
+    }.flatMap(_.toSet)
   }
 }

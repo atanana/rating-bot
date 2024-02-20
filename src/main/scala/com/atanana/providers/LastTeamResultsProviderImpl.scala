@@ -19,12 +19,12 @@ class LastTeamResultsProviderImpl(
 
   private val logger = Logger("LastTeamResultsProvider")
 
-  override def getLastTeamResults(teamId: TeamId): EitherT[Future, Throwable, List[TournamentResult]] = for
+  override def getLastTeamResults(teamId: TeamId): EitherT[Future, Throwable, Set[TournamentResult]] = for
     teamTournamentsPage <- connector.getTeamTournaments
     tournamentIds <- EitherT.fromEither[Future](teamTournamentsParser.getTournamentIds(teamTournamentsPage).toEither)
     lastTournaments = tournamentIds.toList.sorted(TournamentId.ordering.reverse).take(30)
     results <- lastTournaments.traverse(tournamentId => getTournamentResult(tournamentId, teamId))
-  yield results.flatMap(_.toList)
+  yield results.flatMap(_.toList).toSet
 
   private def getTournamentResult(tournamentId: TournamentId, teamId: TeamId): EitherT[Future, Throwable, Option[TournamentResult]] = for
     page <- connector.getTournamentResultsPage(tournamentId)

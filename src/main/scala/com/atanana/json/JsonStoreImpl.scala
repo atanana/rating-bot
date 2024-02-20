@@ -2,6 +2,7 @@ package com.atanana.json
 
 import com.atanana.data.{Data, Requisition, Tournament}
 import com.atanana.fs.{FsHandler, FsHandlerImpl}
+import com.atanana.types.Ids.TournamentId
 import spray.json.*
 import spray.json.DefaultJsonProtocol.*
 
@@ -19,6 +20,16 @@ class JsonStoreImpl(fsHandler: FsHandler) extends JsonStore {
     override def read(json: JsValue): LocalDateTime = json match {
       case JsString(value) => LocalDateTime.parse(value, DateTimeFormatter.ISO_DATE_TIME)
       case _ => deserializationError("Invalid date string!")
+    }
+  }
+
+  private implicit object TournamentIdFormat extends RootJsonFormat[TournamentId] {
+
+    override def write(obj: TournamentId): JsValue = JsNumber(obj.value)
+
+    override def read(json: JsValue): TournamentId = json match {
+      case JsNumber(value) => TournamentId(value.intValue)
+      case _ => deserializationError("Tournament id expected")
     }
   }
 
