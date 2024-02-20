@@ -15,7 +15,6 @@ import scala.util.chaining.*
 
 class PollingDataProviderImpl(
                                connector: Connector,
-                               csvParser: CsvParser, //todo
                                requisitionsParser: RequisitionsParser,
                                requisitionsPageParser: RequisitionsPageParser,
                                tournamentInfoProvider: TournamentInfoProvider,

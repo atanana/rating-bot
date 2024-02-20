@@ -2,15 +2,13 @@ package com.atanana.providers
 
 import cats.data.EitherT
 import cats.implicits.*
+import com.atanana.Conversions.{fromIntToTeamId, fromIntToTournamentId}
 import com.atanana.TestUtils.{awaitEither, awaitError}
-import com.atanana.data.{ParsedData, PartialRequisitionData, TournamentData, TournamentInfo, TournamentResult}
+import com.atanana.data.{ParsedData, PartialRequisitionData, TournamentInfo, TournamentResult}
 import com.atanana.json.Config
-import com.atanana.mocks.{MockCsvParser, MockLastTeamResultsProvider, MockRequisitionsPageParser, MockRequisitionsParser, MockTournamentInfoParser, MockTournamentInfoProvider}
-import com.atanana.net.{ConnectorImpl, MockConnector}
+import com.atanana.mocks.{MockLastTeamResultsProvider, MockRequisitionsPageParser, MockRequisitionsParser, MockTournamentInfoProvider}
+import com.atanana.net.MockConnector
 import com.atanana.parsers.*
-import com.atanana.types.Ids.TournamentId
-import com.atanana.Conversions.fromIntToTournamentId
-import com.atanana.Conversions.fromIntToTeamId
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
@@ -22,13 +20,12 @@ import scala.util.{Failure, Success, Try}
 
 class PollingDataProviderTest extends AnyWordSpecLike with Matchers {
   private val connector = new MockConnector()
-  private val csvParser = new MockCsvParser()
   private val requisitionsParser = new MockRequisitionsParser()
   private val requisitionsPageParser = new MockRequisitionsPageParser()
   private val tournamentInfoProvider = new MockTournamentInfoProvider()
   private val lastTeamResultsProvider = new MockLastTeamResultsProvider()
   private val config: Config = Config("tg token", "cookie", 1, 1, 1, 1, 1, List("test venue 1", "test venue 2"))
-  private val provider = new PollingDataProviderImpl(connector, csvParser, requisitionsParser, requisitionsPageParser, tournamentInfoProvider, lastTeamResultsProvider, config)
+  private val provider = new PollingDataProviderImpl(connector, requisitionsParser, requisitionsPageParser, tournamentInfoProvider, lastTeamResultsProvider, config)
 
   "PollingDataProvider" should {
 
