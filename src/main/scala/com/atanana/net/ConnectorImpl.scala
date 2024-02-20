@@ -5,8 +5,7 @@ import com.atanana.json.Config
 import com.atanana.types.Ids.{ReleaseId, TeamId, TournamentId}
 import com.atanana.types.Pages.{TeamTournamentsPage, TournamentInfoPage, TournamentResultsPage}
 import sttp.client3.*
-import sttp.client3.okhttp.OkHttpFutureBackend
-import sttp.model.{Header, Uri}
+import sttp.model.Uri
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -82,12 +81,6 @@ class ConnectorImpl(netWrapper: NetWrapper, config: Config) extends Connector {
         .map(_.left.map(error => new ConnectorException(uri, s"$error with params $params")))
         .recover(exception => Left(new ConnectorException(uri, cause = exception)))
     )
-}
-
-object ConnectorImpl {
-  val SITE_URL = "https://rating.chgk.info"
-  val API_URL = "https://api.rating.chgk.net"
-  val TOURNAMENT_URL_TEMPLATE: String = SITE_URL + "/tournament/"
 }
 
 class ConnectorException(

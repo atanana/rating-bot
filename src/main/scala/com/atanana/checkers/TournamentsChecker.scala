@@ -1,6 +1,6 @@
 package com.atanana.checkers
 
-import com.atanana.data.{Tournament, TournamentData, TournamentResult, TournamentsCheckResult}
+import com.atanana.data.{Tournament, TournamentResult, TournamentsCheckResult}
 
 trait TournamentsChecker {
 

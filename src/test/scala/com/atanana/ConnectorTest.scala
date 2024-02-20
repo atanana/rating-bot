@@ -1,12 +1,8 @@
 package com.atanana
 
+import com.atanana.Conversions.{fromIntToReleaseId, fromIntToTeamId, fromIntToTournamentId}
 import com.atanana.TestUtils.{awaitEither, awaitError, fakeConfig}
-import com.atanana.net.ConnectorImpl.{API_URL, SITE_URL}
-import com.atanana.net.{ConnectorException, ConnectorImpl, MockNetWrapper, NetWrapperImpl, UriComposer}
-import com.atanana.types.Ids.TournamentId
-import com.atanana.Conversions.fromIntToTournamentId
-import com.atanana.Conversions.fromIntToReleaseId
-import com.atanana.Conversions.fromIntToTeamId
+import com.atanana.net.{ConnectorException, ConnectorImpl, MockNetWrapper, UriComposer}
 import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike

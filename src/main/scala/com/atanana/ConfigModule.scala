@@ -16,7 +16,6 @@ class ConfigModule(config: Config, isDebug: Boolean) {
   lazy val poster: Poster = if isDebug then wire[TestPoster] else wire[RealPoster]
   lazy val checkResultHandler: CheckResultHandler = wire[CheckResultHandlerImpl]
 
-  lazy val tournamentPollingFilter: TournamentPollingFilter = wire[TournamentPollingFilterImpl]
   lazy val tournamentPageParser: TournamentPageParser = wire[TournamentPageParserImpl]
   lazy val requisitionsParser: RequisitionsParser = wire[RequisitionsParserImpl]
   lazy val requisitionsPageParser: RequisitionsPageParser = wire[RequisitionsPageParserImpl]

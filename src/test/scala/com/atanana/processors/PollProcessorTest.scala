@@ -1,15 +1,10 @@
 package com.atanana.processors
 
 import cats.data.EitherT
-import com.atanana.CheckResultHandlerImpl
-import com.atanana.TestUtils.{getResult, getResultErrorMessage}
-import com.atanana.checkers.MainCheckerImpl
-import com.atanana.data.*
-import com.atanana.json.JsonStoreImpl
-import com.atanana.mocks.{MockCheckResultHandler, MockJsonStore, MockMainChecker, MockPollingDataProvider}
-import com.atanana.providers.PollingDataProviderImpl
-import com.atanana.types.Ids.TournamentId
 import com.atanana.Conversions.fromIntToTournamentId
+import com.atanana.TestUtils.{getResult, getResultErrorMessage}
+import com.atanana.data.*
+import com.atanana.mocks.{MockCheckResultHandler, MockJsonStore, MockMainChecker, MockPollingDataProvider}
 import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
@@ -55,7 +50,7 @@ class PollProcessorTest extends AnyWordSpecLike with Matchers with BeforeAndAfte
 
     "add missing tournaments" in {
       val parsedData = setUpDefaults()
-      val tournament = TournamentData(2, "tournament 2", "link 2", 1f, 1, 1)
+      val tournament = Tournament(2, 1)
       val storedData = Data(Set(tournament), Set.empty)
       store.data = storedData
 

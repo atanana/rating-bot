@@ -1,7 +1,7 @@
 package com.atanana.mocks
 
 import com.atanana.checkers.TournamentsChecker
-import com.atanana.data.{Tournament, TournamentData, TournamentResult, TournamentsCheckResult}
+import com.atanana.data.{Tournament, TournamentResult, TournamentsCheckResult}
 
 import scala.collection.mutable
 

@@ -1,7 +1,7 @@
 package com.atanana.checkers
 
-import com.atanana.data.{ChangedTournament, Tournament, TournamentData, TournamentResult, TournamentsCheckResult}
-import cats.implicits._
+import cats.implicits.*
+import com.atanana.data.{ChangedTournament, Tournament, TournamentResult, TournamentsCheckResult}
 
 class TournamentsCheckerImpl extends TournamentsChecker {
 
