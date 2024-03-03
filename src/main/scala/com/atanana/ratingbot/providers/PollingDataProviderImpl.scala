@@ -2,11 +2,10 @@ package com.atanana.ratingbot.providers
 
 import cats.data.EitherT
 import cats.implicits.*
-import com.atanana.ratingbot.parsers.*
 import com.atanana.ratingbot.data.{ParsedData, PartialRequisitionData, RequisitionData}
 import com.atanana.ratingbot.json.Config
 import com.atanana.ratingbot.net.Connector
-import com.atanana.ratingbot.parsers.{RequisitionsPageParser, RequisitionsParser}
+import com.atanana.ratingbot.parsers.*
 import com.atanana.ratingbot.types.Ids.{TeamId, TournamentId}
 import com.typesafe.scalalogging.Logger
 

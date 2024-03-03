@@ -1,8 +1,7 @@
 package com.atanana.ratingbot.mocks
 
-import com.atanana.ratingbot.data.*
 import com.atanana.ratingbot.MessageComposer
-import com.atanana.ratingbot.data.{ChangedTournament, Editor, Requisition, TeamPositionsInfo, TournamentInfo, TournamentResult}
+import com.atanana.ratingbot.data.*
 
 import scala.collection.mutable
 

@@ -1,7 +1,6 @@
 package com.atanana.ratingbot
 
 import com.atanana.ratingbot.MessageComposer
-import com.atanana.ratingbot.data.*
 import com.atanana.ratingbot.MessageComposerImpl.{alarms, timePattern}
 import com.atanana.ratingbot.data.*
 import com.atanana.ratingbot.net.UriComposer

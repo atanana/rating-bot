@@ -2,10 +2,10 @@ package com.atanana.ratingbot.processors
 
 import cats.data.EitherT
 import cats.implicits.*
-import com.atanana.ratingbot.mocks.{MockMessageComposer, MockPoster, MockTeamPositionsInfoProvider}
 import com.atanana.ratingbot.MessageComposer
 import com.atanana.ratingbot.TestUtils.{getResult, getResultErrorMessage}
 import com.atanana.ratingbot.data.{TargetTeam, TeamPositionsInfo}
+import com.atanana.ratingbot.mocks.{MockMessageComposer, MockPoster, MockTeamPositionsInfoProvider}
 import com.atanana.ratingbot.posters.Poster
 import com.atanana.ratingbot.processors.TeamPositionsProcessorImpl
 import com.atanana.ratingbot.providers.TeamPositionsInfoProviderImpl

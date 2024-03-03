@@ -2,12 +2,12 @@ package com.atanana.ratingbot.providers
 
 import cats.data.EitherT
 import cats.implicits.*
-import com.atanana.ratingbot.mocks.{MockLastTeamResultsProvider, MockRequisitionsPageParser, MockRequisitionsParser, MockTournamentInfoProvider}
 import com.atanana.parsers.*
 import com.atanana.ratingbot.Conversions.{fromIntToTeamId, fromIntToTournamentId}
 import com.atanana.ratingbot.TestUtils.{awaitEither, awaitError}
 import com.atanana.ratingbot.data.{ParsedData, PartialRequisitionData, TournamentInfo, TournamentResult}
 import com.atanana.ratingbot.json.Config
+import com.atanana.ratingbot.mocks.{MockLastTeamResultsProvider, MockRequisitionsPageParser, MockRequisitionsParser, MockTournamentInfoProvider}
 import com.atanana.ratingbot.net.MockConnector
 import com.atanana.ratingbot.parsers.RequisitionAdditionalData
 import com.atanana.ratingbot.providers.PollingDataProviderImpl

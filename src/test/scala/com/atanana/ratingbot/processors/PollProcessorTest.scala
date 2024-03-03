@@ -1,11 +1,10 @@
 package com.atanana.ratingbot.processors
 
 import cats.data.EitherT
-import com.atanana.ratingbot.data.*
-import com.atanana.ratingbot.mocks.{MockCheckResultHandler, MockJsonStore, MockMainChecker, MockPollingDataProvider}
 import com.atanana.ratingbot.Conversions.fromIntToTournamentId
 import com.atanana.ratingbot.TestUtils.{getResult, getResultErrorMessage}
 import com.atanana.ratingbot.data.*
+import com.atanana.ratingbot.mocks.{MockCheckResultHandler, MockJsonStore, MockMainChecker, MockPollingDataProvider}
 import com.atanana.ratingbot.processors.PollProcessorImpl
 import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers

@@ -4,8 +4,8 @@ import cats.data.EitherT
 import com.atanana.ratingbot.data.Release
 import com.atanana.ratingbot.net.{Connector, ConnectorImpl}
 import com.atanana.ratingbot.parsers.{ReleasesParser, ReleasesParserImpl}
-import com.atanana.ratingbot.{TimeProvider, TimeProviderImpl}
 import com.atanana.ratingbot.types.Ids.ReleaseId
+import com.atanana.ratingbot.{TimeProvider, TimeProviderImpl}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

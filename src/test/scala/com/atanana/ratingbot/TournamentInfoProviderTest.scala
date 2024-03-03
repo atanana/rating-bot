@@ -1,10 +1,10 @@
 package com.atanana.ratingbot
 
 import cats.data.EitherT
-import com.atanana.ratingbot.mocks.{MockTournamentInfoParser, MockTournamentPageParser}
 import com.atanana.ratingbot.Conversions.fromIntToTournamentId
 import com.atanana.ratingbot.TestUtils.{awaitEither, awaitError}
 import com.atanana.ratingbot.data.{Editor, TournamentInfo}
+import com.atanana.ratingbot.mocks.{MockTournamentInfoParser, MockTournamentPageParser}
 import com.atanana.ratingbot.net.MockConnector
 import com.atanana.ratingbot.parsers.TournamentPageParserImpl
 import com.atanana.ratingbot.providers.TournamentInfoProviderImpl

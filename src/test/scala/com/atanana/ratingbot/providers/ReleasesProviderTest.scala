@@ -1,11 +1,11 @@
 package com.atanana.ratingbot.providers
 
 import cats.data.EitherT
-import com.atanana.ratingbot.mocks.{MockReleasesParser, MockTimeProvider}
 import com.atanana.ratingbot.Conversions.fromIntToReleaseId
 import com.atanana.ratingbot.TestUtils.{awaitEither, awaitError}
 import com.atanana.ratingbot.TimeProviderImpl
 import com.atanana.ratingbot.data.Release
+import com.atanana.ratingbot.mocks.{MockReleasesParser, MockTimeProvider}
 import com.atanana.ratingbot.net.{ConnectorImpl, MockConnector}
 import com.atanana.ratingbot.parsers.ReleasesParserImpl
 import com.atanana.ratingbot.providers.ReleasesProviderImpl

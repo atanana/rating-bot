@@ -1,18 +1,14 @@
 package com.atanana.ratingbot
 
-import com.atanana.ratingbot.checkers.*
-import com.atanana.ratingbot.parsers.*
-import com.atanana.ratingbot.processors.*
-import com.atanana.ratingbot.providers.*
-import com.atanana.ratingbot.checkers.*
 import com.atanana.ratingbot.*
+import com.atanana.ratingbot.checkers.*
 import com.atanana.ratingbot.fs.{FsHandler, FsHandlerImpl}
 import com.atanana.ratingbot.json.{Config, JsonStore, JsonStoreImpl}
 import com.atanana.ratingbot.net.{Connector, ConnectorImpl, NetWrapper, NetWrapperImpl}
-import com.atanana.ratingbot.parsers.{ReleasesParser, ReleasesParserImpl, RequisitionsPageParser, RequisitionsPageParserImpl, RequisitionsParser, RequisitionsParserImpl, TeamTournamentsParser, TeamTournamentsParserImpl, TeamsPageParser, TeamsPageParserImpl, TournamentInfoParser, TournamentInfoParserImpl, TournamentPageParser, TournamentPageParserImpl, TournamentResultsParser, TournamentResultsParserImpl}
+import com.atanana.ratingbot.parsers.*
 import com.atanana.ratingbot.posters.{Poster, RealPoster, TestPoster}
-import com.atanana.ratingbot.processors.{CommandProcessor, PollProcessor, PollProcessorImpl, ReminderProcessor, ReminderProcessorImpl, TeamPositionsProcessor, TeamPositionsProcessorImpl}
-import com.atanana.ratingbot.providers.{LastTeamResultsProvider, LastTeamResultsProviderImpl, PollingDataProvider, PollingDataProviderImpl, ReleasesProvider, ReleasesProviderImpl, TeamPositionsInfoComposer, TeamPositionsInfoComposerImpl, TeamPositionsInfoProvider, TeamPositionsInfoProviderImpl, TournamentInfoProvider, TournamentInfoProviderImpl}
+import com.atanana.ratingbot.processors.*
+import com.atanana.ratingbot.providers.*
 
 class ConfigModule(config: Config, isDebug: Boolean) {
 

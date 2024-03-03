@@ -1,11 +1,11 @@
 package com.atanana.ratingbot.processors
 
 import cats.data.EitherT
-import com.atanana.ratingbot.mocks.{MockJsonStore, MockMessageComposer, MockPoster}
 import com.atanana.ratingbot.MessageComposerImpl
 import com.atanana.ratingbot.TestUtils.{getResult, getResultErrorMessage}
 import com.atanana.ratingbot.data.{Data, Requisition}
 import com.atanana.ratingbot.json.JsonStoreImpl
+import com.atanana.ratingbot.mocks.{MockJsonStore, MockMessageComposer, MockPoster}
 import com.atanana.ratingbot.posters.Poster
 import com.atanana.ratingbot.processors.ReminderProcessorImpl
 import org.scalatest.matchers.should.Matchers

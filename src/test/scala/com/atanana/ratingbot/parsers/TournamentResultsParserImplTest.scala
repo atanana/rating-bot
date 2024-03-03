@@ -1,10 +1,9 @@
 package com.atanana.parsers
 
-import com.atanana.ratingbot.types.Pages.TournamentResultsPage
-import com.atanana.ratingbot.Conversions.fromIntToTournamentId
-import com.atanana.ratingbot.Conversions.fromIntToTeamId
+import com.atanana.ratingbot.Conversions.{fromIntToTeamId, fromIntToTournamentId}
 import com.atanana.ratingbot.data.TournamentResult
 import com.atanana.ratingbot.parsers.TournamentResultsParserImpl
+import com.atanana.ratingbot.types.Pages.TournamentResultsPage
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 

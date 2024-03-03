@@ -1,8 +1,7 @@
 package com.atanana.ratingbot.checkers
 
-import com.atanana.ratingbot.data.*
 import com.atanana.ratingbot.data
-import com.atanana.ratingbot.data.{CheckResult, Data, ParsedData}
+import com.atanana.ratingbot.data.*
 import com.typesafe.scalalogging.Logger
 
 class MainCheckerImpl(tournamentsChecker: TournamentsChecker, requisitionsChecker: RequisitionsChecker) extends MainChecker {

@@ -1,10 +1,10 @@
 package com.atanana.ratingbot.providers
 
 import cats.data.EitherT
-import com.atanana.ratingbot.mocks.{MockTeamTournamentsParser, MockTournamentResultsParser}
 import com.atanana.ratingbot.Conversions.{fromIntToTeamId, fromIntToTournamentId, fromStringToTeamTournamentsPage, fromStringToTournamentResultsPage}
 import com.atanana.ratingbot.TestUtils.awaitEither
 import com.atanana.ratingbot.data.TournamentResult
+import com.atanana.ratingbot.mocks.{MockTeamTournamentsParser, MockTournamentResultsParser}
 import com.atanana.ratingbot.net.MockConnector
 import com.atanana.ratingbot.providers.LastTeamResultsProviderImpl
 import com.atanana.ratingbot.types.Ids.TournamentId

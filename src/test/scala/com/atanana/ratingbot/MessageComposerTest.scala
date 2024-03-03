@@ -1,7 +1,6 @@
 package com.atanana.ratingbot
 
 import cats.implicits.*
-import com.atanana.ratingbot.data.*
 import com.atanana.ratingbot.Conversions.fromIntToTournamentId
 import com.atanana.ratingbot.MessageComposerImpl
 import com.atanana.ratingbot.data.*

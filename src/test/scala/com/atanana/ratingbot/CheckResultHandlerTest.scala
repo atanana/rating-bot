@@ -1,12 +1,11 @@
 package com.atanana.ratingbot
 
 import cats.data.EitherT
-import com.atanana.ratingbot.data.*
-import com.atanana.ratingbot.mocks.{MockMessageComposer, MockPoster, MockTournamentInfoProvider}
 import com.atanana.ratingbot.CheckResultHandlerImpl
 import com.atanana.ratingbot.Conversions.fromIntToTournamentId
 import com.atanana.ratingbot.TestUtils.{awaitEither, awaitError}
 import com.atanana.ratingbot.data.*
+import com.atanana.ratingbot.mocks.{MockMessageComposer, MockPoster, MockTournamentInfoProvider}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.matchers.should.Matchers.shouldBe
 import org.scalatest.wordspec.AnyWordSpecLike
