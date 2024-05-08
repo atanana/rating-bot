@@ -2,17 +2,17 @@ name := "rating-bot"
 
 assembly / assemblyJarName := "rating-bot.jar"
 
-version := "3.1.2"
+version := "3.2.0"
 
-scalaVersion := "3.3.1"
+scalaVersion := "3.4.1"
 
-libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.4.14"
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.5.6"
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
 libraryDependencies += "io.spray" %% "spray-json" % "1.3.6"
 libraryDependencies += "net.ruippeixotog" %% "scala-scraper" % "3.1.0"
 libraryDependencies += "com.softwaremill.macwire" %% "macros" % "2.5.9"
-libraryDependencies += "com.softwaremill.sttp.client3" %% "core" % "3.9.5"
-libraryDependencies += "com.softwaremill.sttp.client3" %% "async-http-client-backend-cats" % "3.9.5"
+libraryDependencies += "com.softwaremill.sttp.client3" %% "core" % "3.9.6"
+libraryDependencies += "com.softwaremill.sttp.client3" %% "async-http-client-backend-cats" % "3.9.6"
 libraryDependencies += "org.typelevel" %% "cats-core" % "2.10.0"
 libraryDependencies += "org.typelevel" %% "cats-effect" % "3.5.4"
 
