@@ -1,14 +1,12 @@
 package com.atanana.ratingbot
 
 import cats.data.EitherT
+import cats.effect.IO
 import cats.implicits.*
 import com.atanana.ratingbot.data.{ChangedTournament, CheckResult, RequisitionData, TournamentResult}
 import com.atanana.ratingbot.posters.Poster
 import com.atanana.ratingbot.providers.TournamentInfoProvider
 import com.atanana.ratingbot.{CheckResultHandler, MessageComposer}
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 class CheckResultHandlerImpl(
                               poster: Poster,
@@ -16,13 +14,13 @@ class CheckResultHandlerImpl(
                               tournamentInfoProvider: TournamentInfoProvider
                             ) extends CheckResultHandler {
 
-  override def processCheckResult(checkResult: CheckResult): EitherT[Future, Throwable, Unit] =
+  override def processCheckResult(checkResult: CheckResult): EitherT[IO, Throwable, Unit] =
     for
       messages <- composeMessages(checkResult)
       _ <- messages.map(poster.postAsync).sequence
     yield ()
 
-  private def composeMessages(checkResult: CheckResult): EitherT[Future, Throwable, List[String]] = {
+  private def composeMessages(checkResult: CheckResult): EitherT[IO, Throwable, List[String]] = {
     val tournaments = checkResult.tournamentsCheckResult
     val requisitions = checkResult.requisitionsCheckResult
     for

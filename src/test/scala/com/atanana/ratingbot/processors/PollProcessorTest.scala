@@ -1,6 +1,7 @@
 package com.atanana.ratingbot.processors
 
 import cats.data.EitherT
+import cats.effect.IO
 import com.atanana.ratingbot.Conversions.fromIntToTournamentId
 import com.atanana.ratingbot.TestUtils.{getResult, getResultErrorMessage}
 import com.atanana.ratingbot.data.*
@@ -11,8 +12,6 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
 import java.time.LocalDateTime
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 class PollProcessorTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
   private val provider = new MockPollingDataProvider()
@@ -102,7 +101,7 @@ class PollProcessorTest extends AnyWordSpecLike with Matchers with BeforeAndAfte
       Set(TournamentResult(1, 1, 1f, 1)),
       Set(RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now()))
     )
-    provider.result = EitherT.rightT[Future, Throwable](parsedData)
+    provider.result = EitherT.rightT[IO, Throwable](parsedData)
     parsedData
   }
 }

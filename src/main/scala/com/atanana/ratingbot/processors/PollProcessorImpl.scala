@@ -1,14 +1,12 @@
 package com.atanana.ratingbot.processors
 
 import cats.data.EitherT
+import cats.effect.IO
 import com.atanana.ratingbot.checkers.{MainChecker, MainCheckerImpl}
 import com.atanana.ratingbot.data.Data
 import com.atanana.ratingbot.json.{JsonStore, JsonStoreImpl}
 import com.atanana.ratingbot.providers.{PollingDataProvider, PollingDataProviderImpl}
 import com.atanana.ratingbot.{CheckResultHandler, CheckResultHandlerImpl}
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 class PollProcessorImpl(
                          pollingDataProvider: PollingDataProvider,
@@ -17,7 +15,7 @@ class PollProcessorImpl(
                          checkResultHandler: CheckResultHandler
                        ) extends PollProcessor {
 
-  override def process(): EitherT[Future, Throwable, Unit] =
+  override def process(): EitherT[IO, Throwable, Unit] =
     for
       parsedData <- pollingDataProvider.data
       storedData = store.read

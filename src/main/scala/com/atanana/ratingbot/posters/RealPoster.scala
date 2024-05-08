@@ -1,13 +1,11 @@
 package com.atanana.ratingbot.posters
 
 import cats.data.EitherT
+import cats.effect.IO
 import com.atanana.ratingbot.json.Config
 import com.atanana.ratingbot.net.{Connector, ConnectorImpl}
 import com.typesafe.scalalogging.Logger
 import sttp.client3.UriContext
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 class RealPoster(connector: Connector, config: Config) extends Poster {
 
@@ -23,7 +21,7 @@ class RealPoster(connector: Connector, config: Config) extends Poster {
   )
 
   //noinspection ConvertibleToMethodValue
-  override def postAsync(message: String): EitherT[Future, Throwable, Unit] =
+  override def postAsync(message: String): EitherT[IO, Throwable, Unit] =
     connector.postAsync(url, params(message))
       .map(logger.debug(_))
 }

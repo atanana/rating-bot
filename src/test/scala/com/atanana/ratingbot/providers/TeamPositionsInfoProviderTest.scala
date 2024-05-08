@@ -1,6 +1,7 @@
 package com.atanana.ratingbot.providers
 
 import cats.data.EitherT
+import cats.effect.IO
 import cats.implicits.*
 import com.atanana.ratingbot.Conversions.fromIntToReleaseId
 import com.atanana.ratingbot.TestUtils.awaitEither
@@ -12,8 +13,6 @@ import com.atanana.ratingbot.providers.TeamPositionsInfoProviderImpl
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 import scala.util.chaining.scalaUtilChainingOps
 
 class TeamPositionsInfoProviderTest extends AnyWordSpecLike with Matchers {
@@ -53,10 +52,10 @@ class TeamPositionsInfoProviderTest extends AnyWordSpecLike with Matchers {
   }
 
   private def setupDefaultExpectations(): Unit = {
-    connector.teamsPageResponses.put(lastReleaseId, EitherT.rightT[Future, Throwable](teamPage))
-    connector.cityTeamsPageResponses.put(lastReleaseId, EitherT.rightT[Future, Throwable](cityTeamsPage))
-    connector.countryTeamsPageResponses.put(lastReleaseId, EitherT.rightT[Future, Throwable](countryTeamsPage))
-    releasesProvider.releaseId = EitherT.rightT[Future, Throwable](lastReleaseId)
+    connector.teamsPageResponses.put(lastReleaseId, EitherT.rightT[IO, Throwable](teamPage))
+    connector.cityTeamsPageResponses.put(lastReleaseId, EitherT.rightT[IO, Throwable](cityTeamsPage))
+    connector.countryTeamsPageResponses.put(lastReleaseId, EitherT.rightT[IO, Throwable](countryTeamsPage))
+    releasesProvider.releaseId = EitherT.rightT[IO, Throwable](lastReleaseId)
   }
 
   private def createTeam(id: Int): Team = Team(id, "", "", 0, 0)

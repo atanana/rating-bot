@@ -1,36 +1,33 @@
 package com.atanana.ratingbot.net
 
+import cats.effect.IO
 import com.atanana.ratingbot.json.Config
+import sttp.capabilities.WebSockets
 import sttp.client3.*
-import sttp.client3.okhttp.OkHttpFutureBackend
-import sttp.model.{Header, Uri}
+import sttp.model.Uri
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+class NetWrapperImpl(config: Config, backend: SttpBackend[IO, WebSockets]) extends NetWrapper {
 
-class NetWrapperImpl(config: Config) extends NetWrapper {
-
-  private val asyncBackend = OkHttpFutureBackend()
   private val authCookie = ("REMEMBERME", config.authCookie)
 
-  override def getPageAsync(uri: Uri): Future[Either[String, String]] =
+  override def getPageAsync(uri: Uri): IO[Either[String, String]] =
     basicRequest
       .get(uri)
       .cookie(authCookie)
-      .send(asyncBackend)
+      .send(backend)
       .map(_.body)
 
-  override def postAsync(uri: Uri, params: Map[String, String]): Future[Either[String, String]] =
+  override def postAsync(uri: Uri, params: Map[String, String]): IO[Either[String, String]] =
     basicRequest
       .body(params)
       .post(uri)
       .cookie(authCookie)
-      .send(asyncBackend)
+      .send(backend)
       .map(_.body)
 
-  override def getApi(uri: Uri): Future[Either[String, String]] =
+  override def getApi(uri: Uri): IO[Either[String, String]] =
     basicRequest
       .get(uri)
-      .send(asyncBackend)
+      .send(backend)
       .map(_.body)
 }

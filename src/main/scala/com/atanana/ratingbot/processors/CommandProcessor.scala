@@ -1,10 +1,8 @@
 package com.atanana.ratingbot.processors
 
 import cats.data.EitherT
+import cats.effect.IO
 import com.typesafe.scalalogging.Logger
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 class CommandProcessor(pollProcessor: PollProcessor,
                        reminderProcessor: ReminderProcessor,
@@ -18,7 +16,7 @@ class CommandProcessor(pollProcessor: PollProcessor,
     "teamPositions" -> teamPositionsProcessor
   )
 
-  def processCommand(command: String): EitherT[Future, Throwable, Unit] = {
+  def processCommand(command: String): EitherT[IO, Throwable, Unit] = {
     logger.debug(s"Process command $command")
     val processor = processors.getOrElse(command, createDefaultProcessor(command))
     processor.process()
@@ -31,5 +29,5 @@ class CommandProcessor(pollProcessor: PollProcessor,
 }
 
 trait Processor {
-  def process(): EitherT[Future, Throwable, Unit]
+  def process(): EitherT[IO, Throwable, Unit]
 }

@@ -1,6 +1,7 @@
 package com.atanana.ratingbot
 
 import cats.data.EitherT
+import cats.effect.IO
 import com.atanana.ratingbot.Conversions.fromIntToTournamentId
 import com.atanana.ratingbot.TestUtils.{awaitEither, awaitError}
 import com.atanana.ratingbot.data.{Editor, TournamentInfo}
@@ -13,8 +14,6 @@ import com.atanana.ratingbot.types.Pages.TournamentInfoPage
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 import scala.util.Success
 import scala.util.chaining.scalaUtilChainingOps
 
@@ -30,7 +29,7 @@ class TournamentInfoProviderTest extends AnyWordSpecLike with Matchers {
       val tournamentId = 123
       val page = "tournament page"
       val editor = Editor("test")
-      connector.tournamentPageResponses.put(tournamentId, EitherT.rightT[Future, Throwable](page))
+      connector.tournamentPageResponses.put(tournamentId, EitherT.rightT[IO, Throwable](page))
       tournamentPageParser.editors = List(editor)
 
       provider.getEditors(tournamentId).pipe(awaitEither) shouldEqual Right(List(editor))

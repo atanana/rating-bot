@@ -1,6 +1,7 @@
 package com.atanana.ratingbot.providers
 
 import cats.data.EitherT
+import cats.effect.IO
 import cats.implicits.*
 import com.atanana.parsers.*
 import com.atanana.ratingbot.Conversions.{fromIntToTeamId, fromIntToTournamentId}
@@ -15,8 +16,6 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
 import java.time.LocalDateTime
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 import scala.util.chaining.scalaUtilChainingOps
 import scala.util.{Failure, Success, Try}
 
@@ -36,7 +35,7 @@ class PollingDataProviderTest extends AnyWordSpecLike with Matchers {
       val tournamentRequisitionsPage = "tournament requisitions page"
       val tournamentResult = TournamentResult(123, 36, 3.0f, 321)
       setTournamentsData(Set(tournamentResult))
-      connector.tournamentRequisitionsPageResponses.put(tournamentId, EitherT.rightT[Future, Throwable](tournamentRequisitionsPage))
+      connector.tournamentRequisitionsPageResponses.put(tournamentId, EitherT.rightT[IO, Throwable](tournamentRequisitionsPage))
       setQuestionsCount(tournamentId, 36)
 
       val requisitionData = PartialRequisitionData("test tournament", tournamentId, "test agent", LocalDateTime.now())
@@ -47,9 +46,9 @@ class PollingDataProviderTest extends AnyWordSpecLike with Matchers {
     }
 
     "should filter small requisitions" in {
-      connector.tournamentRequisitionsPageResponses.put(1, EitherT.rightT[Future, Throwable]("1"))
-      connector.tournamentRequisitionsPageResponses.put(2, EitherT.rightT[Future, Throwable]("2"))
-      connector.tournamentRequisitionsPageResponses.put(3, EitherT.rightT[Future, Throwable]("3"))
+      connector.tournamentRequisitionsPageResponses.put(1, EitherT.rightT[IO, Throwable]("1"))
+      connector.tournamentRequisitionsPageResponses.put(2, EitherT.rightT[IO, Throwable]("2"))
+      connector.tournamentRequisitionsPageResponses.put(3, EitherT.rightT[IO, Throwable]("3"))
       setTournamentsData(Set.empty)
       setQuestionsCount(2, 36)
       setQuestionsCount(3, 45)
@@ -66,9 +65,9 @@ class PollingDataProviderTest extends AnyWordSpecLike with Matchers {
     }
 
     "should filter requisitions from ignored venues" in {
-      connector.tournamentRequisitionsPageResponses.put(1, EitherT.rightT[Future, Throwable]("1"))
-      connector.tournamentRequisitionsPageResponses.put(2, EitherT.rightT[Future, Throwable]("2"))
-      connector.tournamentRequisitionsPageResponses.put(3, EitherT.rightT[Future, Throwable]("3"))
+      connector.tournamentRequisitionsPageResponses.put(1, EitherT.rightT[IO, Throwable]("1"))
+      connector.tournamentRequisitionsPageResponses.put(2, EitherT.rightT[IO, Throwable]("2"))
+      connector.tournamentRequisitionsPageResponses.put(3, EitherT.rightT[IO, Throwable]("3"))
       setTournamentsData(Set.empty)
       setQuestionsCount(1, 36)
       setQuestionsCount(2, 36)

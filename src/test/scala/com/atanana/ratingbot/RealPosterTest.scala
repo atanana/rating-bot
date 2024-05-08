@@ -1,16 +1,13 @@
 package com.atanana.ratingbot
 
 import cats.data.EitherT
-import cats.implicits.catsStdInstancesForFuture
+import cats.effect.IO
 import com.atanana.ratingbot.TestUtils.fakeConfig
 import com.atanana.ratingbot.net.MockConnector
 import com.atanana.ratingbot.posters.RealPoster
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 import sttp.client3.UriContext
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 class RealPosterTest extends AnyFunSuite with Matchers {
 
@@ -25,7 +22,7 @@ class RealPosterTest extends AnyFunSuite with Matchers {
       "disable_web_page_preview" -> "true",
       "parse_mode" -> "Markdown"
     )
-    connector.postResponses.put((uri"https://api.telegram.org/bottg%20token/sendMessage", params), EitherT.rightT[Future, Throwable]("123"))
+    connector.postResponses.put((uri"https://api.telegram.org/bottg%20token/sendMessage", params), EitherT.rightT[IO, Throwable]("123"))
 
     poster.postAsync(message)
   }

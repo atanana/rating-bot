@@ -1,6 +1,7 @@
 package com.atanana.ratingbot.processors
 
 import cats.data.EitherT
+import cats.effect.IO
 import cats.implicits.*
 import com.atanana.ratingbot.MessageComposer
 import com.atanana.ratingbot.TestUtils.{getResult, getResultErrorMessage}
@@ -11,9 +12,6 @@ import com.atanana.ratingbot.processors.TeamPositionsProcessorImpl
 import com.atanana.ratingbot.providers.TeamPositionsInfoProviderImpl
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 class TeamPositionsProcessorTest extends AnyWordSpecLike with Matchers {
   private val provider = new MockTeamPositionsInfoProvider()
@@ -26,7 +24,7 @@ class TeamPositionsProcessorTest extends AnyWordSpecLike with Matchers {
     "post correct message" in {
       val targetTeam = TargetTeam("test team", "test city", 100)
       val info = TeamPositionsInfo(targetTeam.some, targetTeam.some, targetTeam, 123, 200, 3000, 20, 30)
-      provider.result = EitherT.rightT[Future, Throwable](info)
+      provider.result = EitherT.rightT[IO, Throwable](info)
       messageComposer.teamPositionsMessage.put(info, "test message")
       poster.responses.put("test message", EitherT.rightT(()))
 
@@ -35,7 +33,7 @@ class TeamPositionsProcessorTest extends AnyWordSpecLike with Matchers {
     }
 
     "pass error from provider" in {
-      provider.result = EitherT.leftT[Future, TeamPositionsInfo](new RuntimeException("123"))
+      provider.result = EitherT.leftT[IO, TeamPositionsInfo](new RuntimeException("123"))
 
       getResultErrorMessage(processor) shouldEqual "123"
     }
@@ -43,7 +41,7 @@ class TeamPositionsProcessorTest extends AnyWordSpecLike with Matchers {
     "pass error from poster" in {
       val targetTeam = TargetTeam("test team", "test city", 100)
       val info = TeamPositionsInfo(targetTeam.some, targetTeam.some, targetTeam, 123, 200, 3000, 20, 30)
-      provider.result = EitherT.rightT[Future, Throwable](info)
+      provider.result = EitherT.rightT[IO, Throwable](info)
       messageComposer.teamPositionsMessage.put(info, "test message")
       poster.responses.put("test message", EitherT.leftT(new RuntimeException("123")))
 

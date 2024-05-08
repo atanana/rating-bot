@@ -1,10 +1,9 @@
 package com.atanana.ratingbot.posters
 
 import cats.data.EitherT
-
-import scala.concurrent.Future
+import cats.effect.IO
 
 trait Poster {
 
-  def postAsync(message: String): EitherT[Future, Throwable, Unit]
+  def postAsync(message: String): EitherT[IO, Throwable, Unit]
 }

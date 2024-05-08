@@ -1,6 +1,7 @@
 package com.atanana.ratingbot.providers
 
 import cats.data.EitherT
+import cats.effect.IO
 import com.atanana.ratingbot.Conversions.fromIntToReleaseId
 import com.atanana.ratingbot.TestUtils.{awaitEither, awaitError}
 import com.atanana.ratingbot.TimeProviderImpl
@@ -13,8 +14,6 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
 import java.time.LocalDateTime
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 import scala.util.Success
 import scala.util.chaining.scalaUtilChainingOps
 
@@ -28,7 +27,7 @@ class ReleasesProviderTest extends AnyWordSpecLike with Matchers {
   "ReleasesProvider" should {
 
     "provide last release id" in {
-      connector.releases = EitherT.rightT[Future, Throwable]("releases page")
+      connector.releases = EitherT.rightT[IO, Throwable]("releases page")
       parser.releases.put("releases page", Success(List(
         Release(1, LocalDateTime.of(2022, 12, 31, 1, 0)),
         Release(2, LocalDateTime.of(2022, 12, 31, 2, 0)),
@@ -42,7 +41,7 @@ class ReleasesProviderTest extends AnyWordSpecLike with Matchers {
     }
 
     "return error if no releases" in {
-      connector.releases = EitherT.rightT[Future, Throwable]("releases page")
+      connector.releases = EitherT.rightT[IO, Throwable]("releases page")
       parser.releases.put("releases page", Success(List()))
 
       val error = provider.getLastReleaseId.pipe(awaitError)

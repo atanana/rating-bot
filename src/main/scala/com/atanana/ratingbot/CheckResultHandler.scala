@@ -1,11 +1,10 @@
 package com.atanana.ratingbot
 
 import cats.data.EitherT
+import cats.effect.IO
 import com.atanana.ratingbot.data.CheckResult
-
-import scala.concurrent.Future
 
 trait CheckResultHandler {
 
-  def processCheckResult(checkResult: CheckResult): EitherT[Future, Throwable, Unit]
+  def processCheckResult(checkResult: CheckResult): EitherT[IO, Throwable, Unit]
 }

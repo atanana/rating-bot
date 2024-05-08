@@ -1,5 +1,6 @@
 package com.atanana.ratingbot
 
+import cats.effect.IO
 import com.atanana.ratingbot.*
 import com.atanana.ratingbot.checkers.*
 import com.atanana.ratingbot.fs.{FsHandler, FsHandlerImpl}
@@ -9,8 +10,10 @@ import com.atanana.ratingbot.parsers.*
 import com.atanana.ratingbot.posters.{Poster, RealPoster, TestPoster}
 import com.atanana.ratingbot.processors.*
 import com.atanana.ratingbot.providers.*
+import sttp.capabilities.WebSockets
+import sttp.client3.SttpBackend
 
-class ConfigModule(config: Config, isDebug: Boolean) {
+class ConfigModule(config: Config, isDebug: Boolean, backend: SttpBackend[IO, WebSockets]) {
 
   import com.softwaremill.macwire.*
 
