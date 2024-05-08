@@ -26,25 +26,25 @@ class LastTeamResultsProviderImplTest extends AnyWordSpecLike with Matchers {
 
     "return last tournaments results" in {
       connector.teamTournamentsPage = EitherT.rightT("tournaments page")
-      teamTournamentsParser.results("tournaments page") = Success((1 to 50).map(TournamentId(_)).toSet)
-      for i <- 20 to 50 do {
+      teamTournamentsParser.results("tournaments page") = Success((1 to 100).map(TournamentId(_)).toSet)
+      for i <- 50 to 100 do {
         connector.tournamentResultsPage(i) = EitherT.rightT(s"tournament results $i")
         tournamentResultsParser.results((s"tournament results $i", i, 123)) = Success(Some(TournamentResult(i, i, i, i)))
       }
 
-      val results = (50 to 21 by -1).map(i => TournamentResult(i, i, i, i)).toSet
+      val results = (100 to 51 by -1).map(i => TournamentResult(i, i, i, i)).toSet
       provider.getLastTeamResults(123).pipe(awaitEither) shouldEqual Right(results)
     }
 
     "filter results without rating" in {
       connector.teamTournamentsPage = EitherT.rightT("tournaments page")
-      teamTournamentsParser.results("tournaments page") = Success((1 to 50).map(TournamentId(_)).toSet)
-      for i <- 20 to 50 do {
+      teamTournamentsParser.results("tournaments page") = Success((1 to 100).map(TournamentId(_)).toSet)
+      for i <- 50 to 100 do {
         connector.tournamentResultsPage(i) = EitherT.rightT(s"tournament results $i")
         tournamentResultsParser.results((s"tournament results $i", i, 123)) = if i % 2 == 0 then Success(Some(TournamentResult(i, i, i, i))) else Success(None)
       }
 
-      val results = (50 to 21 by -1)
+      val results = (100 to 51 by -1)
         .filter(_ % 2 == 0)
         .map(i => TournamentResult(i, i, i, i)).toSet
       provider.getLastTeamResults(123).pipe(awaitEither) shouldEqual Right(results)
