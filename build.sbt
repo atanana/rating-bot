@@ -21,6 +21,7 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.18" % "test"
 assembly / assemblyMergeStrategy := {
   case PathList("module-info.class") => MergeStrategy.discard
   case x if x.endsWith("/module-info.class") => MergeStrategy.discard
+  case x if x.endsWith("/io.netty.versions.properties") => MergeStrategy.discard
   case x =>
     val oldStrategy = (assembly / assemblyMergeStrategy).value
     oldStrategy(x)
