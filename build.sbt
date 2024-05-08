@@ -1,7 +1,5 @@
 name := "rating-bot"
 
-assembly / assemblyJarName := "rating-bot.jar"
-
 version := "3.2.0"
 
 scalaVersion := "3.4.1"
@@ -26,6 +24,7 @@ assembly / assemblyMergeStrategy := {
     val oldStrategy = (assembly / assemblyMergeStrategy).value
     oldStrategy(x)
 }
+assembly / assemblyOutputPath := file("target/rating-bot.jar")
 
 scalacOptions += "-rewrite"
 scalacOptions += "-new-syntax"
