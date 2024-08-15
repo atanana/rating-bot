@@ -30,7 +30,7 @@ case class Config(
                    chat: Long,
                    team: Int,
                    city: Int,
-                   port: Int,
+                   pipe: String,
                    country: Int,
                    ignoredVenues: List[String]
                  )

@@ -8,7 +8,6 @@ import sttp.client3.SttpBackend
 import sttp.client3.httpclient.cats.HttpClientCatsBackend
 
 import java.lang
-import java.net.ServerSocket
 import scala.util.{Failure, Success}
 
 object Main extends IOApp {
@@ -33,8 +32,7 @@ object Main extends IOApp {
     val logger = Logger("main")
     val configModule = new ConfigModule(config, isDebug, backend)
     val processor = configModule.commandProcessor
-    val serverSocket = new ServerSocket(config.port)
-    val commandProvider = new CommandProvider(serverSocket)
+    val commandProvider = new CommandProvider(config.pipe)
 
     val task = for
       command <- commandProvider.getCommand

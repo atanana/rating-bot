@@ -1,31 +1,22 @@
 package com.atanana.ratingbot
 
 import cats.data.EitherT
-import cats.effect.IO
+import cats.effect.{IO, Resource}
 import com.typesafe.scalalogging.Logger
 
-import java.io.{BufferedReader, InputStreamReader}
-import java.net.ServerSocket
-import scala.util.control.NonFatal
-import scala.util.{Failure, Success, Try}
+import scala.io.Source
 
-class CommandProvider(serverSocket: ServerSocket) {
+class CommandProvider(pipe: String) {
 
   private val logger = Logger("CommandProvider")
 
   def getCommand: EitherT[IO, Throwable, String] =
     EitherT {
-      IO.blocking {
-        try {
-          val socket = serverSocket.accept()
-          val reader = new BufferedReader(new InputStreamReader(socket.getInputStream))
-          Right(reader.readLine())
+      Resource.fromAutoCloseable {
+          IO(Source.fromFile(pipe))
         }
-        catch {
-          case NonFatal(e) =>
-            logger.error("Error in socket!", e)
-            Left(e)
-        }
-      }
+        .evalMap(source => IO(source.mkString.trim))
+        .attempt
+        .use(IO.pure)
     }
 }
