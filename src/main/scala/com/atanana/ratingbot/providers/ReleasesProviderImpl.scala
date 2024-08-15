@@ -12,7 +12,7 @@ class ReleasesProviderImpl(connector: Connector, parser: ReleasesParser, timePro
 
   override def getLastReleaseId: EitherT[IO, Throwable, ReleaseId] = for
     releasesPage <- connector.getReleases
-    lastRelease <- EitherT.fromEither[IO](processReleasesPage(releasesPage))
+    lastRelease <- EitherT.fromEither(processReleasesPage(releasesPage))
   yield lastRelease.id
 
   private def processReleasesPage(releasesPage: String): Either[Throwable, Release] = for

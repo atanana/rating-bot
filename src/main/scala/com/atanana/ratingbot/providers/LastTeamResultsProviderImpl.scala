@@ -19,7 +19,7 @@ class LastTeamResultsProviderImpl(
 
   override def getLastTeamResults(teamId: TeamId): EitherT[IO, Throwable, Set[TournamentResult]] = for
     teamTournamentsPage <- connector.getTeamTournaments
-    tournamentIds <- EitherT.fromEither[IO](teamTournamentsParser.getTournamentIds(teamTournamentsPage).toEither)
+    tournamentIds <- EitherT.fromEither(teamTournamentsParser.getTournamentIds(teamTournamentsPage).toEither)
     lastTournaments = tournamentIds.toList.sorted(TournamentId.ordering.reverse).take(50)
     results <- lastTournaments.traverse(tournamentId => getTournamentResult(tournamentId, teamId))
   yield results.flatMap(_.toList).toSet

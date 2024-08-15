@@ -12,7 +12,7 @@ class MockProcessor extends PollProcessor with ReminderProcessor with TeamPositi
 
   override def process(): EitherT[IO, Throwable, Unit] = {
     invocationsCount += 1
-    EitherT.rightT[IO, Throwable](())
+    EitherT.rightT(())
   }
 
   def reset(): Unit = invocationsCount = 0

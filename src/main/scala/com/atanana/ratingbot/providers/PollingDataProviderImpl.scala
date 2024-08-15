@@ -32,7 +32,7 @@ class PollingDataProviderImpl(
   private def getNewRequisitions: EitherT[IO, Throwable, Set[RequisitionData]] =
     for
       requisitionsPage <- connector.getRequisitionPage
-      requisitions <- EitherT.fromEither[IO](requisitionsParser.getRequisitionsData(requisitionsPage).toEither)
+      requisitions <- EitherT.fromEither(requisitionsParser.getRequisitionsData(requisitionsPage).toEither)
       filteredRequisitions <- filterRequisitions(requisitions.toSet)
       results <- addQuestionsCount(filteredRequisitions)
     yield results
@@ -47,7 +47,7 @@ class PollingDataProviderImpl(
   private def checkRequisitionAsync(requisition: PartialRequisitionData): EitherT[IO, Throwable, Boolean] =
     for
       requisitionsPage <- connector.getTournamentRequisitionsPage(requisition.tournamentId)
-      data <- EitherT.fromEither[IO](requisitionsPageParser.additionalData(requisition.agent, requisitionsPage).toEither)
+      data <- EitherT.fromEither(requisitionsPageParser.additionalData(requisition.agent, requisitionsPage).toEither)
     yield data.teamsCount > 1 && !config.ignoredVenues.contains(data.venue)
 
   private def addQuestionsCount(requisitions: Set[PartialRequisitionData]): EitherT[IO, Throwable, Set[RequisitionData]] =

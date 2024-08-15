@@ -10,10 +10,9 @@ import scala.concurrent.duration.*
 
 import cats.effect.unsafe.implicits.global
 
-//noinspection ScalaDeprecation
 object TestUtils {
 
-  val fakeConfig: Config = Config("tg token", "cookie", 123, 321, 456, 10000, 1, List.empty)
+  val fakeConfig: Config = Config("tg token", "cookie", 123, 321, 456, "pipe", 1, List.empty)
 
   def getResult(processor: Processor): Either[Throwable, Unit] = await(processor.process().value)
 

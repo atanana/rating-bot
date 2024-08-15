@@ -3,8 +3,8 @@ package com.atanana.ratingbot.providers
 import cats.data.EitherT
 import cats.effect.IO
 import com.atanana.ratingbot.data.TeamPositionsInfo
-import com.atanana.ratingbot.net.{Connector, ConnectorImpl}
-import com.atanana.ratingbot.parsers.{TeamsPageParser, TeamsPageParserImpl}
+import com.atanana.ratingbot.net.Connector
+import com.atanana.ratingbot.parsers.TeamsPageParser
 
 class TeamPositionsInfoProviderImpl(
                                      connector: Connector,
@@ -19,7 +19,7 @@ class TeamPositionsInfoProviderImpl(
     cityTeams <- connector.getCityTeamsPage(releaseId).map(parser.getTeams)
     countryTeams <- connector.getCountryTeamsPage(releaseId).map(parser.getTeams)
 
-    positionsInfo <- EitherT.fromEither[IO](composer.positionsInfo(allTeams, cityTeams, countryTeams)
+    positionsInfo <- EitherT.fromEither(composer.positionsInfo(allTeams, cityTeams, countryTeams)
       .left.map[Throwable](new RuntimeException(_)))
   yield positionsInfo
 }

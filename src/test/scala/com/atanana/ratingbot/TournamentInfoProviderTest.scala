@@ -29,7 +29,7 @@ class TournamentInfoProviderTest extends AnyWordSpecLike with Matchers {
       val tournamentId = 123
       val page = "tournament page"
       val editor = Editor("test")
-      connector.tournamentPageResponses.put(tournamentId, EitherT.rightT[IO, Throwable](page))
+      connector.tournamentPageResponses.put(tournamentId, EitherT.rightT(page))
       tournamentPageParser.editors = List(editor)
 
       provider.getEditors(tournamentId).pipe(awaitEither) shouldEqual Right(List(editor))

@@ -52,10 +52,10 @@ class TeamPositionsInfoProviderTest extends AnyWordSpecLike with Matchers {
   }
 
   private def setupDefaultExpectations(): Unit = {
-    connector.teamsPageResponses.put(lastReleaseId, EitherT.rightT[IO, Throwable](teamPage))
-    connector.cityTeamsPageResponses.put(lastReleaseId, EitherT.rightT[IO, Throwable](cityTeamsPage))
-    connector.countryTeamsPageResponses.put(lastReleaseId, EitherT.rightT[IO, Throwable](countryTeamsPage))
-    releasesProvider.releaseId = EitherT.rightT[IO, Throwable](lastReleaseId)
+    connector.teamsPageResponses.put(lastReleaseId, EitherT.rightT(teamPage))
+    connector.cityTeamsPageResponses.put(lastReleaseId, EitherT.rightT(cityTeamsPage))
+    connector.countryTeamsPageResponses.put(lastReleaseId, EitherT.rightT(countryTeamsPage))
+    releasesProvider.releaseId = EitherT.rightT(lastReleaseId)
   }
 
   private def createTeam(id: Int): Team = Team(id, "", "", 0, 0)

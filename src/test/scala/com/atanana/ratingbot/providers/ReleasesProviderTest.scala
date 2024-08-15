@@ -27,7 +27,7 @@ class ReleasesProviderTest extends AnyWordSpecLike with Matchers {
   "ReleasesProvider" should {
 
     "provide last release id" in {
-      connector.releases = EitherT.rightT[IO, Throwable]("releases page")
+      connector.releases = EitherT.rightT("releases page")
       parser.releases.put("releases page", Success(List(
         Release(1, LocalDateTime.of(2022, 12, 31, 1, 0)),
         Release(2, LocalDateTime.of(2022, 12, 31, 2, 0)),
@@ -41,7 +41,7 @@ class ReleasesProviderTest extends AnyWordSpecLike with Matchers {
     }
 
     "return error if no releases" in {
-      connector.releases = EitherT.rightT[IO, Throwable]("releases page")
+      connector.releases = EitherT.rightT("releases page")
       parser.releases.put("releases page", Success(List()))
 
       val error = provider.getLastReleaseId.pipe(awaitError)

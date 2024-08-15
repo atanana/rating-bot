@@ -20,10 +20,9 @@ class RealPoster(connector: Connector, config: Config) extends Poster {
     "parse_mode" -> "Markdown"
   )
 
-  //noinspection ConvertibleToMethodValue
   override def postAsync(message: String): EitherT[IO, Throwable, Unit] =
     connector.postAsync(url, params(message))
-      .map(logger.debug(_))
+      .map(logger.debug)
 }
 
 object RealPoster {

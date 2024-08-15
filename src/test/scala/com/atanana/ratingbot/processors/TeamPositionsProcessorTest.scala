@@ -24,7 +24,7 @@ class TeamPositionsProcessorTest extends AnyWordSpecLike with Matchers {
     "post correct message" in {
       val targetTeam = TargetTeam("test team", "test city", 100)
       val info = TeamPositionsInfo(targetTeam.some, targetTeam.some, targetTeam, 123, 200, 3000, 20, 30)
-      provider.result = EitherT.rightT[IO, Throwable](info)
+      provider.result = EitherT.rightT(info)
       messageComposer.teamPositionsMessage.put(info, "test message")
       poster.responses.put("test message", EitherT.rightT(()))
 
@@ -33,7 +33,7 @@ class TeamPositionsProcessorTest extends AnyWordSpecLike with Matchers {
     }
 
     "pass error from provider" in {
-      provider.result = EitherT.leftT[IO, TeamPositionsInfo](new RuntimeException("123"))
+      provider.result = EitherT.leftT(new RuntimeException("123"))
 
       getResultErrorMessage(processor) shouldEqual "123"
     }
@@ -41,7 +41,7 @@ class TeamPositionsProcessorTest extends AnyWordSpecLike with Matchers {
     "pass error from poster" in {
       val targetTeam = TargetTeam("test team", "test city", 100)
       val info = TeamPositionsInfo(targetTeam.some, targetTeam.some, targetTeam, 123, 200, 3000, 20, 30)
-      provider.result = EitherT.rightT[IO, Throwable](info)
+      provider.result = EitherT.rightT(info)
       messageComposer.teamPositionsMessage.put(info, "test message")
       poster.responses.put("test message", EitherT.leftT(new RuntimeException("123")))
 

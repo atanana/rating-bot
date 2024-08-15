@@ -28,9 +28,9 @@ class JsonConfigTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
           |  "city": 3,
           |  "country": 4,
           |  "ignoredVenues": ["test", "test2"],
-          |  "port": 11000
+          |  "pipe": "/opt/rating_pipe"
           |}""".stripMargin, "config.json")
-      jsonConfig.read shouldEqual Success(Config("tg token", "test cookie", 1, 2, 3, 11000, 4, List("test", "test2")))
+      jsonConfig.read shouldEqual Success(Config("tg token", "test cookie", 1, 2, 3, "/opt/rating_pipe", 4, List("test", "test2")))
     }
 
     "not fails on reading config" in {

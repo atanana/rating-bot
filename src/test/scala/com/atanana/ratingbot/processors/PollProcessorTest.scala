@@ -101,7 +101,7 @@ class PollProcessorTest extends AnyWordSpecLike with Matchers with BeforeAndAfte
       Set(TournamentResult(1, 1, 1f, 1)),
       Set(RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now()))
     )
-    provider.result = EitherT.rightT[IO, Throwable](parsedData)
+    provider.result = EitherT.rightT(parsedData)
     parsedData
   }
 }

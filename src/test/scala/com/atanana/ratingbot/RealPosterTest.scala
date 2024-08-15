@@ -22,7 +22,7 @@ class RealPosterTest extends AnyFunSuite with Matchers {
       "disable_web_page_preview" -> "true",
       "parse_mode" -> "Markdown"
     )
-    connector.postResponses.put((uri"https://api.telegram.org/bottg%20token/sendMessage", params), EitherT.rightT[IO, Throwable]("123"))
+    connector.postResponses.put((uri"https://api.telegram.org/bottg%20token/sendMessage", params), EitherT.rightT("123"))
 
     poster.postAsync(message)
   }

@@ -40,7 +40,7 @@ object Main extends IOApp {
     yield ()
 
     task.swap
-      .map(logger.debug("Error occurred!", _))
+      .map(logger.error("Error occurred!", _))
       .value.foreverM
   }
 }

@@ -1,4 +1,4 @@
-package com.atanana.parsers
+package com.atanana.ratingbot.parsers
 
 import com.atanana.ratingbot.parsers.TeamTournamentsParserImpl
 import com.atanana.ratingbot.types.Pages.TeamTournamentsPage

@@ -20,6 +20,6 @@ class TournamentInfoProviderImpl(
 
   override def getInfo(id: TournamentId): EitherT[IO, Throwable, TournamentInfo] = for
     tournamentInfoPage <- connector.getTournamentInfo(id)
-    tournamentInfo <- EitherT.fromEither[IO](tournamentInfoParser.getTournamentInfo(tournamentInfoPage).toEither)
+    tournamentInfo <- EitherT.fromEither(tournamentInfoParser.getTournamentInfo(tournamentInfoPage).toEither)
   yield tournamentInfo
 }
