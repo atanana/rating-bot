@@ -1,6 +1,7 @@
 package com.atanana.ratingbot
 
 import cats.effect.{ExitCode, IO, IOApp}
+import cats.implicits._
 import com.atanana.ratingbot.json.Config
 import com.typesafe.scalalogging.Logger
 import sttp.capabilities.WebSockets
@@ -29,18 +30,13 @@ object Main extends IOApp {
   }
 
   private def start(config: Config, isDebug: Boolean, backend: SttpBackend[IO, WebSockets]): IO[Nothing] = {
-    val logger = Logger("main")
     val configModule = new ConfigModule(config, isDebug, backend)
     val processor = configModule.commandProcessor
     val commandProvider = new CommandProvider(config.pipe)
 
-    val task = for
-      command <- commandProvider.getCommand
-      _ <- processor.processCommand(command)
-    yield ()
-
-    task.swap
-      .map(logger.error("Error occurred!", _))
-      .value.foreverM
+    commandProvider.getCommands
+      .semiflatMap(commands => commands.map(processor.processCommand).sequence)
+      .value
+      .foreverM
   }
 }

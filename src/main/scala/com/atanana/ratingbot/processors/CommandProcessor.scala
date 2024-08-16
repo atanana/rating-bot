@@ -16,10 +16,13 @@ class CommandProcessor(pollProcessor: PollProcessor,
     "teamPositions" -> teamPositionsProcessor
   )
 
-  def processCommand(command: String): EitherT[IO, Throwable, Unit] = {
+  def processCommand(command: String): IO[Unit] = {
     logger.debug(s"Process command $command")
     val processor = processors.getOrElse(command, createDefaultProcessor(command))
     processor.process()
+      .leftSemiflatTap(error => IO(logger.error(s"Error while processing command $command", error)))
+      .value
+      .map(* => ())
   }
 
   private def createDefaultProcessor(command: String): Processor = () => {
