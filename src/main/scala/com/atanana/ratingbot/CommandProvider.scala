@@ -13,9 +13,9 @@ class CommandProvider(pipe: String) {
   def getCommands: EitherT[IO, Throwable, List[String]] =
     EitherT {
       Resource.fromAutoCloseable {
-          IO(Source.fromFile(pipe))
+          IO.blocking(Source.fromFile(pipe))
         }
-        .evalMap(source => IO(source.getLines().toList))
+        .evalMap(source => IO.blocking(source.getLines().toList))
         .attempt
         .use(IO.pure)
     }
