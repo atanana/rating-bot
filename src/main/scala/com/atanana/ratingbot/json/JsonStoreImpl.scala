@@ -1,13 +1,14 @@
 package com.atanana.ratingbot.json
 
 import com.atanana.ratingbot.data.{Data, Requisition, Tournament}
-import com.atanana.ratingbot.fs.{FsHandler, FsHandlerImpl}
+import com.atanana.ratingbot.fs.FsHandler
 import com.atanana.ratingbot.types.Ids.TournamentId
 import spray.json.*
 import spray.json.DefaultJsonProtocol.*
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import scala.annotation.unused
 import scala.util.Try
 
 private val FILE_NAME = "data.json"
@@ -23,6 +24,7 @@ class JsonStoreImpl(fsHandler: FsHandler) extends JsonStore {
     }
   }
 
+  @unused
   private implicit object TournamentIdFormat extends RootJsonFormat[TournamentId] {
 
     override def write(obj: TournamentId): JsValue = JsNumber(obj.value)

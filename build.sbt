@@ -2,7 +2,7 @@ name := "rating-bot"
 
 version := "3.3.2"
 
-scalaVersion := "3.4.2"
+scalaVersion := "3.5.0"
 
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.5.7"
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
