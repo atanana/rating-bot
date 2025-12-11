@@ -3,6 +3,7 @@ package com.atanana.ratingbot
 import com.atanana.ratingbot.MessageComposer
 import com.atanana.ratingbot.MessageComposerImpl.{alarms, timePattern}
 import com.atanana.ratingbot.data.*
+import com.atanana.ratingbot.json.Config
 import com.atanana.ratingbot.net.UriComposer
 
 import java.time.format.DateTimeFormatter
@@ -11,7 +12,7 @@ import java.util.Locale
 import scala.language.implicitConversions
 import scala.util.Random
 
-class MessageComposerImpl extends MessageComposer {
+class MessageComposerImpl(config: Config) extends MessageComposer {
 
   override def composeNewResult(data: TournamentResult, info: TournamentInfo): String = {
     val link = UriComposer.tournamentPageUri(data.id)
@@ -71,7 +72,7 @@ class MessageComposerImpl extends MessageComposer {
        |🏆 место по городу — *${info.cityPosition}*
        |🏆 место по стране — *${info.countryPosition}*
        |🏆 место в общем рейтинге — *${info.currentPosition}*
-       |🏆 до топ-100 осталось — *${info.top100ratingDifference}*
+       |🏆 до топ-${config.topCommandsThreshold} осталось — *${info.topRatingDifference}*
        |🏆 ${targetCountryTeamMessage(info.targetCountryRatingTeam)}
        |🏆 *${-info.overtakingCountryRatingTeam.ratingDifference}* осталось команде *${printTeam(info.overtakingCountryRatingTeam)}* чтобы догнать нас по стране
        |

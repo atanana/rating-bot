@@ -1,9 +1,8 @@
 package com.atanana.ratingbot
 
 import cats.effect.{ExitCode, IO, IOApp}
-import cats.implicits._
+import cats.implicits.*
 import com.atanana.ratingbot.json.Config
-import com.typesafe.scalalogging.Logger
 import sttp.capabilities.WebSockets
 import sttp.client3.SttpBackend
 import sttp.client3.httpclient.cats.HttpClientCatsBackend

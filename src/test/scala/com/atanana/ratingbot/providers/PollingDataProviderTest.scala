@@ -25,7 +25,7 @@ class PollingDataProviderTest extends AnyWordSpecLike with Matchers {
   private val requisitionsPageParser = new MockRequisitionsPageParser()
   private val tournamentInfoProvider = new MockTournamentInfoProvider()
   private val lastTeamResultsProvider = new MockLastTeamResultsProvider()
-  private val config: Config = Config("tg token", "cookie", 1, 1, 1, "pipe", 1, List("test venue 1", "test venue 2"))
+  private val config: Config = Config("tg token", "cookie", 1, 1, 1, "pipe", 1, 100, List("test venue 1", "test venue 2"))
   private val provider = new PollingDataProviderImpl(connector, requisitionsParser, requisitionsPageParser, tournamentInfoProvider, lastTeamResultsProvider, config)
 
   "PollingDataProvider" should {

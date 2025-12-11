@@ -7,7 +7,7 @@ import com.atanana.ratingbot.json.Config
 class TeamPositionsInfoComposerImpl(config: Config) extends TeamPositionsInfoComposer {
   override def positionsInfo(teams: List[Team], cityTeams: List[Team], countryTeams: List[Team]): Either[String, TeamPositionsInfo] = {
     for
-      lastTeam <- getLastTop100Team(teams)
+      lastTeam <- getLastTopTeam(teams)
       team <- findTeam(teams)
       targetTeam <- findTargetTeam(teams, "all")
       targetCountryTeam <- findTargetTeam(countryTeams, "country")
@@ -26,8 +26,8 @@ class TeamPositionsInfoComposerImpl(config: Config) extends TeamPositionsInfoCom
     )
   }
 
-  private def getLastTop100Team(teams: List[Team]) =
-    teams.find(_.position > 99.9).toRight("No last team!")
+  private def getLastTopTeam(teams: List[Team]) =
+    teams.find(_.position >= config.topCommandsThreshold).toRight("No last team!")
 
   private def findTargetTeam(teams: List[Team], listName: String): Either[String, Option[Team]] =
     findTeamIndex(teams, listName).map(index => teams.get(index - 1))
