@@ -1,6 +1,6 @@
 name := "rating-bot"
 
-version := "3.3.3"
+version := "3.4.0"
 
 scalaVersion := "3.7.4"
 
