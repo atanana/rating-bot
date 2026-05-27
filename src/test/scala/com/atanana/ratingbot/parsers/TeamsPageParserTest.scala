@@ -15,11 +15,11 @@ class TeamsPageParserTest extends AnyWordSpecLike with Matchers {
 
   "TeamsPageParser" should {
     "parse valid teams count" in {
-      teams should have size 100
+      teams should have size 500
     }
 
     "parse valid team" in {
-      teams.head shouldEqual Team(45556, "Рабочее название", "Санкт-Петербург", 12088, 1)
+      teams.head shouldEqual Team(49804, "Борский корабел", "Москва", 22470, 1)
     }
   }
 }

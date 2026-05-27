@@ -20,6 +20,6 @@ class TeamsPageParserImpl extends TeamsPageParser {
       name = teamJson.stringField("teamName"),
       city = teamJson.stringField("townName"),
       rating = teamJson.intField("teamRating"),
-      position = teamJson.intField("teamRatingPosition"))
+      position = teamJson.intField("ratingPositionFrom"))
   }.toOption
 }
