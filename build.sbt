@@ -29,3 +29,4 @@ assembly / assemblyOutputPath := file("target/rating-bot.jar")
 scalacOptions += "-rewrite"
 scalacOptions += "-new-syntax"
 scalacOptions += "-explain"
+scalacOptions += "-deprecation"

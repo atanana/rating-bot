@@ -10,21 +10,11 @@ import sttp.model.Uri
 
 class ConnectorImpl(netWrapper: NetWrapper, config: Config) extends Connector {
 
-  override def getRequisitionPage: EitherT[IO, Throwable, String] = {
-    val url = UriComposer.requisitionPageUri(config.city)
-    getPageAsync(url)
-  }
-
   private def getPageAsync(uri: Uri): EitherT[IO, Throwable, String] =
     wrapGet(uri, netWrapper.getPageAsync(uri))
 
   override def getTournamentPage(id: TournamentId): EitherT[IO, Throwable, String] = {
     val url = UriComposer.tournamentPageUri(id)
-    getPageAsync(url)
-  }
-
-  override def getTournamentRequisitionsPage(tournamentId: TournamentId): EitherT[IO, Throwable, String] = {
-    val url = UriComposer.tournamentRequisitionsPageUri(tournamentId)
     getPageAsync(url)
   }
 

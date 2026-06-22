@@ -7,7 +7,5 @@ import com.atanana.ratingbot.types.Ids.TournamentId
 
 trait TournamentInfoProvider {
 
-  def getEditors(id: TournamentId): EitherT[IO, Throwable, List[Editor]] //todo
-
   def getInfo(id: TournamentId): EitherT[IO, Throwable, TournamentInfo]
 }

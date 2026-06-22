@@ -13,11 +13,6 @@ class TournamentInfoProviderImpl(
                                   tournamentInfoParser: TournamentInfoParser
                                 ) extends TournamentInfoProvider {
 
-  override def getEditors(id: TournamentId): EitherT[IO, Throwable, List[Editor]] =
-    for
-      tournamentPage <- connector.getTournamentPage(id)
-    yield tournamentPageParser.getEditors(tournamentPage)
-
   override def getInfo(id: TournamentId): EitherT[IO, Throwable, TournamentInfo] = for
     tournamentInfoPage <- connector.getTournamentInfo(id)
     tournamentInfo <- EitherT.fromEither(tournamentInfoParser.getTournamentInfo(tournamentInfoPage).toEither)

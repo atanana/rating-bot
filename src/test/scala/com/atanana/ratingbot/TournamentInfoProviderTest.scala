@@ -25,22 +25,6 @@ class TournamentInfoProviderTest extends AnyWordSpecLike with Matchers {
 
   "TournamentInfoProvider" should {
 
-    "provide correct info" in {
-      val tournamentId = 123
-      val page = "tournament page"
-      val editor = Editor("test")
-      connector.tournamentPageResponses.put(tournamentId, EitherT.rightT(page))
-      tournamentPageParser.editors = List(editor)
-
-      provider.getEditors(tournamentId).pipe(awaitEither) shouldEqual Right(List(editor))
-    }
-
-    "pass error from connector" in {
-      val tournamentId = 123
-      connector.tournamentPageResponses.put(tournamentId, EitherT.leftT(new RuntimeException("tournament page error")))
-      provider.getEditors(tournamentId).pipe(awaitError) should have message "tournament page error"
-    }
-
     "provide tournament info" in {
       connector.tournamentInfoResponses(123) = EitherT.rightT(TournamentInfoPage("info"))
       tournamentInfoPageParser.results(TournamentInfoPage("info")) = Success(TournamentInfo("test", 36))

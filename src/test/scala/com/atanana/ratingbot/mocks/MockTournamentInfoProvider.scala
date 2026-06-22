@@ -11,9 +11,6 @@ import scala.collection.mutable
 class MockTournamentInfoProvider extends TournamentInfoProvider {
 
   val tournamentInfos: mutable.Map[TournamentId, EitherT[IO, Throwable, TournamentInfo]] = mutable.Map()
-  var editors: mutable.Map[TournamentId, EitherT[IO, Throwable, List[Editor]]] = mutable.Map()
-
-  override def getEditors(id: TournamentId): EitherT[IO, Throwable, List[Editor]] = editors(id)
 
   override def getInfo(id: TournamentId): EitherT[IO, Throwable, TournamentInfo] = tournamentInfos(id)
 }

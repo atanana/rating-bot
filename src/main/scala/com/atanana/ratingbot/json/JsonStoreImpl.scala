@@ -1,6 +1,6 @@
 package com.atanana.ratingbot.json
 
-import com.atanana.ratingbot.data.{Data, Requisition, Tournament}
+import com.atanana.ratingbot.data.{Data, Tournament}
 import com.atanana.ratingbot.fs.FsHandler
 import com.atanana.ratingbot.types.Ids.TournamentId
 import spray.json.*
@@ -35,16 +35,15 @@ class JsonStoreImpl(fsHandler: FsHandler) extends JsonStore {
     }
   }
 
-  private implicit val requisitionFormat: RootJsonFormat[Requisition] = jsonFormat4(Requisition.apply)
   private implicit val tournamentFormat: RootJsonFormat[Tournament] = jsonFormat2(Tournament.apply)
-  private implicit val dataFormat: RootJsonFormat[Data] = jsonFormat2(Data.apply)
+  private implicit val dataFormat: RootJsonFormat[Data] = jsonFormat1(Data.apply)
 
   override def read: Data = {
     fsHandler.readFile(FILE_NAME)
       .flatMap(contents => Try {
         contents.parseJson.convertTo[Data]
       })
-      .getOrElse(Data(Set.empty, Set.empty))
+      .getOrElse(Data(Set.empty))
   }
 
   override def write(data: Data): Unit = {

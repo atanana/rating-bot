@@ -40,26 +40,6 @@ class MessageComposerImpl(config: Config) extends MessageComposer {
     }
   }
 
-  override def composeNewRequisition(requisition: Requisition, editors: List[Editor]): String = {
-    s"А в следующий раз нас поимеют на турнире под названием *${requisition.tournament}* который " +
-      s"состоится *${requisition.dateTime.format(timePattern)}*. Ответственный: ${requisition.agent}." +
-      s"\nРедакторы: ${getEditorsString(editors)}\n*${requisition.questionsCount} вопросов*"
-  }
-
-  private def getEditorsString(editors: List[Editor]) = {
-    editors.map(_.data).mkString(", ")
-  }
-
-  override def composeRequisitionReminder(requisition: Requisition): String = {
-    s"Напоминаю, что завтра состоится очередная рейтинг-оргия под названием *${requisition.tournament} (${requisition.questionsCount} вопросов)*. " +
-      s"Командовать парадом будет ${requisition.agent}"
-  }
-
-  override def composeCancelledRequisition(requisition: Requisition): String = {
-    randomAlarm + s"! ${requisition.agent} вёл себя подозрительно и посему *${requisition.tournament}* в " +
-      s"*${requisition.dateTime.format(timePattern)}* отменяется!"
-  }
-
   private def randomAlarm: String = {
     alarms(Random.nextInt(alarms.size))
   }

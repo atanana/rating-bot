@@ -27,9 +27,9 @@ class PollProcessorTest extends AnyWordSpecLike with Matchers with BeforeAndAfte
   "Processor" should {
     "posts about changes" in {
       val parsedData = setUpDefaults()
-      val storedData = Data(Set.empty, Set.empty)
+      val storedData = Data(Set.empty)
       store.data = storedData
-      val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty), RequisitionsCheckResult(Set.empty, Set.empty))
+      val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty))
       checker.results.put((storedData, parsedData), checkResult)
       checkResultsHandler.results.put(checkResult, EitherT.rightT(()))
 
@@ -38,9 +38,9 @@ class PollProcessorTest extends AnyWordSpecLike with Matchers with BeforeAndAfte
 
     "save new data" in {
       val parsedData = setUpDefaults()
-      val storedData = Data(Set.empty, Set.empty)
+      val storedData = Data(Set.empty)
       store.data = storedData
-      val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty), RequisitionsCheckResult(Set.empty, Set.empty))
+      val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty))
       checker.results.put((storedData, parsedData), checkResult)
       checkResultsHandler.results.put(checkResult, EitherT.rightT(()))
 
@@ -51,13 +51,13 @@ class PollProcessorTest extends AnyWordSpecLike with Matchers with BeforeAndAfte
     "add missing tournaments" in {
       val parsedData = setUpDefaults()
       val tournament = Tournament(2, 1)
-      val storedData = Data(Set(tournament), Set.empty)
+      val storedData = Data(Set(tournament))
       store.data = storedData
 
       var data = parsedData.toData
       data = data.copy(tournaments = data.tournaments + tournament)
 
-      val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty), RequisitionsCheckResult(Set.empty, Set.empty))
+      val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty))
       checker.results.put((storedData, parsedData), checkResult)
       checkResultsHandler.results.put(checkResult, EitherT.rightT(()))
 
@@ -70,7 +70,7 @@ class PollProcessorTest extends AnyWordSpecLike with Matchers with BeforeAndAfte
       val storedData = parsedData.toData
       store.data = storedData
 
-      val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty), RequisitionsCheckResult(Set.empty, Set.empty))
+      val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty))
       checker.results.put((storedData, parsedData), checkResult)
       checkResultsHandler.results.put(checkResult, EitherT.rightT(()))
 
@@ -85,10 +85,10 @@ class PollProcessorTest extends AnyWordSpecLike with Matchers with BeforeAndAfte
 
     "not save data when posting failed" in {
       val parsedData = setUpDefaults()
-      val storedData = Data(Set.empty, Set.empty)
+      val storedData = Data(Set.empty)
       store.data = storedData
 
-      val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty), RequisitionsCheckResult(Set.empty, Set.empty))
+      val checkResult = CheckResult(TournamentsCheckResult(Set.empty, Set.empty))
       checker.results.put((storedData, parsedData), checkResult)
       checkResultsHandler.results.put(checkResult, EitherT.leftT(new RuntimeException("post error")))
 
@@ -98,8 +98,7 @@ class PollProcessorTest extends AnyWordSpecLike with Matchers with BeforeAndAfte
 
   private def setUpDefaults() = {
     val parsedData = ParsedData(
-      Set(TournamentResult(1, 1, 1f, 1)),
-      Set(RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now()))
+      Set(TournamentResult(1, 1, 1f, 1))
     )
     provider.result = EitherT.rightT(parsedData)
     parsedData

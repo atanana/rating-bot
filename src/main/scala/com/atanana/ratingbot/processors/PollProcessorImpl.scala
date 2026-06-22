@@ -41,5 +41,5 @@ class PollProcessorImpl(
   }
 
   private def hasChanges(storedData: Data, parsedData: Data) =
-    storedData.tournaments != parsedData.tournaments || storedData.requisitions != parsedData.requisitions
+    storedData.tournaments != parsedData.tournaments 
 }

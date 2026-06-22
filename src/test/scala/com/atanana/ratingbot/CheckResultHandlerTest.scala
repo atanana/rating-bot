@@ -25,40 +25,20 @@ class CheckResultHandlerTest extends AnyWordSpecLike with Matchers {
   "CheckResultHandler" should {
 
     "post all changes" in {
-      val requisitionData = RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now())
-
-      val editor = Editor("test editor")
-      tournamentInfoProvider.editors.put(1, EitherT.rightT(List(editor)))
       tournamentInfoProvider.tournamentInfos(1) = EitherT.rightT(TournamentInfo("test", 36))
 
       messageComposer.newResultMessages.put(tournamentData, "new result")
       messageComposer.changedResultMessages.put(changedTournament, "changed result")
-      messageComposer.newRequisitionMessages.put((requisitionData.toRequisition, List(editor)), "new requisition")
-      messageComposer.cancelledRequisitionMessages.put(requisitionData.toRequisition, "cancelled requisition")
 
       poster.responses.put("new result", EitherT.rightT(()))
       poster.responses.put("changed result", EitherT.rightT(()))
-      poster.responses.put("new requisition", EitherT.rightT(()))
-      poster.responses.put("cancelled requisition", EitherT.rightT(()))
 
       val checkResult = CheckResult(
-        TournamentsCheckResult(Set(tournamentData), Set(changedTournament)),
-        RequisitionsCheckResult(Set(requisitionData), Set(requisitionData))
+        TournamentsCheckResult(Set(tournamentData), Set(changedTournament))
       )
       new CheckResultHandlerImpl(poster, messageComposer, tournamentInfoProvider).processCheckResult(checkResult).pipe(awaitEither)
 
       poster.responses shouldBe empty
-    }
-
-    "return an error when cannot get editors" in {
-      val requisitionData = RequisitionData("tournament 1", 1, "agent 1", LocalDateTime.now())
-
-      tournamentInfoProvider.editors.put(1, EitherT.leftT(new RuntimeException("editors error")))
-
-      new CheckResultHandlerImpl(poster, messageComposer, tournamentInfoProvider).processCheckResult(CheckResult(
-        TournamentsCheckResult(Set(tournamentData), Set(changedTournament)),
-        RequisitionsCheckResult(Set(requisitionData), Set(requisitionData))
-      )).pipe(awaitError) should have message "editors error"
     }
   }
 }

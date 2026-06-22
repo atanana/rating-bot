@@ -41,19 +41,6 @@ class ConnectorTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
       exception.getCause should have message "123"
     }
 
-    "get requisitions page by wrapper" in {
-      wrapper.pageResponses.put(UriComposer.requisitionPageUri(config.city), IO.pure(Right("requisitions page")))
-      connector.getRequisitionPage.pipe(awaitEither) shouldEqual Right("requisitions page")
-    }
-
-    "pass requisitions page error from wrapper" in {
-      val requisitionsUrl = UriComposer.requisitionPageUri(config.city)
-      wrapper.pageResponses.put(requisitionsUrl, IO.pure(Left("123")))
-      val exception = connector.getRequisitionPage.pipe(awaitError)
-      exception shouldBe a[ConnectorException]
-      exception should have message s"Error uri: $requisitionsUrl\n123"
-    }
-
     "get teams page by wrapper" in {
       val releaseId = 123
       wrapper.pageResponses.put(UriComposer.teamsPageUri(releaseId), IO.pure(Right("teams page")))
@@ -97,21 +84,6 @@ class ConnectorTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
       val exception = connector.getCountryTeamsPage(releaseId).pipe(awaitError)
       exception shouldBe a[ConnectorException]
       exception should have message s"Error uri: $teamsUrl\n123"
-    }
-
-    "get tournament requisitions page by wrapper" in {
-      val tournamentId = 111
-      wrapper.pageResponses.put(UriComposer.tournamentRequisitionsPageUri(tournamentId), IO.pure(Right("tournament requests page")))
-      connector.getTournamentRequisitionsPage(tournamentId).pipe(awaitEither) shouldEqual Right("tournament requests page")
-    }
-
-    "pass tournament requisitions page error from wrapper" in {
-      val tournamentId = 111
-      val url = UriComposer.tournamentRequisitionsPageUri(tournamentId)
-      wrapper.pageResponses.put(url, IO.pure(Left("123")))
-      val exception = connector.getTournamentRequisitionsPage(tournamentId).pipe(awaitError)
-      exception shouldBe a[ConnectorException]
-      exception should have message s"Error uri: $url\n123"
     }
 
     "get tournament info page by wrapper" in {

@@ -12,11 +12,7 @@ trait Connector {
 
   def getTournamentResultsPage(id: TournamentId): EitherT[IO, Throwable, TournamentResultsPage]
 
-  def getRequisitionPage: EitherT[IO, Throwable, String]
-
   def getTournamentPage(id: TournamentId): EitherT[IO, Throwable, String]
-
-  def getTournamentRequisitionsPage(tournamentId: TournamentId): EitherT[IO, Throwable, String]
 
   def getTeamsPage(releaseId: ReleaseId): EitherT[IO, Throwable, String]
 

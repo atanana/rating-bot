@@ -17,18 +17,11 @@ class MockConnector extends Connector {
   val cityTeamsPageResponses: mutable.Map[ReleaseId, EitherT[IO, Throwable, String]] = mutable.Map()
   val countryTeamsPageResponses: mutable.Map[ReleaseId, EitherT[IO, Throwable, String]] = mutable.Map()
   val tournamentInfoResponses: mutable.Map[TournamentId, EitherT[IO, Throwable, TournamentInfoPage]] = mutable.Map()
-  val tournamentRequisitionsPageResponses: mutable.Map[TournamentId, EitherT[IO, Throwable, String]] = mutable.Map()
   var releases: EitherT[IO, Throwable, String] = _
-  var requisitionPage: EitherT[IO, Throwable, String] = _
   var teamTournamentsPage: EitherT[IO, Throwable, TeamTournamentsPage] = _
   var tournamentResultsPage: mutable.Map[TournamentId, EitherT[IO, Throwable, TournamentResultsPage]] = mutable.Map()
 
-  override def getRequisitionPage: EitherT[IO, Throwable, String] = requisitionPage
-
   override def getTournamentPage(id: TournamentId): EitherT[IO, Throwable, String] = tournamentPageResponses(id)
-
-  override def getTournamentRequisitionsPage(tournamentId: TournamentId): EitherT[IO, Throwable, String] =
-    tournamentRequisitionsPageResponses(tournamentId)
 
   override def getTeamsPage(releaseId: ReleaseId): EitherT[IO, Throwable, String] = teamsPageResponses(releaseId)
 

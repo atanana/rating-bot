@@ -39,24 +39,6 @@ class MessageComposerTest extends AnyWordSpecLike with Matchers {
         s"Сегодня ${messageComposer.currentDay()}, а значит настало время дрочить на рейтинг! На турнире test name у нас было 10, а стало 20 взятых. Новый результат: 123 место и 15 рейтига. \nhttps://rating.chgk.info/tournament/123"
     }
 
-    "valid new requisition" in {
-      val requisition = Requisition("tournament 1", "agent 1", LocalDateTime.of(2017, 4, 11, 18, 45), 36)
-      val editors = List(Editor("editor 1"), Editor("editor 2"))
-      messageComposer.composeNewRequisition(requisition, editors) shouldEqual
-        "А в следующий раз нас поимеют на турнире под названием *tournament 1* который состоится *11 апреля 2017 18:45:00*. Ответственный: agent 1.\nРедакторы: editor 1, editor 2\n*36 вопросов*"
-    }
-
-    "valid cancelled requisition" in {
-      messageComposer.composeCancelledRequisition(Requisition("tournament 1", "agent 1", LocalDateTime.of(2017, 4, 11, 18, 45))) should
-        endWith("! agent 1 вёл себя подозрительно и посему *tournament 1* в *11 апреля 2017 18:45:00* отменяется!")
-    }
-
-    "valid requisition reminder" in {
-      val requisition = Requisition("tournament 1", "agent 1", LocalDateTime.of(2017, 4, 11, 18, 45), 36)
-      messageComposer.composeRequisitionReminder(requisition) shouldEqual
-        "Напоминаю, что завтра состоится очередная рейтинг-оргия под названием *tournament 1 (36 вопросов)*. Командовать парадом будет agent 1"
-    }
-
     "valid team positions reminder" in {
       val targetTeam = TargetTeam("target team", "target city", 20)
       val targetCountryTeam = TargetTeam("country team", "country city", 10)

@@ -21,8 +21,6 @@ class ConfigModule(config: Config, isDebug: Boolean, backend: SttpBackend[IO, We
   lazy val checkResultHandler: CheckResultHandler = wire[CheckResultHandlerImpl]
 
   lazy val tournamentPageParser: TournamentPageParser = wire[TournamentPageParserImpl]
-  lazy val requisitionsParser: RequisitionsParser = wire[RequisitionsParserImpl]
-  lazy val requisitionsPageParser: RequisitionsPageParser = wire[RequisitionsPageParserImpl]
   lazy val teamsPageParser: TeamsPageParser = wire[TeamsPageParserImpl]
   lazy val tournamentInfoParser: TournamentInfoParser = wire[TournamentInfoParserImpl]
   lazy val releasesParser: ReleasesParser = wire[ReleasesParserImpl]
@@ -46,12 +44,10 @@ class ConfigModule(config: Config, isDebug: Boolean, backend: SttpBackend[IO, We
 
   lazy val commandProcessor: CommandProcessor = wire[CommandProcessor]
   lazy val pollProcessor: PollProcessor = wire[PollProcessorImpl]
-  lazy val reminderProcessor: ReminderProcessor = wire[ReminderProcessorImpl]
   lazy val teamPositionsProcessor: TeamPositionsProcessor = wire[TeamPositionsProcessorImpl]
 
   lazy val messageComposer: MessageComposer = wire[MessageComposerImpl]
 
   lazy val mainChecker: MainChecker = wire[MainCheckerImpl]
   lazy val tournamentsChecker: TournamentsChecker = wire[TournamentsCheckerImpl]
-  lazy val requisitionsChecker: RequisitionsChecker = wire[RequisitionsCheckerImpl]
 }

@@ -2,11 +2,11 @@ package com.atanana.ratingbot.mocks
 
 import cats.data.EitherT
 import cats.effect.IO
-import com.atanana.ratingbot.processors.{PollProcessor, ReminderProcessor, TeamPositionsProcessor}
+import com.atanana.ratingbot.processors.{PollProcessor, TeamPositionsProcessor}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class MockProcessor extends PollProcessor with ReminderProcessor with TeamPositionsProcessor {
+class MockProcessor extends PollProcessor with TeamPositionsProcessor {
 
   var invocationsCount = 0
 

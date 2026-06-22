@@ -5,14 +5,12 @@ import cats.effect.IO
 import com.typesafe.scalalogging.Logger
 
 class CommandProcessor(pollProcessor: PollProcessor,
-                       reminderProcessor: ReminderProcessor,
                        teamPositionsProcessor: TeamPositionsProcessor) {
 
   private val logger = Logger(classOf[CommandProcessor])
 
   private val processors = Map(
     "poll" -> pollProcessor,
-    "remind" -> reminderProcessor,
     "teamPositions" -> teamPositionsProcessor
   )
 

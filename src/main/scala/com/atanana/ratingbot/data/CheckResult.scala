@@ -4,6 +4,4 @@ case class TournamentsCheckResult(newTournaments: Set[TournamentResult], changed
 
 case class ChangedTournament(tournament: TournamentResult, oldScore: Int)
 
-case class RequisitionsCheckResult(newRequisitions: Set[RequisitionData], cancelledRequisitions: Set[Requisition])
-
-case class CheckResult(tournamentsCheckResult: TournamentsCheckResult, requisitionsCheckResult: RequisitionsCheckResult)
+case class CheckResult(tournamentsCheckResult: TournamentsCheckResult)
