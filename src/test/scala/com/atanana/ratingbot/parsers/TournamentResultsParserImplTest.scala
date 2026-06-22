@@ -8,6 +8,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
 import scala.util.Success
+import scala.language.implicitConversions
 
 class TournamentResultsParserImplTest extends AnyWordSpecLike with Matchers {
 

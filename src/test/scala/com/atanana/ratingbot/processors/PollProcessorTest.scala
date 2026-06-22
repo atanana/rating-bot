@@ -11,7 +11,7 @@ import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
-import java.time.LocalDateTime
+import scala.language.implicitConversions
 
 class PollProcessorTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
   private val provider = new MockPollingDataProvider()

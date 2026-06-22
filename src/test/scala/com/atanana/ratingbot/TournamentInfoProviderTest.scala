@@ -3,17 +3,16 @@ package com.atanana.ratingbot
 import cats.data.EitherT
 import cats.effect.IO
 import com.atanana.ratingbot.Conversions.fromIntToTournamentId
-import com.atanana.ratingbot.TestUtils.{awaitEither, awaitError}
-import com.atanana.ratingbot.data.{Editor, TournamentInfo}
+import com.atanana.ratingbot.TestUtils.awaitEither
+import com.atanana.ratingbot.data.TournamentInfo
 import com.atanana.ratingbot.mocks.{MockTournamentInfoParser, MockTournamentPageParser}
 import com.atanana.ratingbot.net.MockConnector
-import com.atanana.ratingbot.parsers.TournamentPageParserImpl
 import com.atanana.ratingbot.providers.TournamentInfoProviderImpl
-import com.atanana.ratingbot.types.Ids.TournamentId
 import com.atanana.ratingbot.types.Pages.TournamentInfoPage
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
+import scala.language.implicitConversions
 import scala.util.Success
 import scala.util.chaining.scalaUtilChainingOps
 

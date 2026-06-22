@@ -9,6 +9,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import sttp.client3.UriContext
 
+import scala.language.implicitConversions
 import scala.util.chaining.scalaUtilChainingOps
 
 class ConnectorTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {

@@ -2,11 +2,10 @@ package com.atanana.ratingbot.data
 
 import com.atanana.ratingbot.Conversions.fromIntToTournamentId
 import com.atanana.ratingbot.data.{Data, ParsedData, Tournament, TournamentResult}
-import com.atanana.ratingbot.types.Ids.TournamentId
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
-import java.time.LocalDateTime
+import scala.language.implicitConversions
 
 class ParsedDataTest extends AnyWordSpecLike with Matchers {
 

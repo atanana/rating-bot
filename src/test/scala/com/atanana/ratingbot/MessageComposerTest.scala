@@ -8,7 +8,7 @@ import com.atanana.ratingbot.data.*
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
-import java.time.LocalDateTime
+import scala.language.implicitConversions
 
 class MessageComposerTest extends AnyWordSpecLike with Matchers {
   "MessageComposer" should {

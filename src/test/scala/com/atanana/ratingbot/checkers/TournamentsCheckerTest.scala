@@ -6,6 +6,8 @@ import com.atanana.ratingbot.data.{ChangedTournament, Tournament, TournamentResu
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
+import scala.language.implicitConversions
+
 class TournamentsCheckerTest extends AnyWordSpecLike with Matchers {
 
   "TournamentsChecker" should {

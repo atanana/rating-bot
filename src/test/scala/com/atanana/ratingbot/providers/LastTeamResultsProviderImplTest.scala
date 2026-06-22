@@ -11,9 +11,9 @@ import com.atanana.ratingbot.types.Ids.TournamentId
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.Success
 import scala.util.chaining.scalaUtilChainingOps
+import scala.language.implicitConversions
 
 class LastTeamResultsProviderImplTest extends AnyWordSpecLike with Matchers {
 
@@ -29,10 +29,10 @@ class LastTeamResultsProviderImplTest extends AnyWordSpecLike with Matchers {
       teamTournamentsParser.results("tournaments page") = Success((1 to 100).map(TournamentId(_)).toSet)
       for i <- 50 to 100 do {
         connector.tournamentResultsPage(i) = EitherT.rightT(s"tournament results $i")
-        tournamentResultsParser.results((s"tournament results $i", i, 123)) = Success(Some(TournamentResult(i, i, i, i)))
+        tournamentResultsParser.results((s"tournament results $i", i, 123)) = Success(Some(TournamentResult(i, i, i.toFloat, i)))
       }
 
-      val results = (100 to 51 by -1).map(i => TournamentResult(i, i, i, i)).toSet
+      val results = (100 to 51 by -1).map(i => TournamentResult(i, i, i.toFloat, i)).toSet
       provider.getLastTeamResults(123).pipe(awaitEither) shouldEqual Right(results)
     }
 
@@ -41,12 +41,12 @@ class LastTeamResultsProviderImplTest extends AnyWordSpecLike with Matchers {
       teamTournamentsParser.results("tournaments page") = Success((1 to 100).map(TournamentId(_)).toSet)
       for i <- 50 to 100 do {
         connector.tournamentResultsPage(i) = EitherT.rightT(s"tournament results $i")
-        tournamentResultsParser.results((s"tournament results $i", i, 123)) = if i % 2 == 0 then Success(Some(TournamentResult(i, i, i, i))) else Success(None)
+        tournamentResultsParser.results((s"tournament results $i", i, 123)) = if i % 2 == 0 then Success(Some(TournamentResult(i, i, i.toFloat, i))) else Success(None)
       }
 
       val results = (100 to 51 by -1)
         .filter(_ % 2 == 0)
-        .map(i => TournamentResult(i, i, i, i)).toSet
+        .map(i => TournamentResult(i, i, i.toFloat, i)).toSet
       provider.getLastTeamResults(123).pipe(awaitEither) shouldEqual Right(results)
     }
   }

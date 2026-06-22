@@ -2,10 +2,8 @@ package com.atanana.ratingbot.providers
 
 import cats.data.EitherT
 import cats.effect.IO
-import cats.implicits.*
-import com.atanana.ratingbot.parsers.*
 import com.atanana.ratingbot.Conversions.{fromIntToTeamId, fromIntToTournamentId}
-import com.atanana.ratingbot.TestUtils.{awaitEither, awaitError}
+import com.atanana.ratingbot.TestUtils.awaitEither
 import com.atanana.ratingbot.data.{ParsedData, TournamentInfo, TournamentResult}
 import com.atanana.ratingbot.json.Config
 import com.atanana.ratingbot.mocks.{MockLastTeamResultsProvider, MockTournamentInfoProvider}
@@ -14,9 +12,8 @@ import com.atanana.ratingbot.providers.PollingDataProviderImpl
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
-import java.time.LocalDateTime
+import scala.language.implicitConversions
 import scala.util.chaining.scalaUtilChainingOps
-import scala.util.{Failure, Success, Try}
 
 class PollingDataProviderTest extends AnyWordSpecLike with Matchers {
   private val connector = new MockConnector()

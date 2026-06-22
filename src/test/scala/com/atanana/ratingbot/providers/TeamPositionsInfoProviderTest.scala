@@ -7,12 +7,12 @@ import com.atanana.ratingbot.Conversions.fromIntToReleaseId
 import com.atanana.ratingbot.TestUtils.awaitEither
 import com.atanana.ratingbot.data.{TargetTeam, Team, TeamPositionsInfo}
 import com.atanana.ratingbot.mocks.{MockReleasesProvider, MockTeamPositionsInfoComposer, MockTeamsPageParser}
-import com.atanana.ratingbot.net.{ConnectorImpl, MockConnector}
-import com.atanana.ratingbot.parsers.TeamsPageParserImpl
+import com.atanana.ratingbot.net.MockConnector
 import com.atanana.ratingbot.providers.TeamPositionsInfoProviderImpl
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
+import scala.language.implicitConversions
 import scala.util.chaining.scalaUtilChainingOps
 
 class TeamPositionsInfoProviderTest extends AnyWordSpecLike with Matchers {

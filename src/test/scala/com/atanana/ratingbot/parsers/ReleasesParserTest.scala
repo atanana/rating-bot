@@ -8,6 +8,7 @@ import org.scalatest.wordspec.AnyWordSpecLike
 
 import java.time.LocalDateTime
 import scala.util.Success
+import scala.language.implicitConversions
 
 class ReleasesParserTest extends AnyWordSpecLike with Matchers {
 

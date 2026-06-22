@@ -7,7 +7,7 @@ import com.atanana.ratingbot.mocks.MockTournamentsChecker
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
-import java.time.LocalDateTime
+import scala.language.implicitConversions
 
 class MainCheckerTest extends AnyWordSpecLike with Matchers {
 

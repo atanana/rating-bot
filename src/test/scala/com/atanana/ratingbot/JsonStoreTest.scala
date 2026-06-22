@@ -8,6 +8,8 @@ import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
+import scala.language.implicitConversions
+
 class JsonStoreTest extends AnyWordSpecLike with Matchers with BeforeAndAfter {
   private val fsHandler = new MockFsHandler()
   private val jsonStore = new JsonStoreImpl(fsHandler)
