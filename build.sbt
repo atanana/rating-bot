@@ -4,7 +4,7 @@ version := "3.5.0"
 
 scalaVersion := "3.7.4"
 
-libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.5.34"
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.6.5"
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.6"
 libraryDependencies += "io.spray" %% "spray-json" % "1.3.6"
 libraryDependencies += "net.ruippeixotog" %% "scala-scraper" % "3.2.0"
@@ -12,7 +12,7 @@ libraryDependencies += "com.softwaremill.macwire" %% "macros" % "2.6.7"
 libraryDependencies += "com.softwaremill.sttp.client3" %% "core" % "3.11.0"
 libraryDependencies += "com.softwaremill.sttp.client3" %% "async-http-client-backend-cats" % "3.11.0"
 libraryDependencies += "org.typelevel" %% "cats-core" % "2.13.0"
-libraryDependencies += "org.typelevel" %% "cats-effect" % "3.7.0"
+libraryDependencies += "org.typelevel" %% "cats-effect" % "3.7.1"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.20" % "test"
 
