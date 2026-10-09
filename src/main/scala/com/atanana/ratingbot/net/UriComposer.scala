@@ -6,7 +6,7 @@ import sttp.model.Uri
 
 object UriComposer {
   private val SITE_URL = "https://rating.chgk.info"
-  private val API_URL = "https://api.rating.chgk.net"
+  private val API_URL = "https://api.rating.chgk.info"
 
   def tournamentPageUri(id: TournamentId): Uri = uri"$SITE_URL/tournament/$id"
 
